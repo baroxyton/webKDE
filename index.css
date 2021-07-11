@@ -61,3 +61,33 @@ html, body {
     top: calc(100vh - 45px);
     box-shadow: 1px -1px 10px black;
 }
+.menu{
+    position:fixed;
+    width: 25vw;
+    height:fit-content;
+    background-color:rgb(42, 46, 50);
+    border-radius: 2px;
+    user-select: none;
+    border: 1px rgb(50, 55, 60) solid;
+    box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
+}
+.menuItem{
+    white-space: nowrap;
+    width:100%;
+    color:white;
+    padding-top:5px;
+    padding-bottom: 5px;
+    border-radius: 3px;
+    display: flex;
+}
+.menuItem:hover{
+    background-color: rgba(50, 150, 200, 0.7);
+    box-shadow: inset 0px 0px 0px 1px rgba(50, 150, 200, 0.7);
+}
+.menuText{
+    margin-left:5px;
+}
+.menuIcon{
+    background-size: auto 100%;
+    margin-left:5px;
+}

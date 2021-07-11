@@ -3,7 +3,7 @@ export default {
         backgroundimage: "/home/iron/Downloads/icecold2.png",
         apps: [
             {
-                name: "firefox",
+                name: "Firefox",
                 icon: "/usr/share/icons/hicolor/48x48/apps/firefox.png",
                 position:
                 {
@@ -12,7 +12,7 @@ export default {
                 }
             },
             {
-                name: "kate",
+                name: "Kate",
                 icon: "/usr/share/icons/breeze-dark/apps/48/kate.svg",
                 position:
                 {
@@ -21,7 +21,7 @@ export default {
                 }
             },
             {
-                name: "dolphin",
+                name: "Dolphin",
                 icon: "/usr/share/icons/breeze-dark/places/48/folder.svg",
                 position: {
                     x: 2,

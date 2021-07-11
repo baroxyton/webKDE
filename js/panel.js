@@ -14,7 +14,9 @@ class Panel{
         document.getElementById("desktop").appendChild(this.panelElement);
     }
     remove(){
-
+        if(this.panelElement){
+        this.panelElement.outerHTML = "";
+        }
     }
 }
 export {Panel as default};
