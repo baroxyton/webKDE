@@ -27,7 +27,15 @@ export default {
                     x: 2,
                     y: 0
                 }
-            }]
+            }],
+        panels: [
+            {
+                height: 45,
+                top: 100,
+                width: 100,
+                left: 0
+            }
+        ]
     },
     apps: {
         iconSize: 1,
