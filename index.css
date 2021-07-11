@@ -1,0 +1,55 @@
+html, body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0px;
+}
+
+#desktop {
+    height: 100vh;
+    width: 100vw;
+    margin: 0px;
+    background-size: cover;
+}
+#apps{
+    width:100%;
+}
+.app{
+    padding:10px;
+    
+    margin:5px;
+    /*background-color:rgba(20, 100, 255, 0.3);
+    //float:left;*/
+    position:fixed;
+    border-radius: 3px;
+    user-select: none;
+}
+.app:hover {
+    background-color:rgba(20, 100, 255, 0.1);
+    box-shadow:inset 0px 0px 0px 1px rgba(20, 100, 255, 0.1);
+}
+.appicon{
+    height:91.666%;
+    width:100%;
+    background-size: 100% 100%;
+    filter: drop-shadow(1px 1px 2px black);
+}
+.appname{
+    text-align: center;
+    color:white;
+    text-shadow: 1px 1px 2px black;
+    height:8.333%;
+    width: 100%;
+}
+.selectedapp{
+background-color:rgba(20, 100, 255, 0.3) !important;
+}
+.panel{
+    user-select: none;
+    height:45px;
+    width:100vw;
+    margin:0;
+    background-color: rgb(42, 46, 50);
+    position: fixed;
+    top:calc(100vh - 45px);
+    box-shadow:1px -1px 10px black;
+}
