@@ -1,21 +1,22 @@
 //library for parsing paths
-import { path } from "/linuxSimulator/lib/path.js"
+import { path } from "./lib/path.js"
 //library for parsing basic bash synthax
-import { bashParser } from "/linuxSimulator/lib/parseBash.js"
+import { bashParser } from "./lib/parseBash.js"
 //default filesystem
-import { fileapi, getFile } from "/linuxSimulator/components/fileapi.js"
-import { mathParser } from "/linuxSimulator/components/mathparser.js"
-import { generateApi } from "/linuxSimulator/components/binaryApi.js"
-import { Pipe } from "/linuxSimulator/components/pipe.js"
+import { fileapi, getFile } from "./components/fileapi.js"
+import { mathParser } from "./components/mathparser.js"
+import { generateApi } from "./components/binaryApi.js"
+import { Pipe } from "./components/pipe.js"
 window.debug = { Pipe, bashParser, path, fileapi, parseCommand, runCommand, getCommandOutput, getFile }
-export let allCommands = []
+export let allCommands = [];
+export { fileapi };
 fileapi.onready.then(refreshCommands);
 
 function refreshCommands() {
     allCommands = []
-    data.env.PATH.split(":").forEach(function(dir) {
+    data.env.PATH.split(":").forEach(function (dir) {
         let commands = Object.keys(getFile(dir).content);
-        commands.forEach(function(command) {
+        commands.forEach(function (command) {
             allCommands.push({
                 command: command,
                 dir: dir + "/" + command
@@ -41,8 +42,8 @@ export function parseCommand(command) {
     let execTree = [];
     let commands = [];
     let currentCommand = { items: [], end: "none" }
-        //split commands
-    command.forEach(function(item, index, arr) {
+    //split commands
+    command.forEach(function (item, index, arr) {
         if (typeof item == "string") {
             currentCommand.items.push(item);
             if (index + 1 == arr.length) {
@@ -61,10 +62,10 @@ export function parseCommand(command) {
             commands.push(currentCommand);
         }
     })
-    commands.forEach(function(command, index) {
+    commands.forEach(function (command, index) {
         let execRegex = /\$\((.*?)\)/;
         let mathRegex = /\$\(\((.*?)\)\)/;
-        command.items = command.items.map(function(arg, index) {
+        command.items = command.items.map(function (arg, index) {
             let type = "argument";
             if (index == 0) {
                 type = "command"
@@ -82,7 +83,7 @@ export function parseCommand(command) {
                 return { type: type, parse: "exec", content: arg.op.match(execRegex)[1] }
             }
         });
-        command.items = command.items.filter(function(item) {
+        command.items = command.items.filter(function (item) {
             if (item.type != "comment") {
                 return item
             }
@@ -99,7 +100,7 @@ function findBinary(name) {
     if (name.includes("/")) {
         return path.resolve(data.env.PWD, name);
     }
-    let cmd = allCommands.find(function(item) {
+    let cmd = allCommands.find(function (item) {
         if (item.command == name) {
             return true
         }
@@ -111,15 +112,15 @@ function findBinary(name) {
 }
 
 function getCommandOutput(command) {
-    return new Promise(function(res) {
+    return new Promise(function (res) {
         let output = "";
         let hook = {
-            changeCommand: function(api) {
-                api.io.stdout.ondone = function(txt) {
+            changeCommand: function (api) {
+                api.io.stdout.ondone = function (txt) {
                     output += txt;
                 }
             },
-            ondone: function() {
+            ondone: function () {
                 res(output)
             }
         }
@@ -140,7 +141,7 @@ export async function runCommand(command, hook) {
         let binary;
         let args = [];
         let end = treeBranch.command.end;
-        await Promise.all(treeBranch.command.items.map(async function(arg, index, arr) {
+        await Promise.all(treeBranch.command.items.map(async function (arg, index, arr) {
 
             let type = arg.type;
             switch (arg.parse) {
@@ -171,7 +172,7 @@ export async function runCommand(command, hook) {
         runBinary(binary, args, api);
         switch (end) {
             case "none":
-                api.io.stdout.ondone = function() {
+                api.io.stdout.ondone = function () {
                     if (hook && hook.ondone) {
                         hook.ondone()
                     }
@@ -180,7 +181,7 @@ export async function runCommand(command, hook) {
             case ";":
             case "\n":
                 let nextCmd = parsed[index + 1];
-                api.io.stdout.ondone = function() {
+                api.io.stdout.ondone = function () {
                     if (nextCmd) {
                         parseArgsRun(nextCmd, index + 1);
                     }
@@ -193,7 +194,7 @@ export async function runCommand(command, hook) {
                 api.hideout = true
                 api.io.stdout.onwrite
                 api.fs.write(path.resolve(api.data.env.PWD, parsed[index + 1].command.items[0].content), api.io.stdout, true);
-                api.io.stdout.ondone = function() {
+                api.io.stdout.ondone = function () {
                     let nextCommand = parsed[index + 2];
                     if (nextCommand) {
                         parseArgsRun(nextCommand, index + 2);
@@ -207,7 +208,7 @@ export async function runCommand(command, hook) {
             case ">>":
                 api.hideout = true
                 api.fs.write(path.resolve(api.data.env.PWD, parsed[index + 1].command.items[0].content), api.io.stdout);
-                api.io.stdout.ondone = function() {
+                api.io.stdout.ondone = function () {
                     let nextCommand = parsed[index + 2];
                     if (nextCommand) {
                         parseArgsRun(nextCommand, index + 2);
@@ -222,10 +223,10 @@ export async function runCommand(command, hook) {
                 api.hideout = true
                 let newApi = apiGen(data, data.user);
                 parseArgsRun(parsed[index + 1], index + 1, newApi);
-                api.io.stdout.onwrite = function(txt) {
+                api.io.stdout.onwrite = function (txt) {
                     newApi.io.stdin.write(txt)
                 }
-                api.io.stdout.ondone = function() {
+                api.io.stdout.ondone = function () {
                     api.io.stdin.done()
                 }
             default:
@@ -247,37 +248,37 @@ export async function runBinary(path, args, api) {
         args,
         content
     });
-    api.io.stdin.onwrite = function(txt) {
+    api.io.stdin.onwrite = function (txt) {
         execWorker.postMessage({
             type: "io",
             std: "stdin",
             content: txt
         });
     }
-    api.io.stderr.input.onwrite = function(txt) {
+    api.io.stderr.input.onwrite = function (txt) {
         execWorker.postMessage({
             type: "io",
             std: "stderr",
             content: txt
         });
     }
-    api.io.keys.onwrite = function(txt) {
+    api.io.keys.onwrite = function (txt) {
         execWorker.postMessage({
             type: "io",
             std: "keys",
             content: txt
         });
     }
-    api.io.stdin.ondone = function() {
+    api.io.stdin.ondone = function () {
         execWorker.postMessage({
             type: "ioend",
             std: "stdin"
         });
     }
-    api.io.stdout.ondone = function() {
+    api.io.stdout.ondone = function () {
         api.worker.terminate()
     }
-    execWorker.onmessage = function(e) {
+    execWorker.onmessage = function (e) {
         console.log(e.data)
         let data = e.data;
         switch (data.type) {
@@ -313,7 +314,7 @@ export async function runBinary(path, args, api) {
                     });
                     return
                 }
-                pipe.ondone = function(output) {
+                pipe.ondone = function (output) {
                     execWorker.postMessage({
                         type: "callback",
                         id: data.callbackId,
@@ -357,18 +358,18 @@ export async function runBinary(path, args, api) {
                 let output = "";
                 let user = api.data.user;
                 let hook = {
-                    ondone: function() {
+                    ondone: function () {
                         execWorker.postMessage({
                             type: "callback",
                             id: data.callbackId,
                             output
                         });
                     },
-                    generateApi: function(data) {
+                    generateApi: function (data) {
                         return generateApi(data, user)
                     },
-                    changeCommand: function(api) {
-                        api.io.stdout.onwrite = function(data) {
+                    changeCommand: function (api) {
+                        api.io.stdout.onwrite = function (data) {
                             output += data;
                         }
                     }

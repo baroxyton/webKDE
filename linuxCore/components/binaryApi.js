@@ -1,6 +1,6 @@
-import { Pipe } from "/linuxSimulator/components/pipe.js"
-import { fileapi } from "/linuxSimulator/components/fileapi.js"
-import { path } from "/linuxSimulator/lib/path.js"
+import { Pipe } from "./pipe.js"
+import { fileapi } from "./fileapi.js"
+import { path } from "../lib/path.js"
 export function generateApi(data, execAs) {
     let api = {
         data: {

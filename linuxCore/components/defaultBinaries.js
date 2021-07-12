@@ -1,5 +1,5 @@
 //default/example binaries. Source code and documentation for api can be found in binarysandbox.js
-import { compile } from "/linuxSimulator/components/binarycompile.js"
+import { compile } from "./binarycompile.js"
 let defaultBinaries = {
     //change directory command for navigation
     cd: compile(async function() {

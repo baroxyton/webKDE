@@ -1,7 +1,7 @@
 //indexedObject database library written by me
 //license: https://unlicense.org/
-function IndexedObject(name, startValue) {
-	let db, store;
+export function IndexedObject(name, startValue) {
+	let db, store, objectStore;
 	let rq = window.indexedDB.open(name, 1);
 	this.reset = function() {
 		indexedDB.deleteDatabase(name);

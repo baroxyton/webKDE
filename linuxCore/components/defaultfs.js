@@ -1,4 +1,15 @@
-import { defaultBinaries } from "/linuxSimulator/components/defaultBinaries.js"
+import { defaultBinaries } from "./defaultBinaries.js"
+function downloadSync(url) {
+    let xhr = new XMLHttpRequest();
+    try{
+    xhr.open("GET", url, false);
+    xhr.send();
+    }
+    catch(err){
+        alert(err);
+    }
+    return xhr.response;
+}
 export const defaultfs = {
     "/": {
         meta: {
@@ -167,6 +178,44 @@ export const defaultfs = {
                         },
                         content: {
 
+                        }
+                    },
+                    "share": {
+                        meta: {
+                            changeDate: 0,
+                            owner: "root",
+                            permission: [7, 5, 5],
+                            type: "dir"
+                        },
+                        content: {
+                            "icons": {
+                                meta: {
+                                    changeDate: 0,
+                                    owner: "root",
+                                    permission: [7, 5, 5],
+                                    type: "dir"
+                                },
+                                content: JSON.parse(downloadSync("assets/icons.json"))
+                            },
+                            "fonts": {
+                                meta: {
+                                    changeDate: 0,
+                                    owner: "root",
+                                    permission: [7, 5, 5],
+                                    type: "dir"
+                                },
+                                content: {
+                                    "NotoSans-Regular.ttf": {
+                                        meta: {
+                                            changeDate: 0,
+                                            owner: "root",
+                                            permission: [7, 5, 5],
+                                            type: "file"
+                                        },
+                                        content: downloadSync("assets/NotoSans-Regular.ttf")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
