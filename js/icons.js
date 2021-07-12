@@ -24,8 +24,15 @@ class DesktopApp {
         this.nameElement.classList.add("appname");
         this.appElement.classList.add("app");
         this.iconElement.classList.add("appicon");
-
-        this.iconElement.style.backgroundImage = `url("${this.icon}")`;
+        try{
+        let pipe = debug.fileapi.internal.read(this.icon);
+        //alert(pipe)
+        this.iconElement.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(pipe)}")`;
+        }
+    catch(err){
+        console.log(err)
+    }
+        //this.iconElement.style.backgroundImage = `url("${this.icon}")`;
         this.appElement.style.height = (65 * this.config.iconSize) + "px";
         this.appElement.style.width = (60 * this.config.iconSize) + "px";
         this.appElement.style.top = (65 * this.config.iconSize * this.position.y) + (40 * this.position.y) + "px";
@@ -33,7 +40,7 @@ class DesktopApp {
         this.nameElement.innerText = this.name;
         this.nameElement.style.fontSize = this.config.fontSize;
         this.nameElement.style.color = this.config.fontColor;
-
+    
         this.appElement.appendChild(this.iconElement);
         this.appElement.appendChild(this.nameElement);
         this.appHolder.appendChild(this.appElement);

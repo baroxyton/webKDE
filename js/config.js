@@ -1,10 +1,10 @@
 export default {
     desktop: {
-        backgroundimage: "/home/iron/Downloads/icecold2.png",
+        backgroundimage: "/assets/icecold2.png",
         apps: [
             {
-                name: "Firefox",
-                icon: "/usr/share/icons/hicolor/48x48/apps/firefox.png",
+                name: "test.svg",
+                icon: "/usr/share/icons/breeze-dark/mimetypes/application-vnd.openxmlformats-officedocument.wordprocessingml.document.svg",
                 position:
                 {
                     x: 0,
@@ -13,7 +13,7 @@ export default {
             },
             {
                 name: "Kate",
-                icon: "/usr/share/icons/breeze-dark/apps/48/kate.svg",
+                icon: "/usr/share/icons/breeze-dark/apps/kate.svg",
                 position:
                 {
                     x: 5,
@@ -22,7 +22,7 @@ export default {
             },
             {
                 name: "Dolphin",
-                icon: "/usr/share/icons/breeze-dark/places/48/folder.svg",
+                icon: "/usr/share/icons/breeze-dark/places/folder.svg",
                 position: {
                     x: 2,
                     y: 0

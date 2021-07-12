@@ -81,7 +81,36 @@ export const defaultfs = {
                                     permission: [7, 5, 5],
                                     type: "dir"
                                 },
-                                content: {}
+                                content: {
+                                    "plasma":{
+                                        meta: {
+                                            changeDate: 0,
+                                            owner: "demo",
+                                            permission: [7, 5, 5],
+                                            type: "dir"
+                                        },
+                                        content:{}
+                                    }
+                                }
+                            },
+                            "Pictures":{
+                                meta: {
+                                    changeDate: 0,
+                                    owner: "demo",
+                                    permission: [7, 5, 5],
+                                    type: "dir"
+                                },
+                                content:{
+                                    "wallpaper.png":{
+                                        meta: {
+                                            changeDate: 0,
+                                            owner: "demo",
+                                            permission: [7, 5, 5],
+                                            type: "file"
+                                        },
+                                        content:downloadSync("/assets/icecold2.png")
+                                    }
+                                }
                             }
                         }
                     }
