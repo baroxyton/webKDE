@@ -1,10 +1,10 @@
-import { defaultfs } from "/linuxSimulator/components/defaultfs.js"
-import { IndexedObject } from "/linuxSimulator/lib/indexedObject.js"
-import { checkPermission } from "/linuxSimulator/components/checkPermission.js"
-import { Pipe } from "/linuxSimulator/components/pipe.js"
-import { sleep } from "/linuxSimulator/components/sleep.js"
-import { path } from "/linuxSimulator/lib/path.js"
-import * as builders from "/linuxSimulator/components/fileBuilder.js"
+import { defaultfs } from "./defaultfs.js"
+import { IndexedObject } from "../lib/indexedObject.js"
+import { checkPermission } from "./checkPermission.js"
+import { Pipe } from "./pipe.js"
+import { sleep } from "./sleep.js"
+import { path } from "../lib/path.js"
+import * as builders from "./fileBuilder.js"
 let fileParse = path;
 let specialFiles = {
         "random": {
@@ -31,6 +31,7 @@ let specialFiles = {
     }
     //filesystem database
 let filesystem = new IndexedObject("filesystem", defaultfs);
+window.fs = filesystem;
 //get direct reference to file
 export function getFile(fullpath) {
     //remove / on end to make processing easier
@@ -95,6 +96,15 @@ export const fileapi = {
             }
         })();
         return outpipe;
+    },
+    readAsUrl:function(user,path){
+        let result = this.read(user,path);
+        let outputPipe = new Pipe();
+        result.ondone = function(result){
+        outputPipe.write(URL.createObjectURL(new Blob([String(result)])));
+        outputPipe.done();
+        }
+        return outputPipe;
     },
     write: function(user, path, pipe, clear) {
         let file = getFile(path);
