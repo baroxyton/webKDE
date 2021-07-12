@@ -3,6 +3,8 @@ import config from "./config.js";
 import DesktopApp from "./icons.js";
 import Panel from "./panel.js"
 import DesktopMenu from "./menu.js"
+import toMime from "./toMime.js"
+import * as linux from "../linuxCore/index.js"; 
 class Desktop {
     constructor(config) {
         this.config = config;
@@ -19,7 +21,15 @@ class Desktop {
     };
     renderApps() {
         this.apps.forEach(app => app.remove());
-        this.config.desktop.apps.forEach(element => {
+        let apps = linux.fileapi.internal.list("/home/demo/Desktop");
+        let preparedApps = apps.map(function(app,index,apps){
+            let result = {};
+            result.name = app;
+            result.icon = "/usr/share/icons/breeze-dark/mimetypes/" + toMime(app).replace("/","-") + ".svg";
+            result.position = {x:0,y:0};
+            return result;
+        })
+        preparedApps.forEach(element => {
             this.apps.push(new DesktopApp(element.name, element.icon, element.position, config.apps));
         });
     }
@@ -52,4 +62,5 @@ class Desktop {
         })
     }
 };
-window.desktop = new Desktop(config);
+
+    window.desktop = new Desktop(config);
