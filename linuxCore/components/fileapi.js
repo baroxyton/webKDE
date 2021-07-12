@@ -56,6 +56,23 @@ export function getFile(fullpath) {
 export const fileapi = {
     //this is called when the database is ready to read/write
     onready: filesystem.onready,
+    //fast access for priviliged scripts
+    internal: {
+        read:function(path){
+            let file = getFile(path);
+            if(file instanceof Error){
+                return "";
+            }
+            return file.content;
+        },
+        list:function(path){
+            let file = getFile(path);
+            if(file instanceof Error){
+                return "";
+            }
+            return Object.keys(file.content);
+        }
+    },
     read: function(user, path) {
         let file = getFile(path);
         if (file instanceof Error) {
