@@ -10,6 +10,7 @@ class Desktop {
     constructor(config) {
         this.config = config;
         this.apps = [];
+        this.selectedApps = [];
         this.panels = [];
         this.element = document.getElementById("desktop");
         this.render();
@@ -64,6 +65,9 @@ class Desktop {
                 this.mousedown = true;
                 this.mousepos = { x: event.pageX, y: event.pageY };
             }
+            if(event.target.classList.contains("app")||event.target.classList.contains("appicon")||event.target.classList.contains("appname")){
+
+            }
         });
         this.element.addEventListener("mouseup", event => {
             this.mousedown = false;
@@ -73,7 +77,7 @@ class Desktop {
             }
         })
         this.element.addEventListener("mousemove", event => {
-            if (!this.mousedown || event.target != this.element) {
+            if (!this.mousedown || (!this.drag&&event.target != this.element&&!event.target.classList.contains("desktopdrag"))) {
                 return;
             }
             if (!this.drag) {
@@ -82,6 +86,27 @@ class Desktop {
             if (this.drag) {
                 this.drag.change({ x: event.pageX, y: event.pageY });
             }
+        });
+        window.addEventListener("touchstart",event=>{
+            document.body.requestFullscreen();
+            let node = event.target;
+            let clickEvent = document.createEvent('MouseEvents');
+            clickEvent.initMouseEvent("mousedown",true,true,window,0,event.touches[0].screenX,event.touches[0].screenY,event.touches[0].clientX,event.touches[0].clientY);
+            event.target.dispatchEvent(clickEvent);
+        });
+        window.addEventListener("touchmove",event=>{
+            let node = event.target;
+            let clickEvent = document.createEvent('MouseEvents');
+            this.lastTouch = event;
+            clickEvent.initMouseEvent("mousemove",true,true,window,0,event.touches[0].screenX,event.touches[0].screenY,event.touches[0].clientX,event.touches[0].clientY);
+            event.target.dispatchEvent(clickEvent);
+        });
+        window.addEventListener("touchend",()=>{
+            event = this.lastTouch;
+            let node = event.target;
+            let clickEvent = document.createEvent('MouseEvents');
+            clickEvent.initMouseEvent("mouseup",true,true,window,0,event.touches[0].screenX,event.touches[0].screenY,event.touches[0].clientX,event.touches[0].clientY);
+            event.target.dispatchEvent(clickEvent);
         });
     }
 };
