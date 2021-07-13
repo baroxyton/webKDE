@@ -1,5 +1,5 @@
 #!/bin/bash
-#usage: 
+#usage: find  /usr/share/icons/breeze-dark/apps/48/ -type f,l  -exec  /tmp/generator.sh {} \; > apps.json
 inputfile=$1;
 echo $inputfile > /dev/stderr;
 parsed=$(cat $inputfile|jq -R -s '.');

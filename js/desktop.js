@@ -48,12 +48,18 @@ class Desktop {
             }
             event.preventDefault();
             this.menu = new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
-                text: 'create new file',
-                action: function () { alert(1) }
+                text: 'Create new file',
+                action: function () { alert(1) },
+                icon:"/usr/share/icons/breeze-dark/actions/document-new.svg"
             },
             {
-                text: "refresh desktop",
-                icon: "/usr/share/icons/hicolor/48x48/apps/firefox.png",
+                text:"Create new folder",
+                action:function(){alert(2)},
+                icon:"/usr/share/icons/breeze-dark/actions/folder-new.svg"
+            },
+            {
+                text: "Refresh desktop",
+                icon: "/usr/share/icons/breeze-dark/places/desktop.svg",
                 action: function () { this.render() }
             }]);
         });

@@ -22,7 +22,7 @@ class DesktopMenu{
             let iconElement = document.createElement("div");
             iconElement.classList.add("menuIcon");
             iconElement.innerHTML = "&nbsp;".repeat(5);
-            iconElement.style.backgroundImage =  `url("${item.icon}")`;
+            iconElement.style.backgroundImage =  `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(item.icon))}")`;
             itemElement.appendChild(iconElement);
             }
             itemElement.appendChild(textElement);
