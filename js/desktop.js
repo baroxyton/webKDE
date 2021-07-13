@@ -116,5 +116,6 @@ class Desktop {
         });
     }
 };
-
+linux.fileapi.onready.then(()=>{
 window.desktop = new Desktop(config);
+});

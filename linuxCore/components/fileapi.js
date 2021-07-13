@@ -31,6 +31,7 @@ let specialFiles = {
     }
     //filesystem database
 let filesystem = new IndexedObject("filesystem", defaultfs);
+localStorage.downloaded = true;
 window.fs = filesystem;
 //get direct reference to file
 export function getFile(fullpath) {

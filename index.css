@@ -69,7 +69,7 @@ html, body {
     background-color:rgb(42, 46, 50);
     border-radius: 2px;
     user-select: none;
-    border: 1px rgb(50, 55, 60) solid;
+    border: 1px rgb(70, 70, 70) solid;
     box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
 }
 .menuItem{
@@ -97,4 +97,10 @@ html, body {
     border-radius: 5px;
     background-color: rgba(50, 150, 200, 0.3);
     box-shadow: inset 0px 0px 0px 1px rgba(226, 227, 228, 0.7);
+}
+.widget{
+    height:45px;
+    width:45px;
+    background-size: cover;
+    float:left;
 }

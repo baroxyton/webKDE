@@ -1,3 +1,4 @@
+"use strict";
 export default {
     desktop: {
         backgroundimage: "/assets/icecold2.png",
@@ -33,7 +34,8 @@ export default {
                 height: 45,
                 top: 100,
                 width: 100,
-                left: 0
+                left: 0,
+                items:[{type:"SearchMenuWidget"}]
             }
         ]
     },

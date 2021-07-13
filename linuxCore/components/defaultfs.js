@@ -1,5 +1,8 @@
 import { defaultBinaries } from "./defaultBinaries.js"
 function downloadSync(url) {
+    if(localStorage.downloaded){
+        return "{}";
+    }
     let xhr = new XMLHttpRequest();
     try{
     xhr.open("GET", url, false);
