@@ -14,6 +14,7 @@ class DesktopMenu{
         this.element.style.left = this.position.x + "px";
         this.items.forEach(item => {
             let itemElement = document.createElement("div");
+            itemElement.addEventListener("mousedown",event=>{item.action(); this.remove()})
             let textElement = document.createElement("div");
             itemElement.classList.add("menuItem");
             textElement.classList.add("menuText");

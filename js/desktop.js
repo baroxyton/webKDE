@@ -60,7 +60,7 @@ class Desktop {
             {
                 text: "Refresh desktop",
                 icon: "/usr/share/icons/breeze-dark/places/desktop.svg",
-                action: function () { this.render() }
+                action: ()=> { this.render() }
             }]);
         });
         this.element.addEventListener("mousedown", event => {
