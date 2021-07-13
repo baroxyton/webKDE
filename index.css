@@ -91,3 +91,10 @@ html, body {
     background-size: auto 100%;
     margin-left:5px;
 }
+.desktopdrag{
+    position:absolute;
+    border-radius: 5px;
+    background-color: rgba(50, 150, 200, 0.3);
+    box-shadow: inset 0px 0px 0px 1px rgba(226, 227, 228, 0.7);
+    
+}
