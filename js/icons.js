@@ -1,4 +1,5 @@
 "use strict";
+import DesktopMenu from "./menu.js";
 // app/icon that renders on desktop
 class DesktopApp {
     constructor(name, icon, position, appConfig) {
@@ -54,6 +55,19 @@ class DesktopApp {
     }
     addListeners() {
         this.mousedown = false;
+        this.appElement.addEventListener("contextmenu",event =>{
+            event.preventDefault();
+            new DesktopMenu({x:event.pageX,y:event.pageY},[{
+                text:"Rename..",
+                icon:"/usr/share/icons/breeze-dark/actions/edit-rename.svg"
+            },{
+                text:"Delete",
+                icon:"/usr/share/icons/breeze-dark/actions/edit-delete.svg"
+            },{
+                text:"Properties",
+                icon:"/usr/share/icons/breeze-dark/actions/dialog-object-properties.svg"
+            }]);
+        })
         this.appElement.addEventListener("mousedown", event => {
             this.mousedown = true;
             desktop.apps.forEach(app => app.unselect());

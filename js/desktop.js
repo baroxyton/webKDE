@@ -47,7 +47,7 @@ class Desktop {
                 return;
             }
             event.preventDefault();
-            this.menu = new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
+            new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: 'Create new file',
                 action: function () { alert(1) },
                 icon:"/usr/share/icons/breeze-dark/actions/document-new.svg"
@@ -58,15 +58,16 @@ class Desktop {
                 icon:"/usr/share/icons/breeze-dark/actions/folder-new.svg"
             },
             {
+                text:"Open with file manager",
+                icon:"/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
+            },
+            {
                 text: "Refresh desktop",
                 icon: "/usr/share/icons/breeze-dark/places/desktop.svg",
                 action: ()=> { this.render() }
             }]);
         });
         this.element.addEventListener("mousedown", event => {
-            if (this.menu && (event.target.id == "desktop" || event.target.classList.contains("panel") || event.target.classList.contains("app"))) {
-                this.menu.remove();
-            }
             if (event.target == this.element) {
                 this.mousedown = true;
                 this.mousepos = { x: event.pageX, y: event.pageY };
