@@ -32,7 +32,12 @@ class DesktopMenu{
         document.getElementById("desktop").appendChild(this.element);
     }
     addListeners(){
-        
+        document.getElementById("desktop").addEventListener("mousedown",event=>{
+            if(event.target.classList.contains("menu")||event.target.parentElement.classList.contains("menu")){
+                return;
+            }
+            this.remove();
+        });
     }
     remove(){
         this.element.outerHTML = "";
