@@ -17,7 +17,7 @@ class Desktop {
         this.addListeners()
     }
     render() {
-        this.element.style.backgroundImage = `url("${this.config.desktop.backgroundimage}")`;
+        this.element.style.backgroundImage = `url("data:image/png;base64,${linux.fileapi.internal.read(this.config.desktop.backgroundimage)}")`;
         this.renderApps();
         this.renderPanels();
     };
