@@ -1,0 +1,20 @@
+{
+    "desktop": {
+        "backgroundimage": "/assets/icecold2.png",
+        "icons":{},
+        "panels": [
+            {
+                "height": 45,
+                "top": 100,
+                "width": 100,
+                "left": 0,
+                "items":[{"type":"SearchMenuWidget"}]
+            }
+        ]
+    },
+    "apps": {
+        "iconSize": 1,
+        "fontSize": "1em",
+        "fontColor": "white"
+    }
+}

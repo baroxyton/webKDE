@@ -73,7 +73,7 @@ export const defaultfs = {
                                             permission: [7, 5, 5],
                                             type: "file"
                                         },
-                                        content: "Desktop comming soon? ;)"
+                                        content: "A web clone of linux and KDE!"
                                     }
                                 }
                             },
@@ -85,14 +85,14 @@ export const defaultfs = {
                                     type: "dir"
                                 },
                                 content: {
-                                    "plasma":{
+                                    "plasma.json":{
                                         meta: {
                                             changeDate: 0,
                                             owner: "demo",
                                             permission: [7, 5, 5],
-                                            type: "dir"
+                                            type: "file"
                                         },
-                                        content:{}
+                                        content:downloadSync("/assets/plasmaConfig.json")
                                     }
                                 }
                             },

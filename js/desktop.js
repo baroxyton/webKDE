@@ -1,11 +1,11 @@
 "use strict";
-import config from "./config.js";
 import DesktopApp from "./icons.js";
 import Panel from "./panel.js";
 import DesktopMenu from "./menu.js";
 import toMime from "./toMime.js";
 import DesktopDrag from "./desktopDrag.js";
 import * as linux from "../linuxCore/index.js";
+let config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
 class Desktop {
     constructor(config) {
         this.config = config;
@@ -43,10 +43,10 @@ class Desktop {
     }
     addListeners() {
         this.element.addEventListener("contextmenu", event => {
+            event.preventDefault();
             if (event.target.id != "desktop") {
                 return;
             }
-            event.preventDefault();
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: 'Create new file',
                 action: function () { alert(1) },
