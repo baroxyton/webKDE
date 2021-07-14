@@ -5,7 +5,7 @@ import DesktopMenu from "./menu.js";
 import toMime from "./toMime.js";
 import DesktopDrag from "./desktopDrag.js";
 import * as linux from "../linuxCore/index.js";
-let config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
+let config;
 class Desktop {
     constructor(config) {
         this.config = config;
@@ -118,5 +118,6 @@ class Desktop {
     }
 };
 linux.fileapi.onready.then(()=>{
+config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
 window.desktop = new Desktop(config);
 });
