@@ -120,4 +120,5 @@ class Desktop {
 linux.fileapi.onready.then(()=>{
 config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
 window.desktop = new Desktop(config);
+localStorage.downloaded = true;
 });

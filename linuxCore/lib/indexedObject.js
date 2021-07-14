@@ -2,15 +2,10 @@
 //license: https://unlicense.org/
 export function IndexedObject(name, startValue) {
 	let db, store, objectStore;
-	let rq = window.indexedDB.open(name, 1);
+	let rq;
 	this.reset = function() {
 		indexedDB.deleteDatabase(name);
 		db.data = startValue;
-	};
-	rq.onupgradeneeded = function(e) {
-		db = e.target.result;
-		store = db.createObjectStore('projectStore', { keyPath: 'projectName' });
-		store.createIndex('data', 'data');
 	};
 	startValue = startValue || {};
 	let self = this;
@@ -53,6 +48,13 @@ export function IndexedObject(name, startValue) {
 		});
 	};
 	this.onready = new Promise(async function(resolve) {
+		self.data = await self.data()
+		rq = window.indexedDB.open(name, 1);
+		rq.onupgradeneeded = function(e) {
+			db = e.target.result;
+			store = db.createObjectStore('projectStore', { keyPath: 'projectName' });
+			store.createIndex('data', 'data');
+		};
 		try {
 			rq.onsuccess = async function(e) {
 				db = e.target.result;
