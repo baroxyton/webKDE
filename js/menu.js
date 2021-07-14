@@ -14,7 +14,7 @@ class DesktopMenu{
         this.element.style.left = this.position.x + "px";
         this.items.forEach(item => {
             let itemElement = document.createElement("div");
-            itemElement.addEventListener("mousedown",event=>{item.action(); this.remove()})
+            itemElement.addEventListener("mouseup",event=>{item.action(); this.remove()})
             let textElement = document.createElement("div");
             itemElement.classList.add("menuItem");
             textElement.classList.add("menuText");
@@ -33,7 +33,7 @@ class DesktopMenu{
     }
     addListeners(){
         document.getElementById("desktop").addEventListener("mousedown",event=>{
-            if(event.target.classList.contains("menu")||event.target.parentElement.classList.contains("menu")){
+            if(event.target.classList.contains("menu")||event.target.classList.contains("menuItem")||event.target.parentElement.classList.contains("menuItem")){
                 return;
             }
             this.remove();
