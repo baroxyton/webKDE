@@ -1,21 +1,32 @@
 {
     "desktop": {
         "backgroundimage": "/home/demo/Pictures/wallpaper.png",
-        "theme":"breeze-dark",
-        "icons":{},
+        "theme": "breeze-dark",
+        "icons": {},
         "panels": [
             {
                 "height": 45,
                 "top": 100,
                 "width": 100,
                 "left": 0,
-                "items":[{"type":"SearchMenuWidget"},{"type":"ClockWidget","styles":{"float":"right"}}]
+                "items": [
+                    {
+                        "type": "SearchMenuWidget"
+                    },
+                    {
+                        "type": "ClockWidget",
+                        "styles": {
+                            "float": "right"
+                        }
+                    }
+                ]
             }
         ]
     },
     "apps": {
         "iconSize": 1,
-        "fontSize": "1em",
+        "fontSize": "0.8em",
         "fontColor": "white"
-    }
+    },
+    "font": "/usr/share/fonts/NotoSans-Regular.ttf"
 }
