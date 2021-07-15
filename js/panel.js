@@ -16,7 +16,11 @@ class Panel{
         this.panelElement.style.left = this.config.left + "%";
         this.panelElement.top = this.config.top + "%";
         this.config.items.forEach(item=>{
-            this.widgets.push(new widgets[item.type](this.panelElement));
+            let newWidget = new widgets[item.type](this.panelElement);
+            if(item.styles){
+                newWidget.align(item.styles);
+            }
+            this.widgets.push(newWidget);
         })
         document.getElementById("desktop").appendChild(this.panelElement);
     }

@@ -9,7 +9,7 @@
                 "top": 100,
                 "width": 100,
                 "left": 0,
-                "items":[{"type":"SearchMenuWidget"}]
+                "items":[{"type":"SearchMenuWidget"},{"type":"ClockWidget","styles":{"float":"right"}}]
             }
         ]
     },

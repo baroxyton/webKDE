@@ -10,7 +10,7 @@ let config;
 class Desktop {
     constructor(config) {
         this.config = config;
-        this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/breeze-dark"))//+this.config.desktop.theme));
+        this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/"+this.config.desktop.theme));
         this.apps = [];
         this.selectedApps = [];
         this.panels = [];

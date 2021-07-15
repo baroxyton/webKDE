@@ -82,5 +82,7 @@ html, body {
     width:45px;
     background-size: cover;
     float:left;
+    vertical-align: middle;
+    text-align: center;
     filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
 }
