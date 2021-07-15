@@ -62,20 +62,25 @@ export class ClockWidget extends Widget {
         let date = new Date();
         let minutes = date.getMinutes();
         let hours = date.getHours();
-        let month = date.getMonth();
+        let month = date.getMonth() + 1;
         let year = date.getFullYear();
-        let day = date.getDay();
+        let day = date.getDate()   
         if (minutes < 10) {
             minutes = "0" + minutes;
         }
         if (hours < 10) {
             hours = "0" + hours;
         }
-        this.element.innerHTML = `<a>${hours}:${minutes}</a><br><a style="font-size:1em;">${day}.${month}.${String(year).slice(-2)}</a>`;
+        if(month < 10){
+            month = "0" + month;
+        }
+        if(day < 10){
+            day = "0" + day;
+        }
+        this.element.innerHTML = `<a style="font-size:1.2em;">${hours}:${minutes}</a><br><a style="font-size:1em;">${day}.${month}.${String(year).slice(-2)}</a>`;
     }
     rendered() {
         this.updateTime();
-        this.element.style.fontSize = "1.3em";
         this.element.style.width = "auto";
         setInterval(() => this.updateTime(), 1000)
     }

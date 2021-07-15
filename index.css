@@ -27,7 +27,7 @@ html, body {
 
 
 .appicon {
-    height: 91.666%;
+    height: 85%;
     width: 100%;
     background-size: 100% 100%;
     filter: drop-shadow(1px 1px 0.5px rgba(0, 0, 0, 0.5));
@@ -36,7 +36,7 @@ html, body {
 .appname {
     text-align: center;
     color: white;
-    text-shadow: -1px -1px 3px rgba(0, 0, 0, 1);
+    text-shadow: 1px 1px 2px #000, 1px 1px 2px #000, 1px 1px 2px #000;
     height: 8.333%;
     width: 100%;
 }
@@ -53,7 +53,7 @@ html, body {
     min-width: 25vw;
     width:fit-content;
     height:fit-content;
-    border-radius: 2px;
+    border-radius: 4px;
     user-select: none;
     box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
 }

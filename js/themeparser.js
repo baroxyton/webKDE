@@ -19,13 +19,27 @@ function parseTheme(rawTheme) {
     return result;
 }
 class ThemeLoader {
-    constructor(rawTheme) {
+    constructor(rawTheme,font) {
+        this.font = font;
         this.parsedTheme = parseTheme(rawTheme);
         this.render()
+    }
+    generateFont(){
+        if(!this.font){
+            return "";
+        }
+        return `@font-face {
+            font-family: linuxFont;
+            src: url("${this.font}");
+          }
+          *{
+              font-family:linuxFont;
+          }`
     }
     render() {
         this.element = document.createElement("style");
         this.element.innerHTML = `
+        ${this.generateFont()}
         .app:hover{
             background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal},0.4);
             box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8);
@@ -40,7 +54,7 @@ class ThemeLoader {
         }
         .menu{
             background-color:rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
-            border: 1px rgb(${this.parsedTheme["Colors:Window"].BackgroundAlternate}) solid;
+            border: 1px rgb(${this.parsedTheme["Colors:Window"].ForegroundInactive}) solid;
         }
         .menuText{
             color:rgb(${this.parsedTheme["Colors:View"].ForegroundNormal});
