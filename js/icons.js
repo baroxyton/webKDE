@@ -80,7 +80,7 @@ class DesktopApp {
                 this.stopMoving();
             }
         });
-        this.appElement.addEventListener("mousemove", event => {
+        this.appElement.addEventListener("mousemove", async event => {
             if (!this.mousedown) {
                 return;
             }
@@ -89,6 +89,14 @@ class DesktopApp {
             this.appElement.style.left = (event.pageX - this.mousedownPosition.x) + "px";
             this.appElement.style.top = (event.pageY - this.mousedownPosition.y) + "px";
         });
+        document.getElementById("desktop").addEventListener("mousemove",async event=>{
+            if(!this.moving){
+                return;
+            }
+            this.movePosition = { x: event.pageX, y: event.pageY };
+            this.appElement.style.left = (event.pageX - this.mousedownPosition.x) + "px";
+            this.appElement.style.top = (event.pageY - this.mousedownPosition.y) + "px";
+        })
         document.getElementById("desktop").addEventListener("mouseup", event => {
             if(event.target.id != "desktop"){
                 return;
