@@ -20,17 +20,11 @@ html, body {
     padding: 10px;
     padding-left:15px;
     padding-right:15px;
-    /*background-color:rgba(20, 100, 255, 0.3);
-    //float:left;*/
     position: fixed;
     border-radius: 3px;
     user-select: none;
 }
 
-.app:hover {
-    background-color: rgba(50, 150, 200, 0.3);
-    box-shadow: inset 0px 0px 0px 1px rgba(50, 150, 200, 0.7);
-}
 
 .appicon {
     height: 91.666%;
@@ -47,43 +41,29 @@ html, body {
     width: 100%;
 }
 
-.selectedapp {
-    background-color: rgba(50, 150, 200, 0.7) !important;
-    box-shadow: none !important;
-}
 
 .panel {
     user-select: none;
-    height: 45px;
-    width: 100vw;
-    margin: 0;
-    background-color: rgb(42, 46, 50);
     position: fixed;
     top: calc(100vh - 45px);
     box-shadow: 1px -1px 10px black;
 }
 .menu{
     position:fixed;
-    width: 25vw;
+    min-width: 25vw;
+    width:fit-content;
     height:fit-content;
-    background-color:rgb(42, 46, 50);
     border-radius: 2px;
     user-select: none;
-    border: 1px rgb(70, 70, 70) solid;
     box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
 }
 .menuItem{
     white-space: nowrap;
     width:100%;
-    color:white;
     padding-top:5px;
     padding-bottom: 5px;
     border-radius: 3px;
     display: flex;
-}
-.menuItem:hover{
-    background-color: rgba(50, 150, 200, 0.7);
-    box-shadow: inset 0px 0px 0px 1px rgba(50, 150, 200, 0.7);
 }
 .menuText{
     margin-left:5px;
@@ -91,16 +71,16 @@ html, body {
 .menuIcon{
     background-size: auto 100%;
     margin-left:5px;
+    filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
 }
 .desktopdrag{
     position:absolute;
     border-radius: 5px;
-    background-color: rgba(50, 150, 200, 0.3);
-    box-shadow: inset 0px 0px 0px 1px rgba(226, 227, 228, 0.7);
 }
 .widget{
     height:45px;
     width:45px;
     background-size: cover;
     float:left;
+    filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
 }

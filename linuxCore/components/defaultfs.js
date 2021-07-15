@@ -238,6 +238,15 @@ export const defaultfs = async function () {
                                     },
                                     content: JSON.parse(await download("assets/icons.json"))
                                 },
+                                "themes": {
+                                    meta: {
+                                        changeDate: 0,
+                                        owner: "root",
+                                        permission: [7, 5, 5],
+                                        type: "dir"
+                                    },
+                                    content: JSON.parse(await download("assets/themes.json"))
+                                },
                                 "fonts": {
                                     meta: {
                                         changeDate: 0,

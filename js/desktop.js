@@ -5,10 +5,12 @@ import DesktopMenu from "./menu.js";
 import toMime from "./toMime.js";
 import DesktopDrag from "./desktopDrag.js";
 import * as linux from "../linuxCore/index.js";
+import ThemeLoader from "./themeparser.js"
 let config;
 class Desktop {
     constructor(config) {
         this.config = config;
+        this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/breeze-dark"))//+this.config.desktop.theme));
         this.apps = [];
         this.selectedApps = [];
         this.panels = [];

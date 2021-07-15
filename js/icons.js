@@ -36,8 +36,8 @@ class DesktopApp {
         //this.iconElement.style.backgroundImage = `url("${this.icon}")`;
         this.appElement.style.height = (65 * this.config.iconSize) + "px";
         this.appElement.style.width = (60 * this.config.iconSize) + "px";
-        this.appElement.style.top = (65 * this.config.iconSize * this.position.y) + (40 * this.position.y) + "px";
-        this.appElement.style.left = (60 * this.config.iconSize * this.position.x) + (40 * this.position.x) + "px";
+        this.appElement.style.top = 5+(65 * this.config.iconSize * this.position.y) + (40 * this.position.y) + "px";
+        this.appElement.style.left = 5+(60 * this.config.iconSize * this.position.x) + (40 * this.position.x) + "px";
         this.nameElement.innerText = this.name;
         this.nameElement.style.fontSize = this.config.fontSize;
         this.nameElement.style.color = this.config.fontColor;
@@ -117,8 +117,8 @@ class DesktopApp {
 
     stopMoving() {
         this.moving = false;
-        this.position.x = Math.round((this.movePosition.x- this.mousedownPosition.x) / (40+(60 * this.config.iconSize)));
-        this.position.y = Math.round((this.movePosition.y- this.mousedownPosition.y) / (40+(65 * this.config.iconSize)));
+        this.position.x = Math.round((this.movePosition.x+5- this.mousedownPosition.x) / (40+(60 * this.config.iconSize)));
+        this.position.y = Math.round((this.movePosition.y+5- this.mousedownPosition.y) / (40+(65 * this.config.iconSize)));
         this.render();
     }
 };

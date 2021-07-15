@@ -1,6 +1,7 @@
 {
     "desktop": {
         "backgroundimage": "/home/demo/Pictures/wallpaper.png",
+        "theme":"breeze-dark",
         "icons":{},
         "panels": [
             {
