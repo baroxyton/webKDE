@@ -50,7 +50,8 @@ html, body {
 }
 .menu{
     position:fixed;
-    min-width: 25vw;
+    min-width: 15vw;
+    font-size:0.85em;
     width:fit-content;
     height:fit-content;
     border-radius: 4px;
@@ -85,4 +86,46 @@ html, body {
     vertical-align: middle;
     text-align: center;
     filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
+}
+.kwin{
+    height:500px;
+    width:700px;
+    top:200px;
+    left: 200px;
+    position:fixed;
+    border-radius:3px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.5);
+}
+.knavbar{
+    position:relative;
+    top:0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    left:0;
+    height:25px;
+    width:100%;
+}
+.kwinActions{
+    float:right;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.kwinActions > div {
+    height:20px;
+    width:20px;
+    border-radius:50%;
+    margin:2px;
+    margin-top:2.5px;
+}
+.kwintitle{
+    width:100%;
+    text-align: center;
+    user-select: none;
+}
+.kwinIcon{
+    float:left;
+    height:25px;
+    width:25px;
+    background-size: 100% 100%;
 }

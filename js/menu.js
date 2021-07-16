@@ -23,7 +23,10 @@ class DesktopMenu {
                 if (item.action) {
                     item.action();
                 }
-                this.remove()
+                this.remove();
+                if(this.parent){
+                    this.parent.parentElement.outerHTML = "";
+                }
             });
             itemElement.addEventListener("mousemove",event=>{
                 if(!item.expanded&&item.submenus){

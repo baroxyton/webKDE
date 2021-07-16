@@ -4,6 +4,7 @@ import Panel from "./panel.js";
 import DesktopMenu from "./menu.js";
 import toMime from "./toMime.js";
 import DesktopDrag from "./desktopDrag.js";
+import "./windowmanager.js"
 import * as linux from "../linuxCore/index.js";
 import ThemeLoader from "./themeparser.js"
 let config;
@@ -45,20 +46,20 @@ class Desktop {
     }
     addListeners() {
         this.element.addEventListener("contextmenu", event => {
-            event.preventDefault();
+            event.preventDefault()
             if (event.target.id != "desktop") {
                 return;
             }
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
-                text: 'Create new file',
-                action: function () { alert(1) },
-                icon:"/usr/share/icons/breeze-dark/actions/document-new.svg"
-            },
-            {
-                text:"Create new..",
-                action:function(){},
-                submenus:[{text:"hello"},{text:"goodbye",submenus:[{text:"hello again"}]}],
-                icon:"/usr/share/icons/breeze-dark/actions/folder-new.svg"
+                text: 'Create new...',
+                icon:"/usr/share/icons/breeze-dark/actions/document-new.svg",
+                submenus:[{
+                    text:"Folder",
+                    icon:"/usr/share/icons/breeze-dark/actions/folder-new.svg"
+                },{
+                    text:"Text Document",
+                    icon:"/usr/share/icons/breeze-dark/actions/x-shape-text.svg"
+                }]
             },
             {
                 text:"Open with file manager",
