@@ -55,8 +55,9 @@ class Desktop {
                 icon:"/usr/share/icons/breeze-dark/actions/document-new.svg"
             },
             {
-                text:"Create new folder",
-                action:function(){alert(2)},
+                text:"Create new..",
+                action:function(){},
+                submenus:[{text:"hello"},{text:"goodbye",submenus:[{text:"hello again"}]}],
                 icon:"/usr/share/icons/breeze-dark/actions/folder-new.svg"
             },
             {
