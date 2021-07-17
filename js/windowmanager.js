@@ -6,8 +6,8 @@ class WebKWin {
     constructor(url, theme) {
         this.url = url;
         this.theme = theme;
-        this.height = 500;
-        this.width = 700;
+        this.height = innerHeight*0.3;
+        this.width = innerWidth*0.7;
         this.position = { x: 100, y: 200 };
         this.render();
         this.addListeners();
@@ -15,6 +15,8 @@ class WebKWin {
 
     render() {
         if (!this.element) {
+
+            // Create & style elements
             this.element = document.createElement("div");
             this.navbar = document.createElement("div");
             this.title = document.createElement("div");
