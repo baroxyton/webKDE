@@ -3,6 +3,7 @@ html, body {
     width: 100vw;
     margin: 0px;
     overscroll-behavior-y: contain;
+    overflow: hidden;
 }
 
 #desktop {
@@ -88,11 +89,7 @@ html, body {
     filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
 }
 .kwin{
-    height:500px;
-    width:700px;
-    top:200px;
-    left: 200px;
-    position:fixed;
+    position:absolute;
     border-radius:3px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.5);
 }
