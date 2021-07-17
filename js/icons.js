@@ -95,6 +95,14 @@ class DesktopApp {
                 this.stopMoving();
             }
         });
+        
+        // Remove highlight when pressing desktop
+        document.getElementById("desktop").addEventListener("mouseup", event => {
+            if(event.target.id != "desktop"){
+                return;
+            }
+            this.unselect();
+        })
 
         this.appElement.addEventListener("mousemove", async event => {
             // If not clicked down, we can exit function
