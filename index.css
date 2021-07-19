@@ -114,6 +114,7 @@ html, body {
     border-radius:50%;
     margin:2px;
     margin-top:2.5px;
+    cursor: initial !important;
 }
 .kwintitle{
     width:100%;

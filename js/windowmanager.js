@@ -6,8 +6,8 @@ class WebKWin {
     constructor(url, theme) {
         this.url = url;
         this.theme = theme;
-        this.height = innerHeight*0.3;
-        this.width = innerWidth*0.7;
+        this.height = innerHeight * 0.3;
+        this.width = innerWidth * 0.7;
         this.position = { x: 100, y: 200 };
         this.render();
         this.addListeners();
@@ -33,6 +33,7 @@ class WebKWin {
             this.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read("/usr/share/icons/breeze-dark/apps/com.visualstudio.code.oss.svg"))}")`;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
 
+            // Append elements
             this.navbar.appendChild(actions);
             this.navbar.appendChild(this.icon);
             this.navbar.appendChild(this.title);
@@ -56,14 +57,162 @@ class WebKWin {
             this.mousePos = { x: event.pageX - rect.left, y: event.pageY - rect.top };
         });
 
-        // Mouse move: drag window
+        // Mouse move: drag & resize window
         document.body.addEventListener("mousemove", event => {
             if (this.mousePos) {
                 this.position = { x: event.pageX - this.mousePos.x, y: event.pageY - this.mousePos.y };
                 this.element.style.left = this.position.x + "px";
                 this.element.style.top = this.position.y + "px";
             }
+            if(this.resize){
+
+                // Change width of kwin element
+                if(this.resize[0] == 1){
+                    this.width = event.pageX - this.position.x;
+                    this.element.style.width = this.width + "px";
+                }
+
+                // Change height of kwin element
+                if(this.resize[1] == 1){
+                    this.height = event.pageY - this.position.y;
+                    this.element.style.height = this.height + "px";
+                }
+
+                // Change start x position & width
+                if(this.resize[0] == -1){
+                    this.width = this.width - (event.pageX - this.position.x);
+                    this.position.x = event.pageX;
+                    this.element.style.left = this.position.x + "px";
+                    this.element.style.width = this.width + "px";
+                }
+                // Change start y position & height
+                if(this.resize[1] == -1){
+                    this.height = this.height - (event.pageY - this.position.y);
+                    this.position.y = event.pageY;
+                    this.element.style.top = this.position.y + "px";
+                    this.element.style.height = this.height + "px";
+                }
+            }
         });
+        document.body.addEventListener("mouseup",event=>{
+            this.resize = null;
+            document.body.style.cursor = "default";
+        });
+
+        // Resize window
+
+        /*
+        Directions:
+
+              North
+                |
+          NW    |    NE
+                |      
+    West ---------------- East
+                |
+          SW    |    SE
+                |
+              South
+
+        */
+        document.body.addEventListener("mousedown", event => {
+
+            // Resize box
+            let pixelsIn = 2;
+            let pixelsAround = 5;
+            let rect = this.element.getBoundingClientRect();
+
+            // Test if click was within our window drag area
+
+            // Corner coords
+            let ax = rect.left-pixelsAround, ay = rect.top-pixelsAround, bx = rect.left-pixelsAround, by = rect.bottom+pixelsAround, dx = rect.right+pixelsAround, dy = rect.top-pixelsAround;
+            
+            let x= event.pageX,y=event.pageY;
+            let bax = bx - ax,bay = by - ay, dax = dx - ax, day = dy - ay;
+
+            let isInArea = !(((x - ax) * bax + (y - ay) * bay < 0.0)||((x - bx) * bax + (y - by) * bay > 0.0)||((x - ax) * dax + (y - ay) * day < 0.0)||((x - dx) * dax + (y - dy) * day > 0.0));
+            
+            if(!isInArea){
+                //exit
+                return;
+            }
+            // Prevent desktop dragclick selection
+
+            desktop.mousedown = null;
+            
+
+            // Top left corner
+            if ((rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) && (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn)) {
+                // North-West -> South-East 
+                document.body.style.cursor = "nwse-resize";
+                this.resize = [-1,-1];
+                event.preventDefault();
+                return;
+            }
+
+            // Top right corner
+            if ((rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) && (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn)) {
+                // North-East -> South-West
+                document.body.style.cursor = "nesw-resize";
+                this.resize = [1,-1];
+                event.preventDefault();
+                return;
+            }
+
+            // Bottom left corner
+            if ((rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) && (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn)) {
+                // North-West -> South-East 
+                document.body.style.cursor = "nesw-resize";
+                this.resize = [-1,1];
+                event.preventDefault();
+                return;
+            }
+
+            // Bottom right corner
+            if ((rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) && (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn)) {
+                // North-West -> South-East 
+                document.body.style.cursor = "nwse-resize";
+                this.resize = [1,1];
+                event.preventDefault();
+                return;
+            }
+
+            // Left side
+            if (rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) {
+                // East -> West
+                document.body.style.cursor = "ew-resize";
+                this.resize = [-1, 0];
+                event.preventDefault();
+                return;
+            }
+            
+            // Right side
+            if (rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) {
+                // East -> West
+                document.body.style.cursor = "ew-resize";
+                this.resize = [1, 0];
+                event.preventDefault();
+                return;
+            }
+
+            // Top
+            if (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn) {
+                // North -> South
+                document.body.style.cursor = "ns-resize";
+                this.resize = [0, -1];
+                event.preventDefault();
+                return;
+            }
+
+            // Bottom
+            if (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn) {
+                // North -> South
+                document.body.style.cursor = "ns-resize";
+                this.resize = [0, 1];
+                event.preventDefault();
+                return;
+            }
+        })
         this.navbar.addEventListener("mouseup", event => {
             this.navbar.style.cursor = "default";
             this.mousePos = null;
