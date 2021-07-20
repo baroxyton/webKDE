@@ -128,6 +128,9 @@ html, body {
     background-size: 100% 100%;
 }
 .programIframe{
+    position:relative;
+    top:0;
+    left:0;
     height:100%;
     width:100%;
     border: 0;
@@ -136,4 +139,14 @@ html, body {
     height:calc(100% - 25px);
     width:100%;
     border-radius:3px;
+    display:flex;
+}
+.windowcover{
+    display:none;
+    position:absolute;
+    background-color:transparent;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    display:flex;
 }

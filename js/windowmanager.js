@@ -21,8 +21,9 @@ class WebKWin {
             this.iframeHolder = document.createElement("div");
             this.element = document.createElement("div");
             this.navbar = document.createElement("div");
-            this.title = document.createElement("div");
             let actions = document.createElement("div");
+            this.title = document.createElement("div");
+            this.cover = document.createElement("div");
             this.icon = document.createElement("div");
 
             this.element.classList.add("kwin");
@@ -32,7 +33,8 @@ class WebKWin {
             this.icon.classList.add("kwinIcon");
             this.iframeHolder.classList.add("iframeHolder");
             this.contentElement.classList.add("programIframe");
-            
+            this.cover.classList.add("windowcover");
+
             this.contentElement.width = "100%";
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
@@ -45,6 +47,7 @@ class WebKWin {
             this.navbar.appendChild(this.icon);
             this.navbar.appendChild(this.title);
             this.element.appendChild(this.navbar);
+            this.iframeHolder.appendChild(this.cover);
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
             document.body.appendChild(this.element);
@@ -63,6 +66,9 @@ class WebKWin {
 
             // Calculate position relative to element
             this.mousePos = { x: event.pageX - this.position.x, y: event.pageY - this.position.y };
+
+            // Cover iframe
+            this.cover.style.display = "block";
         });
 
         // Mouse move: drag & resize window
@@ -105,6 +111,7 @@ class WebKWin {
         document.body.addEventListener("mouseup", event => {
             this.resize = null;
             document.body.style.cursor = "default";
+            this.cover.style.display = "none";
         });
 
         // Resize window
@@ -146,6 +153,8 @@ class WebKWin {
 
             desktop.mousedown = null;
 
+            // Cover iframe
+            this.cover.style.display = "block";
 
             // Top left corner
             if ((this.position.x - event.pageX < pixelsAround && this.position.x - event.pageX > -pixelsIn) && (this.position.y - event.pageY < pixelsAround && this.position.y - event.pageY > -pixelsIn)) {
