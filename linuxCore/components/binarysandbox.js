@@ -1,39 +1,43 @@
 AsyncFunction = (async function() {}).constructor
 
-function Pipe() {
-    let writeListener = [];
-    let doneListener = [];
-    this.listeners = { writeListener, doneListener }
-    let fulltext = "";
-    let self = this;
-    Object.defineProperties(this, {
-        "onwrite": {
-            "set": function(lis) {
-                writeListener.push(lis)
-            }
-        },
-        "ondone": {
-            "set": function(lis) {
-                doneListener.push(lis)
-            }
-        }
-    });
-    this.ondone = function() {}
-    this.write = function(text) {
-        fulltext += String(text);
-        writeListener.forEach(function(lis) {
-            lis(text)
-        })
+class Pipe {
+    constructor() {
+
+        // Array of all events to keep track of
+        this.writeListener = [];
+        this.doneListener = [];
+
+        this.result = "";
     }
-    this.done = function() {
-        doneListener.forEach(function(lis) {
-            lis(fulltext)
-        })
+
+    // Enables adding listeners like this:
+    // instance.onwrite = [Object Function]
+    set onwrite(listener) {
+        this.writeListener.push(listener);
+    }
+
+    // Enables adding listeners like this:
+    // instance.ondone = [Object Function]
+    set ondone(listener) {
+        this.doneListener.push(listener);
+    }
+
+    // To write data to the pipe. Events receive current part of input
+    write(input) {
+        this.result += input;
+        this.writeListener.forEach(listener => listener(input));
+    }
+
+    // When no more output is expected
+    done() {
+        this.doneListener.forEach(listener => listener(this.result))
     }
 }
+
 let callbackId = 0;
 let callbackQueue = {}
-    //this is to turn an api callback into a promise
+
+// Get callback result as promise
 function getCallback(data, isPersistent) {
     data.callbackId = callbackId;
     postMessage(data);
@@ -48,37 +52,35 @@ function getCallback(data, isPersistent) {
         }
     })
 }
-//api object
+// Api object
 api = {
-    //access current user with api.user
+    // Access current user with api.user
     user: "",
-    //these are the input/output pipes
+    // These are the input/output pipes
     io: {
-        //write to stdout. can be piped wiht > >> or |
-        //with with api.io.stdout.output.write("some text")
+
+        // Usage: api.io.stdout.output.write("some text")
         stdout: {
             output: new Pipe()
         },
-        //input. api.io.stdin.input.onwrite to access piped std
-        //api.io.stdin.output.write to write to command input
-        //write {{{clear}}} to input to clear it
+
+        // Write {{{clear}}} to input to clear it
         stdin: {
             input: new Pipe(),
             output: new Pipe()
         },
-        //input is when someone types something, output is to show messages without piping them to stdout
-        //write {{{clear}}} to clear console
+
         stderr: {
             input: new Pipe(),
             output: new Pipe()
         },
-        //everytime user presses key, javascript event is sent
+        // Everytime user presses key, javascript event is sent
         keys: {
             input: new Pipe()
         }
     },
-    //api.env.read(key) to read env value
-    //api-env.write(key,value) to set env value
+    // api.env.read(key) to read env value
+    // api-env.write(key, value) to set env value
     env: {
         read: async function(key) {
             let env = await getCallback({
@@ -95,44 +97,44 @@ api = {
             })
         }
     },
-    //api.exec(command) to exec command. Executed with current process user
+    // api.exec(command) to exec command. Executed with current process user
     exec: async function(command) {
         let data = await getCallback({ type: "exec", command })
         return data;
     },
-    //execute javascript outside of sandbox (Example: alert(1) )
-    //requires root permissions
+    // Execute javascript outside of sandbox (Example: alert(1) )
+    // Requires root permissions
     execjs: async function(code) {
         let data = await getCallback({ type: "execjs", code });
         return data;
     },
-    //use api.application.quit() to exit
+    // Terminate own process
     application: {
         quit: function() {
             api.io.stdout.output.done()
         }
     },
-    //command arguments can be accessed using api.args
+    // Command arguments can be accessed using api.args
     args: [],
-    //use api.fs("operation",[arguments]) to execute filesystem operation
-    //binaryApi.js has all arguments and operations
+    // Use api.fs("operation",[arguments]) to execute filesystem operation
+    // binaryApi.js has all arguments and operations
     fs: async function(operation, args) {
         let data = await getCallback({ type: "fs", operation, args })
         console.log(data);
         return data;
     },
-    //requests root permission
-    //application is terminated if the user cancels the request
+
+    // Prompt user for root permission
+    // Application is terminated if the user cancels the request
     elevate: async function() {
         let data = await getCallback({ type: "elevate" })
         if (!data) {
             api.io.stderr.output.write("Denied root access");
             api.application.quit()
-        }
-        //you cannot aquire root using this lol
+        } 
         api.user = "root"
     },
-    //makes web request, use proxy to avoid CORS
+    // Makes web request, use proxy to avoid CORS
     web: async function(url) {
         let data = await (await fetch("https://proxy.ironblockhd.repl.co/?url=" + encodeURIComponent(url))).text();
         return data;

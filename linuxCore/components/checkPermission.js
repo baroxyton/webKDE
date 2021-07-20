@@ -1,4 +1,5 @@
-//all permissions possible
+// All supported permissions
+// x: execute w: write, r: read
 let permissions = {
     0: [],
     1: ["x"],
@@ -10,12 +11,13 @@ let permissions = {
     7: ["r", "w", "x"]
 }
 export function checkPermission(user, file, operation) {
-    //cuz he's root!
+
+    // Root always has permission
     if (user == "root") {
         return true
     }
     let owner = file.meta.owner;
-    //assume that you aren't the owner
+
     let permission = file.meta.permission[2]
     if (owner == user) {
         permission = file.meta.permission[0]
