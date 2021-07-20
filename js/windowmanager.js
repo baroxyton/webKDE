@@ -52,9 +52,9 @@ class WebKWin {
 
             // Change cursor icon
             this.navbar.style.cursor = "grab";
-
-            let rect = this.navbar.getBoundingClientRect();
-            this.mousePos = { x: event.pageX - rect.left, y: event.pageY - rect.top };
+            
+            // Calculate position relative to element
+            this.mousePos = { x: event.pageX - this.position.x, y: event.pageY - this.position.y };
         });
 
         // Mouse move: drag & resize window
@@ -100,8 +100,7 @@ class WebKWin {
         });
 
         // Resize window
-
-        /*
+/*
         Directions:
 
               North
@@ -114,18 +113,17 @@ class WebKWin {
                 |
               South
 
-        */
+*/
         document.body.addEventListener("mousedown", event => {
 
             // Resize box
             let pixelsIn = 2;
             let pixelsAround = 5;
-            let rect = this.element.getBoundingClientRect();
 
             // Test if click was within our window drag area
 
             // Corner coords
-            let ax = rect.left-pixelsAround, ay = rect.top-pixelsAround, bx = rect.left-pixelsAround, by = rect.bottom+pixelsAround, dx = rect.right+pixelsAround, dy = rect.top-pixelsAround;
+            let ax = this.position.x-pixelsAround, ay = this.position.y-pixelsAround, bx = this.position.x-pixelsAround, by = this.position.y+this.height+pixelsAround, dx = this.position.x+this.width+pixelsAround, dy = this.position.y-pixelsAround;
             
             let x= event.pageX,y=event.pageY;
             let bax = bx - ax,bay = by - ay, dax = dx - ax, day = dy - ay;
@@ -142,7 +140,7 @@ class WebKWin {
             
 
             // Top left corner
-            if ((rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) && (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn)) {
+            if ((this.position.x - event.pageX < pixelsAround && this.position.x - event.pageX > -pixelsIn) && (this.position.y - event.pageY < pixelsAround && this.position.y - event.pageY > -pixelsIn)) {
                 // North-West -> South-East 
                 document.body.style.cursor = "nwse-resize";
                 this.resize = [-1,-1];
@@ -151,7 +149,7 @@ class WebKWin {
             }
 
             // Top right corner
-            if ((rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) && (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn)) {
+            if (((this.position.x+this.width) - event.pageX < pixelsAround && (this.position.x+this.width) - event.pageX > -pixelsIn) && (this.position.y - event.pageY < pixelsAround && this.position.y - event.pageY > -pixelsIn)) {
                 // North-East -> South-West
                 document.body.style.cursor = "nesw-resize";
                 this.resize = [1,-1];
@@ -160,7 +158,7 @@ class WebKWin {
             }
 
             // Bottom left corner
-            if ((rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) && (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn)) {
+            if ((this.position.x - event.pageX < pixelsAround && this.position.x - event.pageX > -pixelsIn) && ((this.position.y+this.height) - event.pageY < pixelsAround && (this.position.y+this.height) - event.pageY > -pixelsIn)) {
                 // North-West -> South-East 
                 document.body.style.cursor = "nesw-resize";
                 this.resize = [-1,1];
@@ -169,7 +167,7 @@ class WebKWin {
             }
 
             // Bottom right corner
-            if ((rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) && (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn)) {
+            if (((this.position.x+this.width) - event.pageX < pixelsAround && (this.position.x+this.width) - event.pageX > -pixelsIn) && ((this.position.y+this.height) - event.pageY < pixelsAround && (this.position.y+this.height) - event.pageY > -pixelsIn)) {
                 // North-West -> South-East 
                 document.body.style.cursor = "nwse-resize";
                 this.resize = [1,1];
@@ -178,7 +176,7 @@ class WebKWin {
             }
 
             // Left side
-            if (rect.left - event.pageX < pixelsAround && rect.left - event.pageX > -pixelsIn) {
+            if (this.position.x - event.pageX < pixelsAround && this.position.x - event.pageX > -pixelsIn) {
                 // East -> West
                 document.body.style.cursor = "ew-resize";
                 this.resize = [-1, 0];
@@ -187,7 +185,7 @@ class WebKWin {
             }
             
             // Right side
-            if (rect.right - event.pageX < pixelsAround && rect.right - event.pageX > -pixelsIn) {
+            if ((this.position.x+this.width) - event.pageX < pixelsAround && (this.position.x+this.width) - event.pageX > -pixelsIn) {
                 // East -> West
                 document.body.style.cursor = "ew-resize";
                 this.resize = [1, 0];
@@ -196,7 +194,7 @@ class WebKWin {
             }
 
             // Top
-            if (rect.top - event.pageY < pixelsAround && rect.top - event.pageY > -pixelsIn) {
+            if (this.position.y - event.pageY < pixelsAround && this.position.y - event.pageY > -pixelsIn) {
                 // North -> South
                 document.body.style.cursor = "ns-resize";
                 this.resize = [0, -1];
@@ -205,7 +203,7 @@ class WebKWin {
             }
 
             // Bottom
-            if (rect.bottom - event.pageY < pixelsAround && rect.bottom - event.pageY > -pixelsIn) {
+            if ((this.position.y+this.height) - event.pageY < pixelsAround && (this.position.y+this.height) - event.pageY > -pixelsIn) {
                 // North -> South
                 document.body.style.cursor = "ns-resize";
                 this.resize = [0, 1];
