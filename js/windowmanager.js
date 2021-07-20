@@ -235,5 +235,5 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    new WebKWin("https://wikipedia.org")
+    new WebKWin("/apps/test")
 }, 3000)
