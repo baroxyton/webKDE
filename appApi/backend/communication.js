@@ -1,5 +1,11 @@
 let messageID = 0;
-
+window.addEventListener("message",event=>{
+    let iframe = Array.from(document.querySelectorAll("iframe")).find(iframe=>{
+        return iframe.contentWindow == event.source;
+    })
+    let newEvent = new MessageEvent("message", {data:event.data});
+    iframe.dispatchEvent(newEvent);
+});
 // Send an event/information
 function write(id, subject, data, element, expectResponse = false) {
     let type = typeof data;
@@ -9,16 +15,16 @@ function write(id, subject, data, element, expectResponse = false) {
         id,
         data
     };
-    element.postMessage(response, "*");
+    element.contentWindow.postMessage(response, "*");
 }
 // Write a response to a event
 function writeResponse(id, data, element) {
     write(id, "response", data, element, false);
 }
 class Data {
-    constructor(packet, element) {
+    constructor(data, element) {
         this.element = element;
-        this.id = packet.id;
+        this.id = data.id;
         this.data = data.data;
         this.event = data.event;
         this.type = data.type;

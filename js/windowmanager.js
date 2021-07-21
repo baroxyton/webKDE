@@ -1,5 +1,5 @@
 "use strict";
-
+import ProgramApi from "../appApi/backend/api.js";
 // Window manager class
 
 class WebKWin {
@@ -235,5 +235,8 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    new WebKWin("/apps/test")
+    let win = new WebKWin("/apps/test");
+    let api = new ProgramApi("demo",win.element);
+    api.channel.write("test",{},true);
+    api.channel.onevent = message=>{alert(JSON.stringify(message))};
 }, 3000)
