@@ -19,9 +19,9 @@ class Data {
     constructor(packet, element) {
         this.element = element;
         this.id = packet.id;
-        this.data = data.data;
-        this.event = data.event;
-        this.type = data.type;
+        this.data = packet.data;
+        this.event = packet.event;
+        this.type = packet.type;
     }
     read() {
         return this.data;

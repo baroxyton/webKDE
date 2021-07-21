@@ -237,6 +237,5 @@ class WebKWin {
 setTimeout(function () {
     let win = new WebKWin("/apps/test");
     let api = new ProgramApi("demo",win.element);
-    api.channel.write("test",{},true);
-    api.channel.onevent = message=>{alert(JSON.stringify(message))};
+    api.channel.onevent = message=>{api.channel.write("test",{test:"yes"},true)};
 }, 3000)
