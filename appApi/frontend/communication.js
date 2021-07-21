@@ -35,13 +35,13 @@ class Channel {
         this.element = element;
         this.listeners = [];
         this.callbacks = {};
-        element.addEventListener("message", event => {
+        window.addEventListener("message", event => {
             let data = event.data;
             let id = data.id;
-            if (this.callbacks[id] && data.type == "response") {
+            if (this.callbacks[id] && data.event == "response") {
                 this.callbacks[id](new Data(data, this.element));
             }
-            if (event.data != "response") {
+            if (data.event != "response") {
                 this.listeners.forEach(listener => listener(new Data(data, this.element)));
             }
         })
