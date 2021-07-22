@@ -150,3 +150,8 @@ html, body {
     z-index: 1000;
     display:flex;
 }
+.toolbar{
+    height:25px;
+    width:100%;
+    background-color:red;
+}

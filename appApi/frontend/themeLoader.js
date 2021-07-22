@@ -76,9 +76,10 @@ class ThemeLoader {
             padding:3px;
             background-color: rgb(${this.parsedTheme["Colors:Button"].BackgroundNormal});
             color: rgb(${this.parsedTheme["Colors:Button"].ForegroundNormal});
+            box-shadow: 0px 0px 1px rgb(${this.parsedTheme["Colors:Button"].ForegroundInactive});
         }
         input:focus,button:focus,textarea:focus{
-            box-shadow: 0px 0px 0px rgb(${this.parsedTheme["Colors:Button"].DecorationFocus});
+            box-shadow: 0px 0px 1px rgb(${this.parsedTheme["Colors:Button"].DecorationFocus});
         }
         button:focus{
             color: rgb(${this.parsedTheme["Colors:Button"].ForegroundActive});

@@ -25,6 +25,7 @@ class WebKWin {
             this.title = document.createElement("div");
             this.cover = document.createElement("div");
             this.icon = document.createElement("div");
+            this.toolbar = document.createElement("div");
 
             this.element.classList.add("kwin");
             this.navbar.classList.add("knavbar");
@@ -34,6 +35,7 @@ class WebKWin {
             this.iframeHolder.classList.add("iframeHolder");
             this.contentElement.classList.add("programIframe");
             this.cover.classList.add("windowcover");
+            this.toolbar.classList.add("toolbar");
 
             this.contentElement.width = "100%";
             this.contentElement.height = "100%";
@@ -232,6 +234,14 @@ class WebKWin {
             this.navbar.style.cursor = "default";
             this.mousePos = null;
         });
+    }
+    showToolbar(data){
+        this.iframeHolder.style.height = "calc(100% - 50px)";
+        this.toolbar.style.display = "block";
+    }
+    hideToolbar(){
+        this.iframeHolder.style.height = "calc(100% - 25px)";
+        this.toolbar.style.display = "none";
     }
 }
 setTimeout(function () {
