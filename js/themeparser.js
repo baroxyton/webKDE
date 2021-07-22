@@ -41,7 +41,7 @@ function parseTheme(rawTheme) {
 
 class ThemeLoader {
     constructor(rawTheme, font) {
-
+        this.rawTheme = rawTheme;
         this.font = font;
         this.parsedTheme = parseTheme(rawTheme);
 
