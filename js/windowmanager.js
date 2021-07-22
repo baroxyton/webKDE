@@ -49,6 +49,7 @@ class WebKWin {
             this.navbar.appendChild(this.icon);
             this.navbar.appendChild(this.title);
             this.element.appendChild(this.navbar);
+            this.element.appendChild(this.toolbar);
             this.iframeHolder.appendChild(this.cover);
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
@@ -58,6 +59,8 @@ class WebKWin {
         this.element.style.height = this.height + "px";
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
+
+        this.api = new ProgramApi("demo",this);
     }
     addListeners() {
         // Mouse down: set initial data for dragging window
@@ -246,6 +249,6 @@ class WebKWin {
 }
 setTimeout(function () {
     let win = new WebKWin("/apps/test");
-    let api = new ProgramApi("demo",win.element);
+    window.win = win;
     
 }, 3000)
