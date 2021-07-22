@@ -68,9 +68,23 @@ class ThemeLoader {
         this.element.innerHTML = `
         ${this.generateFont()}
         body{
-        background-color: rgb(${this.parsedTheme["Colors:View"].BackgroundNormal});
+        background-color: rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
         color: rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal});
-        }`
+        }
+        input,button,textarea,table{
+            border:0px;
+            padding:3px;
+            background-color: rgb(${this.parsedTheme["Colors:Button"].BackgroundNormal});
+            color: rgb(${this.parsedTheme["Colors:Button"].ForegroundNormal});
+        }
+        input:focus,button:focus,textarea:focus{
+            box-shadow: 0px 0px 0px rgb(${this.parsedTheme["Colors:Button"].DecorationFocus});
+        }
+        button:focus{
+            color: rgb(${this.parsedTheme["Colors:Button"].ForegroundActive});
+        }
+        `
+        
         document.head.appendChild(this.element);
     }
 

@@ -95,10 +95,10 @@ class ThemeLoader {
             box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].ForegroundNormal}, 0.4);
         }
         .kwin{
-            background-color:rgb(${this.parsedTheme["Colors:View"].BackgroundNormal});
+            background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
         }
         .knavbar{
-            background-color:rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
+            background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
         }
         .minimizeIcon {
             filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
