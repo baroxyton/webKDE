@@ -1,5 +1,6 @@
 "use strict";
 import ProgramApi from "../appApi/backend/api.js";
+import DesktopMenu from "./menu.js"
 // Window manager class
 
 class WebKWin {
@@ -41,6 +42,7 @@ class WebKWin {
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
             this.title.innerText = "test"
+            this.toolbar.innerHTML = "<div class='toolbarItem'>item</div>"
             this.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read("/usr/share/icons/breeze-dark/apps/com.visualstudio.code.oss.svg"))}")`;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
 
@@ -60,7 +62,7 @@ class WebKWin {
         this.element.style.left = this.position.x + "px";
         this.element.style.top = this.position.y + "px";
 
-        this.api = new ProgramApi("demo",this);
+        this.api = new ProgramApi("demo", this);
     }
     addListeners() {
         // Mouse down: set initial data for dragging window
@@ -238,17 +240,37 @@ class WebKWin {
             this.mousePos = null;
         });
     }
-    showToolbar(data){
-        this.iframeHolder.style.height = "calc(100% - 50px)";
+    showToolbar(data) {
+        if (data) {
+            this.toolbar.innerHTML = "";
+            let elements = data.map(data => {
+                let element = document.createElement("div");
+                element.classList.add("toolbarItem");
+                element.innerText = data.name;
+                let items = data.items.map(item=>{
+                    item.action = () => {
+                        this.api.channel.write(data.event, true);
+                    };
+                    return item;
+                });
+                element.addEventListener("mousedown", event => {
+                    let rect = element.getBoundingClientRect();
+                    new DesktopMenu({ x: rect.left, y: rect.bottom },items);
+                });
+                return element;
+            });
+            elements.forEach(element=>this.toolbar.appendChild(element));
+        }
+        this.iframeHolder.style.height = "calc(100% - 55px)";
         this.toolbar.style.display = "block";
     }
-    hideToolbar(){
-        this.iframeHolder.style.height = "calc(100% - 25px)";
+    hideToolbar() {
+        this.iframeHolder.style.height = "calc(100% - 30px)";
         this.toolbar.style.display = "none";
     }
 }
 setTimeout(function () {
     let win = new WebKWin("/apps/test");
     window.win = win;
-    
+
 }, 3000)

@@ -12,7 +12,11 @@ class ProgramApi {
                         user: this.user,
                         theme: desktop.theme.rawTheme,
                         font: desktop.theme.font
-                    })
+                    });
+                    break;
+                case "showToolbar":
+                    this.windowObject.showToolbar(data.read());
+                    break;
             }
         }
     }

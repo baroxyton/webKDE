@@ -140,6 +140,7 @@ html, body {
     width:100%;
     border-radius:3px;
     display:flex;
+    overflow: hidden;
 }
 .windowcover{
     display:none;
@@ -151,7 +152,14 @@ html, body {
     display:flex;
 }
 .toolbar{
-    height:25px;
+    height:30px;
     width:100%;
-    background-color:red;
+    display:none;
+}
+.toolbarItem{
+    padding:3px;
+    border-radius:2px;
+    display:inline;
+    float:left;
+    margin-left:2px;
 }

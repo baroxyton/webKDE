@@ -15,7 +15,7 @@ fileapi.onready.then(refreshCommands);
 function refreshCommands() {
     allCommands = []
     data.env.PATH.split(":").forEach(function (dir) {
-        let commands = []//Object.keys(getFile(dir).content);
+        let commands = [Object.keys(getFile(dir).content)];
         commands.forEach(function (command) {
             allCommands.push({
                 command: command,

@@ -97,7 +97,7 @@ class ThemeLoader {
         .kwin{
             background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
         }
-        .knavbar{
+        .knavbar, .toolbar{
             background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
         }
         .minimizeIcon {
@@ -137,6 +137,15 @@ class ThemeLoader {
         }
         .kwintitle{
             color: rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal});
+        }
+        .toolbar{
+            border-bottom: 1px rgba(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal},0.2) solid;
+        }
+        .toolbarItem{
+            color:rgb(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal});
+        }
+        .toolbarItem:hover{
+            background-color:rgba(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal},0.1);
         }
         `
         document.head.appendChild(this.element);
