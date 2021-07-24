@@ -16,6 +16,7 @@ class OSApi {
             }
         }
     }
+
     // Data structure:
     // Array containing toolbar objects. Toolbar objects
     // contain a "name"-key with the displayed name and
@@ -36,11 +37,16 @@ class OSApi {
         });
         this.channel.write("showToolbar", data, false);
         this.channel.onevent = data => {
-            console.log(data.event);
             if (events[data.event]) {
                 events[data.event]();
             }
         }
+    }
+
+    // Done with rendering etc. Ready to display window
+    // Optianally, pass height, width, maxHeight, maxWidth in an object
+    done(dimensions){
+        this.channel.write("done",dimensions);
     }
 }
 export { OSApi as default };

@@ -89,18 +89,27 @@ class WebKWin {
 
                 // Change width of kwin element
                 if (this.resize[0] == 1) {
+                    if (event.pageX - this.position.x > this.maxWidth || event.pageX - this.position.x < this.minWidth) {
+                        return;
+                    }
                     this.width = event.pageX - this.position.x;
                     this.element.style.width = this.width + "px";
                 }
 
                 // Change height of kwin element
                 if (this.resize[1] == 1) {
+                    if (event.pageY - this.position.y > this.maxHeight || event.pageY - this.position.y < this.minHeight) {
+                        return;
+                    }
                     this.height = event.pageY - this.position.y;
                     this.element.style.height = this.height + "px";
                 }
 
                 // Change start x position & width
                 if (this.resize[0] == -1) {
+                    if (this.width - (event.pageX - this.position.x) > this.maxWidth || this.width - (event.pageX - this.position.x) < this.minWidth) {
+                        return;
+                    }
                     this.width = this.width - (event.pageX - this.position.x);
                     this.position.x = event.pageX;
                     this.element.style.left = this.position.x + "px";
@@ -108,6 +117,9 @@ class WebKWin {
                 }
                 // Change start y position & height
                 if (this.resize[1] == -1) {
+                    if (this.height - (event.pageY - this.position.y) > this.maxHeight || this.height - (event.pageY - this.position.y) < this.minHeight) {
+                        return;
+                    }
                     this.height = this.height - (event.pageY - this.position.y);
                     this.position.y = event.pageY;
                     this.element.style.top = this.position.y + "px";

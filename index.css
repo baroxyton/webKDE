@@ -92,6 +92,7 @@ html, body {
     position:absolute;
     border-radius:3px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.5);
+    visibility: hidden;
 }
 .knavbar{
     position:relative;
