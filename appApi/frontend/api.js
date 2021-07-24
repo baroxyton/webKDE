@@ -1,20 +1,46 @@
 import Channel from "./communication.js"
 import ThemeLoader from "./themeLoader.js"
-class OSApi{
-    constructor(){
+class OSApi {
+    constructor() {
         this.channel = new Channel(window.parent);
         this.events();
     }
-    async events(){
-        this.data = (await this.channel.write("loaded",true, true)).data;
+    async events() {
+        this.data = (await this.channel.write("loaded", true, true)).data;
         this.theme = new ThemeLoader(this.data.theme, this.data.font)
-        this.channel.onevent = data=>{
-            switch(data.event){
+        this.channel.onevent = data => {
+            switch (data.event) {
                 case "changeTheme":
                     this.theme.changeTheme(data.data);
                     break;
             }
         }
     }
+    // Data structure:
+    // Array containing toolbar objects. Toolbar objects
+    // contain a "name"-key with the displayed name and
+    // an "items"-array with the menu entries of the 
+    // toolbars menu entries.
+    // Menu entries are objects, containing a "text"
+    // key with the displayed text, an "icon"-key
+    // with the icon location (optional) and a
+    // "action"-function that is called when the element is clicked
+    showToolbar(data) {
+        let events = {};
+        data.forEach((toolbar, toolIndex) => {
+            toolbar.items.forEach((item, itemIndex) => {
+                item.event = `toolbar-${toolIndex}-${itemIndex}`;
+                events[item.event] = item.action;
+                item.action = null;
+            });
+        });
+        this.channel.write("showToolbar", data, false);
+        this.channel.onevent = data => {
+            console.log(data.event);
+            if (events[data.event]) {
+                events[data.event]();
+            }
+        }
+    }
 }
-export {OSApi as default};
+export { OSApi as default };

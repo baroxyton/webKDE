@@ -55,7 +55,7 @@ class WebKWin {
             this.iframeHolder.appendChild(this.cover);
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
-            document.body.appendChild(this.element);
+            document.getElementById("desktop").appendChild(this.element);
         }
         this.element.style.width = this.width + "px";
         this.element.style.height = this.height + "px";
@@ -75,7 +75,7 @@ class WebKWin {
             this.mousePos = { x: event.pageX - this.position.x, y: event.pageY - this.position.y };
 
             // Cover iframe
-            this.cover.style.display = "block";
+            this.cover.style.display = "flex";
         });
 
         // Mouse move: drag & resize window
@@ -160,15 +160,14 @@ class WebKWin {
 
             desktop.mousedown = null;
 
-            // Cover iframe
-            this.cover.style.display = "block";
-
             // Top left corner
             if ((this.position.x - event.pageX < pixelsAround && this.position.x - event.pageX > -pixelsIn) && (this.position.y - event.pageY < pixelsAround && this.position.y - event.pageY > -pixelsIn)) {
                 // North-West -> South-East 
                 document.body.style.cursor = "nwse-resize";
                 this.resize = [-1, -1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -178,6 +177,8 @@ class WebKWin {
                 document.body.style.cursor = "nesw-resize";
                 this.resize = [1, -1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -187,6 +188,8 @@ class WebKWin {
                 document.body.style.cursor = "nesw-resize";
                 this.resize = [-1, 1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -196,6 +199,8 @@ class WebKWin {
                 document.body.style.cursor = "nwse-resize";
                 this.resize = [1, 1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -205,6 +210,8 @@ class WebKWin {
                 document.body.style.cursor = "ew-resize";
                 this.resize = [-1, 0];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -214,6 +221,8 @@ class WebKWin {
                 document.body.style.cursor = "ew-resize";
                 this.resize = [1, 0];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -223,6 +232,8 @@ class WebKWin {
                 document.body.style.cursor = "ns-resize";
                 this.resize = [0, -1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
 
@@ -232,6 +243,8 @@ class WebKWin {
                 document.body.style.cursor = "ns-resize";
                 this.resize = [0, 1];
                 event.preventDefault();
+                // Cover iframe
+                this.cover.style.display = "flex";
                 return;
             }
         })
@@ -247,19 +260,20 @@ class WebKWin {
                 let element = document.createElement("div");
                 element.classList.add("toolbarItem");
                 element.innerText = data.name;
-                let items = data.items.map(item=>{
+                let items = data.items.map(item => {
+                    item.submenus = null;
                     item.action = () => {
-                        this.api.channel.write(data.event, true);
+                        this.api.channel.write(item.event, true);
                     };
                     return item;
                 });
                 element.addEventListener("mousedown", event => {
                     let rect = element.getBoundingClientRect();
-                    new DesktopMenu({ x: rect.left, y: rect.bottom },items);
+                    setTimeout(() => new DesktopMenu({ x: rect.left, y: rect.bottom }, items), 10);
                 });
                 return element;
             });
-            elements.forEach(element=>this.toolbar.appendChild(element));
+            elements.forEach(element => this.toolbar.appendChild(element));
         }
         this.iframeHolder.style.height = "calc(100% - 55px)";
         this.toolbar.style.display = "block";

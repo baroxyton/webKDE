@@ -143,13 +143,12 @@ html, body {
     overflow: hidden;
 }
 .windowcover{
-    display:none;
     position:absolute;
     background-color:transparent;
     height: 100%;
     width: 100%;
     z-index: 1000;
-    display:flex;
+    display:none;
 }
 .toolbar{
     height:30px;
