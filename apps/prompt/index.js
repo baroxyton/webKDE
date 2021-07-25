@@ -8,3 +8,4 @@ api.done({
     minHeight:innerHeight,
     maxHeight:innerHeight
 })
+setTimeout(function(){api.quit()},2000);

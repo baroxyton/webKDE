@@ -48,5 +48,9 @@ class OSApi {
     done(dimensions){
         this.channel.write("done",dimensions);
     }
+    // Exit with return-value
+    quit(data=0){
+        this.channel.write("quit",data);
+    }
 }
 export { OSApi as default };

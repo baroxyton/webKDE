@@ -31,6 +31,10 @@ class ProgramApi {
                     this.windowObject.height = data.read()?.height || innerHeight * 0.3;
                     this.window.style.width = this.windowObject.width + "px";
                     this.window.style.height = this.windowObject.height + "px";
+                    break;
+                case "quit":
+                    this.windowObject.remove();
+                    break;
             }
         }
     }

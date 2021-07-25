@@ -51,7 +51,7 @@ class WebKWin {
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
             document.getElementById("desktop").appendChild(this.element);
-            
+
             this.element.style.left = this.position.x + "px";
             this.element.style.top = this.position.y + "px";
         }
@@ -287,6 +287,9 @@ class WebKWin {
     hideToolbar() {
         this.iframeHolder.style.height = "calc(100% - 30px)";
         this.toolbar.style.display = "none";
+    }
+    remove() {
+        this.element.outerHTML = "";
     }
 }
 setTimeout(function () {
