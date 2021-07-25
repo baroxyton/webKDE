@@ -121,7 +121,7 @@ class ThemeLoader {
             background-image: url("data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
             <circle fill="rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal})" cx="12" cy="12" r="7"/> 
             <g transform="translate(1,1)">
-              <path d="M11 3a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8M7.707 7L11 10.294l3.293-3.293.707.707-3.293 3.293L15 14.294l-.707.707L11 11.708l-3.293 3.293L7 14.294l3.293-3.293L7 7.708l.707-.707" class="ColorScheme-NegativeText" fill="rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal})"/>
+              <path d="M11 3a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8M7.707 7L11 10.294l3.293-3.293.707.707-3.293 3.293L15 14.294l-.707.707L11 11.708l-3.293 3.293L7 14.294l3.293-3.293L7 7.708l.707-.707" class="ColorScheme-NegativeText" fill="rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal})"/>
             </g>
           </svg>`)}");
           background-position: center;

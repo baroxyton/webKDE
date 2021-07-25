@@ -39,8 +39,6 @@ class WebKWin {
             this.contentElement.width = "100%";
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
-            this.title.innerText = "test"
-            this.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read("/usr/share/icons/breeze-dark/apps/com.visualstudio.code.oss.svg"))}")`;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
 
             // Append elements
