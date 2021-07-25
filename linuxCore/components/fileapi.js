@@ -7,29 +7,29 @@ import { path } from "../lib/path.js"
 import * as builders from "./fileBuilder.js"
 let fileParse = path;
 let specialFiles = {
-        "random": {
-            read: function(pipe) {
-                setInterval(function() {
-                    let randomChar = String.fromCharCode(Math.round(Math.random() * 300));
-                    pipe.write(randomChar);
-                }, 10)
-            },
-            write: function() {
-                return 0;
-            }
+    "random": {
+        read: function (pipe) {
+            setInterval(function () {
+                let randomChar = String.fromCharCode(Math.round(Math.random() * 300));
+                pipe.write(randomChar);
+            }, 10)
         },
-        "null": {
-            read: async function(pipe) {
-                await sleep(1);
-                pipe.write(String.fromCharCode(0));
-                pipe.done();
-            },
-            write: function() {
-                return 0;
-            }
+        write: function () {
+            return 0;
+        }
+    },
+    "null": {
+        read: async function (pipe) {
+            await sleep(1);
+            pipe.write(String.fromCharCode(0));
+            pipe.done();
+        },
+        write: function () {
+            return 0;
         }
     }
-    //filesystem database
+}
+//filesystem database
 let filesystem = new IndexedObject("filesystem", defaultfs);
 window.fs = filesystem;
 //get direct reference to file
@@ -41,7 +41,7 @@ export function getFile(fullpath) {
     //from string to array
     let steps = fullpath.split("/").slice(1);
     let currentLocation = filesystem.data["/"]
-        //try getting to the file. If it fails, return error
+    //try getting to the file. If it fails, return error
     for (let step in steps) {
         step = steps[step]
         if (currentLocation.content[step]) {
@@ -58,22 +58,41 @@ export const fileapi = {
     onready: filesystem.onready,
     //fast access for priviliged scripts
     internal: {
-        read:function(path){
+        read: function (path) {
             let file = getFile(path);
-            if(file instanceof Error){
+            if (file instanceof Error) {
                 return "";
             }
             return file.content;
         },
-        list:function(path){
+        list: function (path) {
             let file = getFile(path);
-            if(file instanceof Error){
+            if (file instanceof Error) {
                 return "";
             }
             return Object.keys(file.content);
+        },
+        write: function (user, path, content) {
+            let file = getFile(path);
+            let fileName;
+            if (file instanceof Error) {
+                fileName = fileParse.basename(path);
+                let parentDir = path;
+                parentDir = fileParse.join(parentDir, "..");
+                file = getFile(parentDir);
+                if (file instanceof Error) {
+                    return file
+                }
+                if (file.meta.type != "dir") {
+                    return new Error("not a directory")
+                }
+                file.content[fileName] = builders.buildFile(user);
+                file.content[fileName].content = content;
+            }
+            file.content[fileName].content = content;
         }
     },
-    read: function(user, path) {
+    read: function (user, path) {
         let file = getFile(path);
         if (file instanceof Error) {
             return file;
@@ -99,7 +118,7 @@ export const fileapi = {
                         break;
                     }
                     await sleep(10);
-                    file.content.split("").forEach(async function(char, i, arr) {
+                    file.content.split("").forEach(async function (char, i, arr) {
                         await sleep(1);
                         outpipe.write(char);
                         if (i == arr.length - 1) {
@@ -114,16 +133,16 @@ export const fileapi = {
         })();
         return outpipe;
     },
-    readAsUrl:function(user,path){
-        let result = this.read(user,path);
+    readAsUrl: function (user, path) {
+        let result = this.read(user, path);
         let outputPipe = new Pipe();
-        result.ondone = function(result){
-        outputPipe.write(URL.createObjectURL(new Blob([String(result)])));
-        outputPipe.done();
+        result.ondone = function (result) {
+            outputPipe.write(URL.createObjectURL(new Blob([String(result)])));
+            outputPipe.done();
         }
         return outputPipe;
     },
-    write: function(user, path, pipe, clear) {
+    write: function (user, path, pipe, clear) {
         let file = getFile(path);
         if (file instanceof Error) {
             let fileName = fileParse.basename(path);
@@ -145,7 +164,7 @@ export const fileapi = {
                 file.content[fileName].content = pipe;
                 return
             }
-            pipe.onwrite = function(char) {
+            pipe.onwrite = function (char) {
                 file.content[fileName].content += char;
 
             }
@@ -171,13 +190,13 @@ export const fileapi = {
                     file.content = pipe;
                     return
                 }
-                pipe.onwrite = function(char) {
+                pipe.onwrite = function (char) {
                     file.content += char;
                 }
         }
 
     },
-    mkdir: function(user, path) {
+    mkdir: function (user, path) {
         if (!getFile(path) instanceof Error) {
             return new Error("already exists")
         }
@@ -195,14 +214,14 @@ export const fileapi = {
         }
         file.content[dirName] = builders.buildDir(user)
     },
-    readMeta: function(path) {
+    readMeta: function (path) {
         let file = getFile(path);
         if (file instanceof Error) {
             return file;
         }
         return file.meta
     },
-    rm: function(user, path) {
+    rm: function (user, path) {
         if (getFile(path) instanceof Error) {
             return new Error("not found")
         }
@@ -214,7 +233,7 @@ export const fileapi = {
         }
         delete file.content[dirName]
     },
-    changeMeta: function(user, path, key, value) {
+    changeMeta: function (user, path, key, value) {
         let file = getFile(path);
         if (file instanceof Error) {
             return file;
@@ -227,7 +246,7 @@ export const fileapi = {
         }
         file.meta[key] = value;
     },
-    fileExists: function(path) {
+    fileExists: function (path) {
         let file = getFile(path);
         if (file instanceof Error) {
             return false
