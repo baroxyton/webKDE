@@ -288,6 +288,9 @@ class WebKWin {
         this.iframeHolder.style.height = "calc(100% - 30px)";
         this.toolbar.style.display = "none";
     }
+    sigterm(){
+        this.api.sigterm()
+    }
     remove() {
         this.element.outerHTML = "";
     }

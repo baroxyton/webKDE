@@ -38,5 +38,8 @@ class ProgramApi {
             }
         }
     }
+    sigterm() {
+        this.channel.write("sigterm");
+    }
 }
 export { ProgramApi as default };
