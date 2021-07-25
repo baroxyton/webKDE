@@ -24,7 +24,7 @@ class Data {
         this.type = packet.type;
     }
     read() {
-        return this.data;
+        return this.data||{};
     }
     respond(data) {
         return writeResponse(this.id, data, this.element);
