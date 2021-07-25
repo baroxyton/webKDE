@@ -40,6 +40,7 @@ class WebKWin {
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
+            actions.children[2].addEventListener("mouseup",()=>this.sigterm());
 
             // Append elements
             this.navbar.appendChild(actions);
