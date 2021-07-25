@@ -7,8 +7,6 @@ class WebKWin {
     constructor(url, theme) {
         this.url = url;
         this.theme = theme;
-        this.height = innerHeight * 0.3;
-        this.width = innerWidth * 0.7;
         this.position = { x: 100, y: 200 };
         this.render();
         this.addListeners();
@@ -42,7 +40,6 @@ class WebKWin {
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
             this.title.innerText = "test"
-            this.toolbar.innerHTML = "<div class='toolbarItem'>item</div>"
             this.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read("/usr/share/icons/breeze-dark/apps/com.visualstudio.code.oss.svg"))}")`;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
 
@@ -56,11 +53,10 @@ class WebKWin {
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
             document.getElementById("desktop").appendChild(this.element);
+            
+            this.element.style.left = this.position.x + "px";
+            this.element.style.top = this.position.y + "px";
         }
-        this.element.style.width = this.width + "px";
-        this.element.style.height = this.height + "px";
-        this.element.style.left = this.position.x + "px";
-        this.element.style.top = this.position.y + "px";
 
         this.api = new ProgramApi("demo", this);
     }
@@ -296,7 +292,7 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    let win = new WebKWin("/apps/test");
+    let win = new WebKWin("/apps/prompt");
     window.win = win;
 
 }, 3000)

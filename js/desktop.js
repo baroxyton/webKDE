@@ -37,14 +37,18 @@ class Desktop {
 
         // get list of file names on desktop
         let apps = linux.fileapi.internal.list("/home/demo/Desktop");
+        
         // generate appropriate app elements using the name 
-        let preparedApps = apps.map(function (app, index, apps) {
+        let preparedApps = apps.map( (app, index, apps)=> {
             let result = {};
             result.name = app;
             // attempt to set correct icon using mime type
             result.icon = "/usr/share/icons/breeze-dark/mimetypes/" + toMime(app).replace("/", "-") + ".svg";
             //position in desktop grid
             result.position = { x: 0, y: 0 };
+            if(this.config.desktop.icons[app]){
+                result.position = this.config.desktop.icons[app].position;
+            };
             return result;
         })
         // generate app icons and store them in desktop instance

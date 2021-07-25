@@ -89,7 +89,9 @@ export const fileapi = {
                 file.content[fileName] = builders.buildFile(user);
                 file.content[fileName].content = content;
             }
-            file.content[fileName].content = content;
+            else{
+                file.content = content;
+            }
         }
     },
     read: function (user, path) {

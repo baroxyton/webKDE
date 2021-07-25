@@ -132,6 +132,9 @@ class DesktopApp {
         this.moving = false;
         this.position.x = Math.round((this.movePosition.x + 5 - this.mousedownPosition.x) / (40 + iconWidth));
         this.position.y = Math.round((this.movePosition.y + 5 - this.mousedownPosition.y) / (40 + iconHeight));
+
+        desktop.config.desktop.icons[this.name] = {position:{x:this.position.x,y:this.position.y}};
+        debug.fileapi.internal.write("demo","/home/demo/.config/plasma.json",JSON.stringify(desktop.config));
         this.render();
     }
 };
