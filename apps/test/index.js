@@ -5,9 +5,4 @@ api.showToolbar([
     { name: "anotherTest", items: [{ text: "hello", action: function () { alert("hell-o") } }] },
     { name: "name", items: [{ text: "whats up", action: function () { console.log("just another test") } }] }
 ]);
-api.done({
-    minHeight:500,
-    maxHeight:500,
-    minWidth:100,
-    maxWidth:200
-})
+api.done();

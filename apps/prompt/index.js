@@ -13,6 +13,7 @@ api.channel.onevent = data => {
         case "sigterm":
 
             // Add custom exit handler here
+            alert("sigterm'd")
             api.quit();
             break;
     }

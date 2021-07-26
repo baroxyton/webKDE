@@ -8,6 +8,7 @@ class ProgramApi {
         this.channel.onevent = data => {
             switch (data.event) {
                 case "loaded":
+                    this.supported = true;
                     data.respond({
                         user: this.user,
                         theme: desktop.theme.rawTheme,
@@ -37,6 +38,24 @@ class ProgramApi {
                     break;
             }
         }
+        setTimeout(()=> {
+            if (this.supported) {
+                return;
+            }
+            this.window.style.visibility = "visible";
+            this.windowObject.titleText = this.windowObject.url;
+            this.windowObject.iconLocation = "/usr/share/icons/breeze-dark/categories/applications-all.svg";
+            this.windowObject.title.innerText = this.windowObject.titleText;
+            this.windowObject.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.windowObject.iconLocation))}")`;
+            this.windowObject.maxWidth = alert=(innerWidth);
+            this.windowObject.maxHeight = innerHeight;
+            this.windowObject.minWidth = 150;
+            this.windowObject.minHeight = 100;
+            this.windowObject.width = innerHeight * 0.5;
+            this.windowObject.height = innerHeight * 0.3;
+            this.window.style.width = this.windowObject.width + "px";
+            this.window.style.height = this.windowObject.height + "px";
+        }, 1500);
     }
     sigterm() {
         this.channel.write("sigterm");
