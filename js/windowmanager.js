@@ -40,8 +40,8 @@ class WebKWin {
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
             actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
-            actions.children[2].addEventListener("mouseup",()=>{
-                if(!this.api.supported){
+            actions.children[2].addEventListener("mouseup", () => {
+                if (!this.api.supported) {
                     this.remove();
                     return;
                 }
@@ -68,7 +68,9 @@ class WebKWin {
     addListeners() {
         // Mouse down: set initial data for dragging window
         this.navbar.addEventListener("mousedown", event => {
-
+            if (this.fullscreen) {
+                return;
+            }
             // Change cursor icon
             this.navbar.style.cursor = "grab";
 
@@ -295,13 +297,40 @@ class WebKWin {
         this.iframeHolder.style.height = "calc(100% - 30px)";
         this.toolbar.style.display = "none";
     }
-    sigterm(){
+    sigterm() {
         this.api.sigterm()
     }
     remove() {
         this.element.outerHTML = "";
     }
+    enterFullscreen() {
+        this.beforeFullscreen = {
+            height: this.height,
+            width: this.width,
+            minHeight: this.minHeight,
+            minWidth: this.minWidth,
+            maxHeight: this.maxHeight,
+            maxWidth: this.maxWidth,
+            position: this.position
+        }
+        this.height = this.minHeight = this.maxHeight = innerHeight;
+        this.width = this.innerWidth = this.maxWidth = innerWidth;
+        this.position = { x: 0, y: 0 };
+        this.element.style.top = "0px";
+        this.element.style.left = "0px";
+        this.element.style.width = this.width + "px";
+        this.element.style.height = this.height + "px";
+        this.fullscreen = true;
+    }
+    exitFullscreen() {
+        this.fullscreen = false;
+        for(let prop in this.beforeFullscreen) this[prop] = this.beforeFullscreen[prop]
+        this.element.style.top = this.position.y + "px";
+        this.element.style.left = this.position.x + "px";
+        this.element.style.width = this.width + "px";
+        this.element.style.height = this.height + "px";
+    }
 }
-    let win = new WebKWin("/apps/prompt");
-    window.win = win;
+let win = new WebKWin("https://playpager.com/embed/checkers/index.html");
+window.win = win;
 
