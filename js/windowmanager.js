@@ -20,7 +20,7 @@ class WebKWin {
             this.iframeHolder = document.createElement("div");
             this.element = document.createElement("div");
             this.navbar = document.createElement("div");
-            let actions = document.createElement("div");
+            this.actions = document.createElement("div");
             this.title = document.createElement("div");
             this.cover = document.createElement("div");
             this.icon = document.createElement("div");
@@ -29,7 +29,7 @@ class WebKWin {
             this.element.classList.add("kwin");
             this.navbar.classList.add("knavbar");
             this.title.classList.add("kwintitle");
-            actions.classList.add("kwinActions");
+            this.actions.classList.add("kwinActions");
             this.icon.classList.add("kwinIcon");
             this.iframeHolder.classList.add("iframeHolder");
             this.contentElement.classList.add("programIframe");
@@ -39,17 +39,10 @@ class WebKWin {
             this.contentElement.width = "100%";
             this.contentElement.height = "100%";
             this.contentElement.src = this.url;
-            actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
-            actions.children[2].addEventListener("mouseup", () => {
-                if (!this.api.supported) {
-                    this.remove();
-                    return;
-                }
-                this.sigterm()
-            });
+            this.actions.innerHTML = `<div class="minimizeIcon"></div><div class="maximizeIcon"></div><div class="closeIcon"></div>`;
 
             // Append elements
-            this.navbar.appendChild(actions);
+            this.navbar.appendChild(this.actions);
             this.navbar.appendChild(this.icon);
             this.navbar.appendChild(this.title);
             this.element.appendChild(this.navbar);
@@ -66,6 +59,13 @@ class WebKWin {
         this.api = new ProgramApi("demo", this);
     }
     addListeners() {
+        this.actions.children[2].addEventListener("mouseup", () => {
+            if (!this.api.supported) {
+                this.remove();
+                return;
+            }
+            this.sigterm()
+        });
         // Mouse down: set initial data for dragging window
         this.navbar.addEventListener("mousedown", event => {
             if (this.fullscreen) {
@@ -324,13 +324,14 @@ class WebKWin {
     }
     exitFullscreen() {
         this.fullscreen = false;
-        for(let prop in this.beforeFullscreen) this[prop] = this.beforeFullscreen[prop]
+        for (let prop in this.beforeFullscreen) this[prop] = this.beforeFullscreen[prop]
         this.element.style.top = this.position.y + "px";
         this.element.style.left = this.position.x + "px";
         this.element.style.width = this.width + "px";
         this.element.style.height = this.height + "px";
     }
 }
-let win = new WebKWin("https://playpager.com/embed/checkers/index.html");
-window.win = win;
-
+setTimeout(function () {
+    let win = new WebKWin("/apps/prompt");
+    window.win = win;
+}, 1000)
