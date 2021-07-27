@@ -64,5 +64,8 @@ class ProgramApi {
     sigterm() {
         this.channel.write("sigterm");
     }
+    changeTheme(rawTheme){
+        this.channel.write("changeTheme",rawTheme)
+    }
 }
 export { ProgramApi as default };
