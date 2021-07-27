@@ -307,7 +307,7 @@ class WebKWin {
     enterFullscreen() {
         let height = innerHeight - (desktop.panels[0].panelElement.offsetHeight + 0);
         this.beforeFullscreen = {
-            height: height,
+            height: this.height,
             width: this.width,
             minHeight: this.minHeight,
             minWidth: this.minWidth,
@@ -337,6 +337,6 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    let win = new WebKWin("/apps/prompt");
+    let win = new WebKWin("https://wikipedia.org");
     window.win = win;
 }, 1000)
