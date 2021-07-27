@@ -59,6 +59,7 @@ class WebKWin {
         this.api = new ProgramApi("demo", this);
     }
     addListeners() {
+        this.actions.children[1].addEventListener("mouseup", () => this.toggleFullscreen())
         this.actions.children[2].addEventListener("mouseup", () => {
             if (!this.api.supported) {
                 this.remove();
@@ -331,8 +332,8 @@ class WebKWin {
         this.element.style.width = this.width + "px";
         this.element.style.height = this.height + "px";
     }
-    toggleFullscreen(){
-        this.fullscreen?this.exitFullscreen():this.enterFullscreen();
+    toggleFullscreen() {
+        this.fullscreen ? this.exitFullscreen() : this.enterFullscreen();
     }
 }
 setTimeout(function () {
