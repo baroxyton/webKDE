@@ -304,8 +304,9 @@ class WebKWin {
         this.element.outerHTML = "";
     }
     enterFullscreen() {
+        let height = innerHeight - (desktop.panels[0].panelElement.offsetHeight + 0);
         this.beforeFullscreen = {
-            height: this.height,
+            height: height,
             width: this.width,
             minHeight: this.minHeight,
             minWidth: this.minWidth,
@@ -313,7 +314,7 @@ class WebKWin {
             maxWidth: this.maxWidth,
             position: this.position
         }
-        this.height = this.minHeight = this.maxHeight = innerHeight;
+        this.height = this.minHeight = this.maxHeight = height;
         this.width = this.innerWidth = this.maxWidth = innerWidth;
         this.position = { x: 0, y: 0 };
         this.element.style.top = "0px";
@@ -329,6 +330,9 @@ class WebKWin {
         this.element.style.left = this.position.x + "px";
         this.element.style.width = this.width + "px";
         this.element.style.height = this.height + "px";
+    }
+    toggleFullscreen(){
+        this.fullscreen?this.exitFullscreen():this.enterFullscreen();
     }
 }
 setTimeout(function () {

@@ -50,7 +50,7 @@ class ProgramApi {
             this.windowObject.iconLocation = "/usr/share/icons/breeze-dark/categories/applications-all.svg";
             this.windowObject.title.innerText = this.windowObject.titleText;
             this.windowObject.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.windowObject.iconLocation))}")`;
-            this.windowObject.maxWidth =  innerWidth;
+            this.windowObject.maxWidth = innerWidth;
             this.windowObject.maxHeight = innerHeight;
             this.windowObject.minWidth = 150;
             this.windowObject.minHeight = 100;
