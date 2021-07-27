@@ -60,7 +60,7 @@ class ProgramApi {
             this.windowObject.height = innerHeight * 0.3;
             this.window.style.width = this.windowObject.width + "px";
             this.window.style.height = this.windowObject.height + "px";
-        }, 1500);
+        }, 5000);
     }
     sigterm() {
         this.channel.write("sigterm");

@@ -338,6 +338,6 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    let win = new WebKWin("https://wikipedia.org");
+    let win = new WebKWin("/apps/prompt");
     window.win = win;
 }, 1000)

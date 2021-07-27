@@ -4,14 +4,18 @@ class OSApi {
     constructor() {
         this.channel = new Channel(window.parent);
         this.events();
+        this.gotData = new Promise(res=>{
+            this.gotDataRes = res;
+        })
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
+        this.gotDataRes(this.data);
         this.theme = new ThemeLoader(this.data.theme, this.data.font)
         this.channel.onevent = data => {
             switch (data.event) {
                 case "changeTheme":
-                    this.theme.changeTheme(data.data);
+                    this.theme.changeTheme(data.read());
                     break;
             }
         }
