@@ -337,6 +337,6 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    let win = new WebKWin("/apps/prompt",{"type":"error",subject:"Buffer overflow"});
+    let win = new WebKWin("/apps/dialog",{"type":"error",subject:"Buffer overflow"});
     window.win = win;
 }, 1000)
