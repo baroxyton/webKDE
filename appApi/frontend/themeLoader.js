@@ -70,10 +70,11 @@ class ThemeLoader {
         body{
         background-color: rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
         color: rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal});
+        user-select:none;
         }
         input,button,textarea,table{
             border:0px;
-            padding:3px;
+            padding:5px;
             background-color: rgb(${this.parsedTheme["Colors:Button"].BackgroundNormal});
             color: rgb(${this.parsedTheme["Colors:Button"].ForegroundNormal});
             box-shadow: 0px 0px 1px rgb(${this.parsedTheme["Colors:Button"].ForegroundInactive});

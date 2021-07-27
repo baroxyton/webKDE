@@ -4,10 +4,9 @@ import DesktopMenu from "./menu.js"
 // Window manager class
 
 class WebKWin {
-    constructor(url, theme, args) {
+    constructor(url, args) {
         this.args = args||{}; 
         this.url = url;
-        this.theme = theme;
         this.position = { x: 100, y: 200 };
         this.render();
         this.addListeners();
@@ -338,6 +337,6 @@ class WebKWin {
     }
 }
 setTimeout(function () {
-    let win = new WebKWin("/apps/prompt");
+    let win = new WebKWin("/apps/prompt",{"type":"error",subject:"Buffer overflow"});
     window.win = win;
 }, 1000)
