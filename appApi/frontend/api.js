@@ -45,12 +45,15 @@ class OSApi {
 
     // Done with rendering etc. Ready to display window
     // Optianally, pass height, width, maxHeight, maxWidth in an object
-    done(dimensions){
-        this.channel.write("done",dimensions);
+    done(dimensions) {
+        this.channel.write("done", dimensions);
+    }
+    resize(dimensions) {
+        this.channel.write("done", dimensions);
     }
     // Exit with return-value
-    quit(data=0){
-        this.channel.write("quit",data);
+    quit(data = 0) {
+        this.channel.write("quit", data);
     }
 }
 export { OSApi as default };

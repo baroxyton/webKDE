@@ -12,7 +12,8 @@ class ProgramApi {
                     data.respond({
                         user: this.user,
                         theme: desktop.theme.rawTheme,
-                        font: desktop.theme.font
+                        font: desktop.theme.font,
+                        args:this.windowObject.args
                     });
                     break;
                 case "showToolbar":

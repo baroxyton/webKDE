@@ -4,7 +4,8 @@ import DesktopMenu from "./menu.js"
 // Window manager class
 
 class WebKWin {
-    constructor(url, theme) {
+    constructor(url, theme, args) {
+        this.args = args||{}; 
         this.url = url;
         this.theme = theme;
         this.position = { x: 100, y: 200 };
