@@ -1,5 +1,6 @@
 "use strict";
 import DesktopMenu from "./menu.js";
+import WebKWin from "./windowmanager.js";
 // Icon, that renders on desktop
 class DesktopApp {
     constructor(name, icon, position, appConfig) {
@@ -73,7 +74,23 @@ class DesktopApp {
                 icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg"
             }, {
                 text: "Delete",
-                icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg"
+                icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
+                action: () => {
+                    let confirm = new WebKWin("/apps/dialog", {
+                        type: "confirm",
+                        subject: "permanently delete " + this.name,
+                        buttons: ["Don't delete", "<a style='color:red'>Delete</a>"]
+                    });
+                    confirm.api.channel.onevent = data => {
+                        if (data.event != "quit") {
+                            return;
+                        }
+                        if (data.read() == "1") {
+                            debug.fileapi.internal.delete("/home/demo/Desktop/" + this.name);
+                            this.remove();
+                        }
+                    }
+                }
             }, {
                 text: "Properties",
                 icon: "/usr/share/icons/breeze-dark/actions/dialog-object-properties.svg"
@@ -95,10 +112,10 @@ class DesktopApp {
                 this.stopMoving();
             }
         });
-        
+
         // Remove highlight when pressing desktop
         document.getElementById("desktop").addEventListener("mouseup", event => {
-            if(event.target.id != "desktop"){
+            if (event.target.id != "desktop") {
                 return;
             }
             this.unselect();
@@ -133,8 +150,8 @@ class DesktopApp {
         this.position.x = Math.round((this.movePosition.x + 5 - this.mousedownPosition.x) / (40 + iconWidth));
         this.position.y = Math.round((this.movePosition.y + 5 - this.mousedownPosition.y) / (40 + iconHeight));
 
-        desktop.config.desktop.icons[this.name] = {position:{x:this.position.x,y:this.position.y}};
-        debug.fileapi.internal.write("demo","/home/demo/.config/plasma.json",JSON.stringify(desktop.config));
+        desktop.config.desktop.icons[this.name] = { position: { x: this.position.x, y: this.position.y } };
+        debug.fileapi.internal.write("demo", "/home/demo/.config/plasma.json", JSON.stringify(desktop.config));
         this.render();
     }
 };
