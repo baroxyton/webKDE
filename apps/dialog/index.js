@@ -66,3 +66,17 @@ function loadBody(type = "prompt", subject = "[unspecified]", buttonText = [], i
             break;
     }
 }
+document.body.addEventListener("keydown",event=>{
+    if(event.key!="Enter"){
+        return;
+    }
+    switch(api.data.args.type){
+        case "error":
+        case "ok":
+        case "prompt":
+        document.querySelector("button").click();
+        break;
+        case "confirm":
+        document.querySelectorAll("button")[1].click();
+    }
+})
