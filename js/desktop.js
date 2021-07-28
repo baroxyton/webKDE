@@ -7,7 +7,7 @@ import DesktopDrag from "./desktopDrag.js";
 import "./windowmanager.js"
 import * as linux from "../linuxCore/index.js";
 import ThemeLoader from "./themeparser.js"
-
+import WebKWin from "./windowmanager.js"
 let config;
 
 class Desktop {
@@ -37,16 +37,21 @@ class Desktop {
 
         // get list of file names on desktop
         let apps = linux.fileapi.internal.list("/home/demo/Desktop");
-        
+
         // generate appropriate app elements using the name 
-        let preparedApps = apps.map( (app, index, apps)=> {
+        let preparedApps = apps.map((app, index, apps) => {
             let result = {};
             result.name = app;
             // attempt to set correct icon using mime type
-            result.icon = "/usr/share/icons/breeze-dark/mimetypes/" + toMime(app).replace("/", "-") + ".svg";
+            if (linux.fileapi.internal.readMeta("/home/demo/Desktop/" + app).type == "dir") {
+                result.icon = "/usr/share/icons/breeze-dark/places/folder.svg";
+            }
+            else {
+                result.icon = "/usr/share/icons/breeze-dark/mimetypes/" + toMime(app).replace("/", "-") + ".svg";
+            }
             //position in desktop grid
             result.position = { x: 0, y: 0 };
-            if(this.config.desktop.icons[app]){
+            if (this.config.desktop.icons[app]) {
                 result.position = this.config.desktop.icons[app].position;
             };
             return result;
@@ -79,7 +84,22 @@ class Desktop {
                 icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
                 submenus: [{
                     text: "Folder",
-                    icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg"
+                    icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
+                    action: () => {
+                        let prompt = new WebKWin("/apps/dialog", {
+                            type: "prompt",
+                            subject: "new folder name",
+                            buttons: ["Create"],
+                            inputText: "New Folder"
+                        });
+                        prompt.api.channel.onevent = data => {
+                            if (data.event == "quit") {
+                                let name = data.read();
+                                linux.fileapi.internal.mkdir("demo", `/home/demo/Desktop/${name}`);
+                                this.renderApps();
+                            }
+                        }
+                    }
                 }, {
                     text: "Text Document",
                     icon: "/usr/share/icons/breeze-dark/actions/x-shape-text.svg"

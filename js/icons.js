@@ -29,7 +29,7 @@ class DesktopApp {
         this.appElement.classList.add("app");
         this.iconElement.classList.add("appicon");
 
-        // Gender icon passed in argument
+        // Generate icon passed in argument
         this.iconElement.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.icon))}")`;
 
         // Grid system: 

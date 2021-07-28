@@ -89,9 +89,31 @@ export const fileapi = {
                 file.content[fileName] = builders.buildFile(user);
                 file.content[fileName].content = content;
             }
-            else{
+            else {
                 file.content = content;
             }
+        },
+        mkdir: function (user, path) {
+            if (!getFile(path) instanceof Error) {
+                return;
+            }
+            let parentDir = fileParse.join(path, "..");
+            let dirName = fileParse.basename(path);
+            let file = getFile(parentDir);
+            if (file instanceof Error) {
+                return file
+            }
+            if (file.meta.type != "dir") {
+                return new Error("cant create dir in file")
+            }
+            file.content[dirName] = builders.buildDir(user)
+        },
+        readMeta:function(path){
+            let file = getFile(path);
+            if (file instanceof Error) {
+                return "";
+            }
+            return file.meta;
         }
     },
     read: function (user, path) {

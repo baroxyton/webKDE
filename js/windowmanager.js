@@ -336,7 +336,5 @@ class WebKWin {
         this.fullscreen ? this.exitFullscreen() : this.enterFullscreen();
     }
 }
-setTimeout(function () {
-    let win = new WebKWin("/apps/dialog",{"type":"error",subject:"Buffer overflow"});
-    window.win = win;
-}, 1000)
+
+export {WebKWin as default};
