@@ -114,6 +114,15 @@ export const fileapi = {
                 return "";
             }
             return file.meta;
+        },
+        delete:function(path){
+            if (getFile(path) instanceof Error) {
+                return;
+            }
+            let parentDir = fileParse.join(path, "..");
+            let dirName = fileParse.basename(path);
+            let file = getFile(parentDir);
+            delete file.content[dirName]
         }
     },
     read: function (user, path) {
