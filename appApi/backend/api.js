@@ -13,7 +13,7 @@ class ProgramApi {
                         user: this.user,
                         theme: desktop.theme.rawTheme,
                         font: desktop.theme.font,
-                        args:this.windowObject.args
+                        args: this.windowObject.args
                     });
                     break;
                 case "showToolbar":
@@ -29,8 +29,8 @@ class ProgramApi {
                     this.windowObject.maxHeight = data.read()?.maxHeight || this.windowObject.maxHeight;
                     this.windowObject.minWidth = data.read()?.minWidth || this.windowObject.minWidth || 150;
                     this.windowObject.minHeight = data.read()?.minHeight || this.windowObject.minHeight || 100;
-                    this.windowObject.width = data.read()?.width || this.windowObject.width || innerHeight * 0.5;
-                    this.windowObject.height = data.read()?.height || this.windowObject.height || innerHeight * 0.3;
+                    this.windowObject.width = data.read()?.width || data.read()?.minWidth || this.windowObject.width || innerHeight * 0.5;
+                    this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
                     this.window.style.width = this.windowObject.width + "px";
                     this.window.style.height = this.windowObject.height + "px";
                     if (this.windowObject.maxHeight || this.windowObject.maxWidth) {
@@ -65,8 +65,8 @@ class ProgramApi {
     sigterm() {
         this.channel.write("sigterm");
     }
-    changeTheme(rawTheme){
-        this.channel.write("changeTheme",rawTheme)
+    changeTheme(rawTheme) {
+        this.channel.write("changeTheme", rawTheme)
     }
 }
 export { ProgramApi as default };
