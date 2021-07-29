@@ -126,10 +126,10 @@ export const fileapi = {
         },
         move:function(oldPath,newPath){
             let file = getFile(oldPath);
-            let newParentDir = fileParse.join(newPath, "..");
-            if(!file instanceof Error && !newParentDir instanceof error){
-                let name = fileParse.basename(file);
-                newParentDir[name] = file;
+            let newParentDir = getFile(fileParse.join(newPath, ".."));
+            if(!(file instanceof Error) && !(newParentDir instanceof Error)){
+                let name = fileParse.basename(newPath);
+                newParentDir.content[name] = file;
                 this.delete(oldPath);
             }
         }
