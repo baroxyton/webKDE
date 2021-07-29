@@ -71,7 +71,24 @@ class DesktopApp {
         this.appElement.addEventListener("contextmenu", event => {
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: "Rename..",
-                icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg"
+                icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
+                action:()=>{
+                    let namePrompt = new WebKWin("/apps/dialog",{
+                        type:"prompt",
+                        subject:"new file name",
+                        buttons:["Rename"],
+                        inputText:this.name
+                    });
+                    namePrompt.api.channel.onevent = data=>{
+                        if (data.event != "quit") {
+                            return;
+                        }
+                        let newName = data.read();
+                        debug.fileapi.internal.move("/home/demo/Desktop/"+this.name,"/home/demo/Desktop/"+newName);
+                        this.name = newName;
+                        this.render();
+                    }
+                }
             }, {
                 text: "Delete",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
