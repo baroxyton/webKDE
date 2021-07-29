@@ -148,6 +148,7 @@ class Desktop {
         })
         // mouse was moved
         this.element.addEventListener("mousemove", event => {
+            this.mousePosition = { x: event.clientX, y: event.clientY };
             // mouse button wasn't down. Nothing to do.
             // Or: bubbled up from other element. Let it handle it.
             if (!this.mousedown || (!this.drag && event.target != this.element && !event.target.classList.contains("desktopdrag"))) {
@@ -155,11 +156,11 @@ class Desktop {
             }
             // Not currently utilizing click drag selection. Start to.
             if (!this.drag) {
-                this.drag = new DesktopDrag(this.mousepos, { x: event.pageX, y: event.pageY });
+                this.drag = new DesktopDrag(this.mousepos,  this.mousePosition);
             }
             // Currently dragging. Report position change to respective drag instance.
             if (this.drag) {
-                this.drag.change({ x: event.pageX, y: event.pageY });
+                this.drag.change(this.mousePosition);
             }
         });
         // Translate various touch events for a (hacky) mobile suppot
