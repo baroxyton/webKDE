@@ -123,6 +123,15 @@ export const fileapi = {
             let dirName = fileParse.basename(path);
             let file = getFile(parentDir);
             delete file.content[dirName]
+        },
+        move:function(oldPath,newPath){
+            let file = getFile(oldPath);
+            let newParentDir = fileParse.join(newPath, "..");
+            if(!file instanceof Error && !newParentDir instanceof error){
+                let name = fileParse.basename(file);
+                newParentDir[name] = file;
+                this.delete(oldPath);
+            }
         }
     },
     read: function (user, path) {
