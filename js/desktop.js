@@ -102,7 +102,22 @@ class Desktop {
                     }
                 }, {
                     text: "Text Document",
-                    icon: "/usr/share/icons/breeze-dark/actions/x-shape-text.svg"
+                    icon: "/usr/share/icons/breeze-dark/actions/x-shape-text.svg",
+                    action: () => {
+                        let prompt = new WebKWin("/apps/dialog", {
+                            type: "prompt",
+                            subject: "new file name",
+                            buttons: ["Create"],
+                            inputText: "NewFile.txt"
+                        });
+                        prompt.api.channel.onevent = data => {
+                            if (data.event == "quit") {
+                                let name = data.read();
+                                linux.fileapi.internal.write("demo", `/home/demo/Desktop/${name}`, "");
+                                this.renderApps();
+                            }
+                        }
+                    }
                 }]
             },
             {
