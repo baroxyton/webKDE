@@ -76,7 +76,7 @@ class ThemeLoader {
             box-shadow: none !important;
         }
         .panel{
-            background-color: rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
+            background-color: rgba(${this.parsedTheme["Colors:View"].BackgroundNormal},0.9);
             color:rgb(${this.parsedTheme["Colors:View"].ForegroundNormal});
         }
         .menu{
