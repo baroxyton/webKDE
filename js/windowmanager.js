@@ -7,7 +7,7 @@ class WebKWin {
     constructor(url, args) {
         this.args = args||{}; 
         this.url = url;
-        this.position = { x: 100, y: 200 };
+        this.position = desktop.mousePosition;
         this.render();
         this.addListeners();
     }
