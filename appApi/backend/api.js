@@ -126,6 +126,20 @@ class ProgramApi {
                         content:Object.keys(file.content)
                     })
                     break;
+                case "delete":
+                    if (!checkPermission("demo", file, "w")) {
+                        request.respond({
+                            type: "error",
+                            content: "Missing permission"
+                        });
+                        return;
+                    }
+                    debug.fileapi.internal.delete(target);
+                    request.respond({
+                        type:"status",
+                        content:0
+                    });
+                    break;
         }
     }
 }
