@@ -99,8 +99,20 @@ class ProgramApi {
                     type: "result",
                     content: file.content
                 })
-
-
+                break;
+            case "readMeta":
+                if (!checkPermission("demo", file, "r")) {
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                request.respond({
+                    type: "result",
+                    content: file.meta
+                })
+                break;
         }
     }
 }
