@@ -113,6 +113,19 @@ class ProgramApi {
                     content: file.meta
                 })
                 break;
+                case "list":
+                    if (!checkPermission("demo", file, "r")) {
+                        request.respond({
+                            type: "error",
+                            content: "Missing permission"
+                        });
+                        return;
+                    }
+                    request.respond({
+                        type:"result",
+                        content:Object.keys(file.content)
+                    })
+                    break;
         }
     }
 }
