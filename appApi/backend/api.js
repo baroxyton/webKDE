@@ -1,6 +1,8 @@
 import Channel from "./communication.js"
+import { checkPermission } from "/linuxCore/components/checkPermission.js"
 class ProgramApi {
     constructor(user, windowObject) {
+        window.api = this;
         this.windowObject = windowObject;
         this.window = windowObject.element;
         this.user = user;
@@ -38,6 +40,9 @@ class ProgramApi {
                     }
                     this.window.style.visibility = "visible";
                     break;
+                case "filesystem":
+                    this.filesystem(data);
+                    break;
                 case "quit":
                     this.windowObject.remove();
                     break;
@@ -67,6 +72,36 @@ class ProgramApi {
     }
     changeTheme(rawTheme) {
         this.channel.write("changeTheme", rawTheme)
+    }
+    filesystem(request) {
+        let data = request.read();
+        let call = data.call;
+        let target = data.target;
+        let additionalArguments = data.args;
+        let file = debug.fileapi.internal.getFile(target);
+        if (file instanceof Error) {
+            request.respond({
+                type: "error",
+                content: "File not found."
+            });
+            return;
+        }
+        switch (call) {
+            case "read":
+                if (!checkPermission("demo", file, "r")) {
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                request.respond({
+                    type: "result",
+                    content: file.content
+                })
+
+
+        }
     }
 }
 export { ProgramApi as default };
