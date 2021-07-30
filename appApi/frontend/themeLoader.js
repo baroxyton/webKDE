@@ -71,6 +71,7 @@ class ThemeLoader {
         background-color: rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
         color: rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal});
         user-select:none;
+        text-align:center;
         }
         input,button,textarea,table{
             border:0px;
