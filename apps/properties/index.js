@@ -29,3 +29,13 @@ async function loadData(filepath,meta) {
     document.getElementById("fileOwner").innerText = `Owner: ${meta.owner}`;
     document.getElementById("typeImage").style.backgroundImage = `url("${iconUrl}")`;
 }
+window.quit = (data)=>api.quit(data);
+api.channel.onevent = data => {
+    switch (data.event) {
+        case "sigterm":
+
+            // Add custom exit handler here
+            api.quit();
+            break;
+    }
+}
