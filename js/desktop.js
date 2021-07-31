@@ -128,7 +128,17 @@ class Desktop {
                 text: "Refresh desktop",
                 icon: "/usr/share/icons/breeze-dark/places/desktop.svg",
                 action: () => { this.render() }
-            }]);
+            },
+            {
+                text: "Properties",
+                icon: "/usr/share/icons/breeze-dark/actions/dialog-object-properties.svg",
+                action: () => {
+                    new WebKWin("/apps/properties", {
+                        path: "/home/demo/Desktop/"
+                    })
+                }
+            }
+            ]);
         });
         // track mousedown position to allow drag click selection later
 
@@ -156,7 +166,7 @@ class Desktop {
             }
             // Not currently utilizing click drag selection. Start to.
             if (!this.drag) {
-                this.drag = new DesktopDrag(this.mousepos,  this.mousePosition);
+                this.drag = new DesktopDrag(this.mousepos, this.mousePosition);
             }
             // Currently dragging. Report position change to respective drag instance.
             if (this.drag) {
