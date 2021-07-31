@@ -59,5 +59,15 @@ class OSApi {
     quit(data = 0) {
         this.channel.write("quit", data);
     }
+    async filesystem(call, target, args){
+        let request = {
+            call,
+            target,
+            args
+        };
+        let result = await this.channel.write("filesystem", request, true);
+        return result;
+    }
 }
+document.body.addEventListener("contextmenu",e=>e.preventDefault());
 export { OSApi as default };
