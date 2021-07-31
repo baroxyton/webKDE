@@ -101,7 +101,6 @@ class ProgramApi {
                 })
                 break;
             case "readMeta":
-                request.respond("hello, world");
                 if (!checkPermission("demo", file, "r")) {
                     request.respond({
                         type: "error",

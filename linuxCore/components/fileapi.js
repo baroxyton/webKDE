@@ -132,6 +132,9 @@ export const fileapi = {
                 newParentDir.content[name] = file;
                 this.delete(oldPath);
             }
+        },
+        getFile:function(file){
+            return getFile(file);
         }
     },
     read: function (user, path) {

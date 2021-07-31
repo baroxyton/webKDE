@@ -1,5 +1,8 @@
 #typeImage{
-    background-color:black;
     height:30%;
     width:30vh;
+    background-size: cover;
+}
+*{
+font-size: 1em;
 }
