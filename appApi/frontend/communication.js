@@ -49,6 +49,7 @@ class Channel {
     write(subject, data, expectResponse = false) {
         let id = messageID;
         write(id, subject, data, this.element, expectResponse);
+        messageID++;
         return new Promise(res => {
             if (expectResponse) {
                 this.callbacks[id] = (data) => {
