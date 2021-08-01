@@ -48,17 +48,23 @@ class OSApi {
     }
 
     // Done with rendering etc. Ready to display window
-    // Optianally, pass height, width, maxHeight, maxWidth in an object
+    // Optianally, pass height, width, maxHeight, maxWidth, minHeight, minWidth, icon, title in an object
     done(dimensions) {
         this.channel.write("done", dimensions);
     }
+
+    // Resize own window
+    // Optianally, pass height, width, maxHeight, maxWidth, minHeight, minWidth, icon, title in an object
     resize(dimensions) {
         this.channel.write("done", dimensions);
     }
+
     // Exit with return-value
     quit(data = 0) {
         this.channel.write("quit", data);
     }
+    
+    // Promise-Driven filesystem request
     async filesystem(call, target, args){
         let request = {
             call,
@@ -67,6 +73,16 @@ class OSApi {
         };
         let result = await this.channel.write("filesystem", request, true);
         return result;
+    }
+    // Load icons
+    // add 'icon'-attribute to elements with icon, then use this function
+    async loadIcons(){
+        document.querySelectorAll("[icon]").forEach(async element=>{
+            let iconLocation = element.getAttribute("icon");
+            let iconContent = await this.filesystem("read",iconLocation);
+            console.log("location",iconContent);
+            element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(iconContent.data.content)}")`;
+        })
     }
 }
 document.body.addEventListener("contextmenu",e=>e.preventDefault());
