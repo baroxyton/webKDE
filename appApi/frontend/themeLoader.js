@@ -62,10 +62,28 @@ class ThemeLoader {
               font-family:linuxFont;
           }`
     }
+    generateVars(){
+        let result = `:root {
+            `;
+        for(let section in this.parsedTheme){
+            for(let data in this.parsedTheme[section]){
+                let value = this.parsedTheme[section][data];
+                if(!value||section.includes("[")||!value.match(/^(((\d){1,3})(\,)?){3}$/)){
+                    continue;
+                }
+                result += `--${section.replace(":","_")}_${data}: rgb(${value});\n`
+            }
+        } 
+        result += "}";
+        console.log(result);
+        return result;
+    }
+
     render() {
         this.element = document.createElement("style");
         // Generate CSS from theme
         this.element.innerHTML = `
+        ${this.generateVars()}
         ${this.generateFont()}
         body{
         background-color: rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
