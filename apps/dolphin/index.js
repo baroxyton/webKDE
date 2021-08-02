@@ -1,15 +1,18 @@
 import OSApi from "../../appApi/frontend/api.js"
 import Icon from "./icons.js"
 let api = new OSApi();
+function done(){
 api.done({
     title: "Dolphin",
     icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
 });
+}
 let loadedIcons = [];
 async function loadContent(path) {
     if (!path.startsWith("/")) {
         path = "/home/demo/" + path;
     }
+    document.getElementById("location").value = path;
     loadedIcons.forEach(icon => icon.remove());
     loadedIcons = [];
     api.resize({ title: "Dolphin - " + path });
@@ -26,7 +29,10 @@ async function loadContent(path) {
     await Promise.all(promises);
     api.loadIcons();
 }
-loadContent("/home/demo");
+(async function(){
+    await loadContent("/home/demo");
+    done();
+})()
 document.getElementById("location").addEventListener("keyup", event => {
     if (event.key == "Enter") {
         loadContent(event.target.value);
