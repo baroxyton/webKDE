@@ -11,7 +11,7 @@ async function loadContent(path) {
         path = "/home/demo/" + path;
     }
     loadedIcons.forEach(icon => icon.remove());
-    loadedIcons = []; 
+    loadedIcons = [];
     api.resize({ title: "Dolphin - " + path });
     document.querySelector(".location.selected")?.classList.remove("selected");
     document.querySelector(`[location="${path}"]`)?.classList.add("selected");
@@ -31,5 +31,11 @@ document.getElementById("location").addEventListener("keyup", event => {
     if (event.key == "Enter") {
         loadContent(event.target.value);
     }
+});
+Array.from(document.getElementsByClassName("location")).forEach(element => {
+    element.addEventListener("click", () => {
+        let location = element.getAttribute("location");
+        loadContent(location);
+    })
 })
 api.loadIcons();

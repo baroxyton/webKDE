@@ -16,7 +16,6 @@ class Icon {
 
         this.textElement.innerText = this.name.split("/").slice(-1);
         let meta = (await this.api.filesystem("readMeta",this.name)).read().content;
-        console.log(meta.type);
         if(meta.type == "dir"){
             this.iconElement.setAttribute("icon", `/usr/share/icons/breeze-dark/places/folder.svg`); 
         }
