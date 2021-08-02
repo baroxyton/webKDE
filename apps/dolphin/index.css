@@ -1,0 +1,96 @@
+#locations{
+    position:fixed;
+    top:40px;
+    left:0;
+    width: 20vw;
+    height:calc(100% - 40px);
+    background-color:var(--Colors_Header_BackgroundAlternate);
+}
+#location{
+    position:absolute;
+    width:50%;
+    top:10%;
+    height:80%;
+    left:25%;
+    background-color:var(--Colors_View_BackgroundNormal);
+}
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    height:40px;
+    width:100%;
+    background-color:var(--Colors_Window_BackgroundAlternate);
+    box-shadow: -1px 1px 1px var(--Colors_View_ForegroundInactive);
+    z-index:999;
+    display:flex;
+    float:left;
+}
+.back, .forward{
+    text-align:center;
+    display:inline;
+    font-size:1.5em;
+    margin-left:10px;
+    padding:3px;
+    height:50%;
+    width:20px;
+    border-radius: 3px;
+    border:1px rgba(0,0,0,0) solid;
+    color:  var(--Colors_View_ForegroundInactive);
+    filter: brightness(0.5);
+}
+.back:hover, .forward:hover{
+    border: 1px var(--Colors_View_ForegroundActive) solid;
+}
+.back:active, .forward:active{
+    background-color: var(--Colors_View_ForegroundActive);
+}
+#content{
+    position:fixed;
+    top:44px;
+    left:20vw;
+    width:calc(80vw - 3px);
+    height:calc(100% - 47px);
+    background-color:red;
+    background-color:var(--Colors_View_BackgroundNormal);
+    border-radius:5px;
+    border: 1px var(--Colors_View_ForegroundInactive) solid;
+    overflow-y:scroll;
+}
+#content:hover{
+    border: 1px var(--Colors_Selection_DecorationFocus) solid; 
+}
+.location{
+    padding-top:3px;
+    padding-bottom:3px;
+    font-size:1em;
+    background-size: auto 80%;
+    background-position: 3px center;
+    background-repeat: no-repeat;
+}
+.location:hover, .location.selected{
+    background-color: var(--Colors_Selection_DecorationFocus);
+}
+.icon{
+    display:inline;
+    margin:3px;
+    padding:10px;
+    float:left;
+    width: 100px;
+    height: 100px;
+}
+.iconImage{
+    margin-top:5%;
+    margin-left:5%;
+    height:90%;
+    width:90%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.iconText{
+    text-align:center;
+    font-size: 0.9em;
+    text-overflow: ellipsis;
+
+}
