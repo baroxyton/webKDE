@@ -71,7 +71,8 @@ class ThemeLoader {
                 if(!value||section.includes("[")||!value.match(/^(((\d){1,3})(\,)?){3}$/)){
                     continue;
                 }
-                result += `--${section.replace(":","_")}_${data}: rgb(${value});\n`
+                result += `--${section.replace(":","_")}_${data}: rgb(${value});\n`;
+                result += `--${section.replace(":","_")}_${data}_raw: ${value};\n`
             }
         } 
         result += "}";
