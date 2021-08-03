@@ -93,6 +93,7 @@ class OSApi {
         let events = {};
         let items = menuitems.map(item => {
             item.event = `menu-${this.menuCount}`;
+            this.menuCount++;
             events[item.event] = item.action;
             delete item.action;
             return item;
