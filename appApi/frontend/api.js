@@ -2,6 +2,7 @@ import Channel from "./communication.js"
 import ThemeLoader from "./themeLoader.js"
 class OSApi {
     constructor() {
+        this.iconCache = {};
         this.channel = new Channel(window.parent);
         this.events();
         this.gotData = new Promise(res => {
@@ -80,8 +81,12 @@ class OSApi {
     async loadIcons() {
         document.querySelectorAll("[icon]").forEach(async element => {
             let iconLocation = element.getAttribute("icon");
+            if(this.iconCache[iconLocation]){
+                element.style.backgroundImage = this.iconCache[iconLocation];
+                return;
+            }
             let iconContent = await this.filesystem("read", iconLocation);
-            element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(iconContent.data.content)}")`;
+            element.style.backgroundImage = this.iconCache[iconLocation] = `url("data:image/svg+xml;base64,${btoa(iconContent.data.content)}")`;
         })
     }
     menu(position, menuitems) {
