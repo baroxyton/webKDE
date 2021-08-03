@@ -4,9 +4,10 @@ class OSApi {
     constructor() {
         this.channel = new Channel(window.parent);
         this.events();
-        this.gotData = new Promise(res=>{
+        this.gotData = new Promise(res => {
             this.gotDataRes = res;
-        })
+        });
+        this.menuCount = 0;
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
@@ -63,9 +64,9 @@ class OSApi {
     quit(data = 0) {
         this.channel.write("quit", data);
     }
-    
+
     // Promise-Driven filesystem request
-    async filesystem(call, target, args){
+    async filesystem(call, target, args) {
         let request = {
             call,
             target,
@@ -76,14 +77,28 @@ class OSApi {
     }
     // Load icons
     // add 'icon'-attribute to elements with icon, then use this function
-    async loadIcons(){
-        document.querySelectorAll("[icon]").forEach(async element=>{
+    async loadIcons() {
+        document.querySelectorAll("[icon]").forEach(async element => {
             let iconLocation = element.getAttribute("icon");
-            let iconContent = await this.filesystem("read",iconLocation);
-            console.log("location",iconContent);
+            let iconContent = await this.filesystem("read", iconLocation);
             element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(iconContent.data.content)}")`;
         })
     }
+    menu(position, menuitems) {
+        let events = {};
+        let items = menuitems.map(item => {
+            item.event = `menu-${this.menuCount}`;
+            events[item.event] = item.action;
+            delete item.action;
+            return item;
+        });
+        this.channel.onevent = data => {
+            if (events[data.event]) {
+                events[data.event]();
+            }
+        }
+        this.channel.write("menu", { position, items });
+    }
 }
-document.body.addEventListener("contextmenu",e=>e.preventDefault());
+document.body.addEventListener("contextmenu", e => e.preventDefault());
 export { OSApi as default };
