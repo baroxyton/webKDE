@@ -43,6 +43,9 @@ class ProgramApi {
                 case "filesystem":
                     this.filesystem(data);
                     break;
+                case "menu":
+                    this.windowObject.menu(data.read());
+                    break;
                 case "quit":
                     this.windowObject.remove();
                     break;
@@ -113,33 +116,33 @@ class ProgramApi {
                     content: file.meta
                 })
                 break;
-                case "list":
-                    if (!checkPermission("demo", file, "r")) {
-                        request.respond({
-                            type: "error",
-                            content: "Missing permission"
-                        });
-                        return;
-                    }
+            case "list":
+                if (!checkPermission("demo", file, "r")) {
                     request.respond({
-                        type:"result",
-                        content:Object.keys(file.content)
-                    })
-                    break;
-                case "delete":
-                    if (!checkPermission("demo", file, "w")) {
-                        request.respond({
-                            type: "error",
-                            content: "Missing permission"
-                        });
-                        return;
-                    }
-                    debug.fileapi.internal.delete(target);
-                    request.respond({
-                        type:"status",
-                        content:0
+                        type: "error",
+                        content: "Missing permission"
                     });
-                    break;
+                    return;
+                }
+                request.respond({
+                    type: "result",
+                    content: Object.keys(file.content)
+                })
+                break;
+            case "delete":
+                if (!checkPermission("demo", file, "w")) {
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                debug.fileapi.internal.delete(target);
+                request.respond({
+                    type: "status",
+                    content: 0
+                });
+                break;
         }
     }
 }

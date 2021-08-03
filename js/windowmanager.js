@@ -5,7 +5,7 @@ import DesktopMenu from "./menu.js"
 
 class WebKWin {
     constructor(url, args) {
-        this.args = args||{}; 
+        this.args = args || {};
         this.url = url;
         this.position = desktop.mousePosition;
         this.render();
@@ -59,6 +59,12 @@ class WebKWin {
         this.api = new ProgramApi("demo", this);
     }
     addListeners() {
+        this.cover.addEventListener("mouseup", event => {
+            if (event.button == 0) {
+                console.log(event);
+                event.target.style.display = "none";
+            }
+        })
         this.actions.children[1].addEventListener("mouseup", () => this.toggleFullscreen())
         this.actions.children[2].addEventListener("mouseup", () => {
             if (!this.api.supported) {
@@ -132,9 +138,11 @@ class WebKWin {
             }
         });
         document.body.addEventListener("mouseup", event => {
+            if(this.resize){
             this.resize = null;
             document.body.style.cursor = "default";
             this.cover.style.display = "none";
+            }
         });
 
         // Resize window
@@ -335,6 +343,22 @@ class WebKWin {
     toggleFullscreen() {
         this.fullscreen ? this.exitFullscreen() : this.enterFullscreen();
     }
+    menu(data) {
+        console.log(data);
+        let position = data.position;
+        let rect = this.contentElement.getBoundingClientRect()
+        position.x += rect.left;
+        position.y += rect.top;
+        let items = data.items.map(item => {
+            item.submenus = null;
+            item.action = () => {
+                this.api.channel.write(item.event, true);
+            };
+            return item;
+        });
+        new DesktopMenu(position, items);
+        this.cover.style.display = "flex";
+    }
 }
-
-export {WebKWin as default};
+window.win = WebKWin;
+export { WebKWin as default };
