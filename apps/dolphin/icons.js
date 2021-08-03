@@ -27,9 +27,15 @@ class Icon {
         this.element.appendChild(this.textElement);
 
         document.getElementById("content").appendChild(this.element);
+        this.addListeners();
     }
     remove(){
         this.element.outerHTML = "";
+    }
+    addListeners(){
+        this.element.addEventListener("contextmenu",event=>{
+            this.api.menu({x:event.pageX,y:event.pageY},[{text:"test",action:function(){alert("works")}}]);
+        })
     }
 }
 export { Icon as default };

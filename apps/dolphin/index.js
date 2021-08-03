@@ -1,11 +1,11 @@
 import OSApi from "../../appApi/frontend/api.js"
 import Icon from "./icons.js"
 let api = new OSApi();
-function done(){
-api.done({
-    title: "Dolphin",
-    icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
-});
+function done() {
+    api.done({
+        title: "Dolphin",
+        icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
+    });
 }
 let loadedIcons = [];
 async function loadContent(path) {
@@ -29,7 +29,7 @@ async function loadContent(path) {
     await Promise.all(promises);
     api.loadIcons();
 }
-(async function(){
+(async function () {
     await loadContent("/home/demo");
     done();
 })()
@@ -43,5 +43,20 @@ Array.from(document.getElementsByClassName("location")).forEach(element => {
         let location = element.getAttribute("location");
         loadContent(location);
     })
+});
+document.getElementById("content").addEventListener("contextmenu", event => {
+    if (event.target != document.getElementById("content")) {
+        return;
+    }
+    api.menu({ x: event.clientX, y: event.clientY }, [
+        {
+            text: "New Folder",
+            icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg"
+        },
+        {
+            text: "New Text Filde",
+            icon: "/usr/share/icons/breeze-dark/actions/document-new.svg"
+        }
+    ])
 })
 api.loadIcons();
