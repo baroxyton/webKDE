@@ -122,7 +122,12 @@ class Desktop {
             },
             {
                 text: "Open with file manager",
-                icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
+                icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg",
+                action:()=>{
+                    new WebKWin("/apps/dolphin",{
+                        location:"/home/demo/Desktop"
+                    })
+                }
             },
             {
                 text: "Refresh desktop",
