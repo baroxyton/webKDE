@@ -1,5 +1,6 @@
 import api from "../frontend/api.js";
 import Channel from "./communication.js"
+import { path as pathRequest } from "../../linuxCore/lib/path.js";
 import { checkPermission } from "/linuxCore/components/checkPermission.js"
 class ProgramApi {
     constructor(user, windowObject) {
@@ -86,7 +87,8 @@ class ProgramApi {
         let target = data.target;
         let additionalArguments = data.args;
         let file = debug.fileapi.internal.getFile(target);
-        if (file instanceof Error) {
+        let parent = debug.fileapi.internal.getFile(pathRequest.join(target, ".."));
+        if ((file instanceof Error && ["readMeta", "list", "delete", "read"].includes(call)) || parent instanceof Error) {
             request.respond({
                 type: "error",
                 content: "File not found."
@@ -94,6 +96,17 @@ class ProgramApi {
             return;
         }
         switch (call) {
+            case "mkdir":
+                if (!checkPermission("demo", parent, "w")) {
+                    console.log(parent);
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                debug.fileapi.internal.mkdir("demo", target);
+                break;
             case "read":
                 if (!checkPermission("demo", file, "r")) {
                     request.respond({
