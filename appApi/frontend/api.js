@@ -81,7 +81,7 @@ class OSApi {
     async loadIcons() {
         document.querySelectorAll("[icon]").forEach(async element => {
             let iconLocation = element.getAttribute("icon");
-            if(this.iconCache[iconLocation]){
+            if (this.iconCache[iconLocation]) {
                 element.style.backgroundImage = this.iconCache[iconLocation];
                 return;
             }
@@ -104,6 +104,29 @@ class OSApi {
             }
         }
         this.channel.write("menu", { position, items });
+    }
+    spawnWindow(url, winArgs) {
+        let self = this;
+        class FakeWinApi {
+            constructor() {
+                this.listeners = [];
+                self.channel.onevent = data => {
+                    if (data.event == "windowApiData") {
+                        this.listeners.forEach(listener => listener(data.read()));
+                    }
+                }
+            }
+            send(...args) {
+                self.channel.write("windowApi", { args: [...args] });
+            }
+            set onevent(what) {
+                this.listeners.push(what);
+            }
+        }
+        let request = { url, args:winArgs };
+        this.channel.write("spawnWindow", request);
+        let output = new FakeWinApi();
+        return output
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());

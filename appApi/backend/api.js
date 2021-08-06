@@ -1,3 +1,4 @@
+import api from "../frontend/api.js";
 import Channel from "./communication.js"
 import { checkPermission } from "/linuxCore/components/checkPermission.js"
 class ProgramApi {
@@ -45,6 +46,9 @@ class ProgramApi {
                     break;
                 case "menu":
                     this.windowObject.menu(data.read());
+                    break;
+                case "spawnWindow":
+                    this.spawnWindow(data);
                     break;
                 case "quit":
                     this.windowObject.remove();
@@ -143,6 +147,20 @@ class ProgramApi {
                     content: 0
                 });
                 break;
+        }
+    }
+    spawnWindow(request) {
+        let url = request.read().url;
+        let args = request.read().args;
+        let spawnedWin = new this.windowObject.constructor(url, args);
+        this.channel.onevent = function (data) {
+            if (data.event == "windowApi") {
+                spawnedWin.api.channel.write(...data.read().args);
+            }
+        };
+        spawnedWin.api.channel.onevent = data => {
+            let packet = { data: data.read(), event: data.event };
+            this.channel.write("windowApiData", packet);
         }
     }
 }
