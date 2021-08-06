@@ -96,6 +96,17 @@ class ProgramApi {
             return;
         }
         switch (call) {
+            case "write":
+                if (!checkPermission("demo", parent, "w")) {
+                    console.log(parent);
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                debug.fileapi.internal.write("demo", target, additionalArguments.content);
+                break;
             case "mkdir":
                 if (!checkPermission("demo", parent, "w")) {
                     console.log(parent);
