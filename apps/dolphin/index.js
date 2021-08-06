@@ -55,13 +55,19 @@ document.getElementById("content").addEventListener("contextmenu", event => {
             text: "New Folder",
             icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
             action:async ()=>{
-                let result = await api.dialog("prompt", "New folder name");
+                let result = await api.dialog("prompt", "New folder name", "New Folder");
                 api.filesystem("mkdir", cwd+"/"+result);
+                loadContent(cwd);
             }
         },
         {
             text: "New Text File",
-            icon: "/usr/share/icons/breeze-dark/actions/document-new.svg"
+            icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
+            action:async()=>{
+                let result = await api.dialog("prompt","New File Name",[],"newFile.txt");
+                api.filesystem("write",cwd+"/"+result,{content:""});
+                loadContent(cwd);
+            }
         },
         {
             text: "Refresh",
