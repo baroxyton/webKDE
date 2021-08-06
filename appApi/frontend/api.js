@@ -128,8 +128,8 @@ class OSApi {
         let output = new FakeWinApi();
         return output
     }
-    dialog(type="prompt",subject="[unspecified]",buttons=[]){
-        let win = this.spawnWindow("/apps/dialog",{type,subject,buttons});
+    dialog(type="prompt",subject="[unspecified]",buttons=[],inputText=""){
+        let win = this.spawnWindow("/apps/dialog",{type,subject,buttons,inputText});
         return new Promise(res=>{
             win.onevent = data=>{
                 if(data.event=="quit"){
