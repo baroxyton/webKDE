@@ -128,6 +128,16 @@ class OSApi {
         let output = new FakeWinApi();
         return output
     }
+    dialog(type="prompt",subject="[unspecified]",buttons=[]){
+        let win = this.spawnWindow("/apps/dialog",{type,subject,buttons});
+        return new Promise(res=>{
+            win.onevent = data=>{
+                if(data.event=="quit"){
+                    res(data.data);
+                }
+            }
+        })
+    }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
 export { OSApi as default };
