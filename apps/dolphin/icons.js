@@ -1,4 +1,5 @@
 "use strict";
+import api from "../../appApi/frontend/api.js";
 import getMime from "../../js/toMime.js"
 class Icon {
     constructor(api, name) {
@@ -34,7 +35,13 @@ class Icon {
     }
     addListeners(){
         this.element.addEventListener("contextmenu",event=>{
-            this.api.menu({x:event.pageX,y:event.pageY},[{text:"test",action:function(){alert("works")}}]);
+            this.api.menu({x:event.pageX,y:event.pageY},
+                [{text:"Delete",
+                icon:"/usr/share/icons/breeze-dark/actions/edit-delete.svg",
+                action:()=>{
+                    this.api.filesystem("delete",this.name);
+                    loadContent(this.name.split("/").slice(0,-1).join("/"));
+                }}]);
         })
     }
 }

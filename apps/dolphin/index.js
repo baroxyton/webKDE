@@ -1,6 +1,7 @@
 import OSApi from "../../appApi/frontend/api.js"
 import Icon from "./icons.js"
 let api = new OSApi();
+window.cwd = "/home/demo"
 function done() {
     api.done({
         title: "Dolphin",
@@ -12,6 +13,7 @@ async function loadContent(path) {
     if (!path.startsWith("/")) {
         path = "/home/demo/" + path;
     }
+    cwd = path;
     document.getElementById("location").value = path;
     loadedIcons.forEach(icon => icon.remove());
     loadedIcons = [];
@@ -51,12 +53,24 @@ document.getElementById("content").addEventListener("contextmenu", event => {
     api.menu({ x: event.clientX, y: event.clientY }, [
         {
             text: "New Folder",
-            icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg"
+            icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
+            action:async ()=>{
+                let result = await api.dialog("prompt", "New folder name");
+                api.filesystem("mkdir", cwd+"/"+result);
+            }
         },
         {
-            text: "New Text Filde",
+            text: "New Text File",
             icon: "/usr/share/icons/breeze-dark/actions/document-new.svg"
+        },
+        {
+            text: "Refresh",
+            icon: "/usr/share/icons/breeze-dark/actions/view-refresh.svg",
+            action: () => {
+                loadContent(cwd);
+            }
         }
     ])
 })
+window.loadContent = loadContent;
 api.loadIcons();
