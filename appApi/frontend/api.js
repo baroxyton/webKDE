@@ -74,6 +74,10 @@ class OSApi {
             args
         };
         let result = await this.channel.write("filesystem", request, true);
+        if(result.read().type == "error"){
+            console.log(request);
+            this.dialog("error",result.read().content);
+        }
         return result;
     }
     // Load icons
