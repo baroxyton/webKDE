@@ -1,4 +1,5 @@
 import OSApi from "../../appApi/frontend/api.js"
+import { fileapi } from "../../linuxCore/index.js";
 import Icon from "./icons.js"
 let api = new OSApi();
 window.cwd = "/home/demo"
@@ -89,3 +90,14 @@ api.channel.onevent = data => {
             break;
     }
 }
+document.getElementById("fileUpload").addEventListener("change",event=>{
+    let file = event.target.files[0];
+    let fileName = file.name;
+    let reader = new FileReader();
+    reader.onload = ()=>{
+       let content = reader.result;
+       let name = fileName.split("/").slice(-1);
+       api.filesystem("write",cwd+"/"+name, {content:content});
+    }
+    reader.readAsBinaryString(file);
+})
