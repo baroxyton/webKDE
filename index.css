@@ -11,6 +11,7 @@ html, body {
     width: 100vw;
     margin: 0px;
     background-size: cover;
+    background-position: center;
 }
 
 #apps {
