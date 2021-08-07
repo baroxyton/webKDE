@@ -17,6 +17,7 @@ class Icon {
 
         this.textElement.innerText = this.name.split("/").slice(-1);
         let meta = (await this.api.filesystem("readMeta", this.name)).read().content;
+        this.meta = meta;
         if (meta.type == "dir") {
             this.iconElement.setAttribute("icon", `/usr/share/icons/breeze-dark/places/folder.svg`);
         }
@@ -56,11 +57,17 @@ class Icon {
                     icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
                     action: async () => {
                         let newName = await this.api.dialog("prompt", "New File Name", ["Rename"], path.basename(this.name));
-                        this.api.filesystem("move",this.name,{new:cwd+"/"+newName});
+                        this.api.filesystem("move", this.name, { new: cwd + "/" + newName });
                         loadContent(cwd);
                     }
                 }
                 ]);
+        });
+        this.element.addEventListener("dblclick", () => {
+            console.log("double")
+            if(this.meta.type == "dir"){
+                loadContent(this.name);
+            }
         })
     }
 }
