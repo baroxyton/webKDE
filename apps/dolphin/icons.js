@@ -1,5 +1,5 @@
 "use strict";
-import api from "../../appApi/frontend/api.js";
+import { path } from "../../linuxCore/lib/path.js";
 import getMime from "../../js/toMime.js"
 class Icon {
     constructor(api, name) {
@@ -41,16 +41,26 @@ class Icon {
                     icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
                     action: () => {
                         this.api.filesystem("delete", this.name);
-                        loadContent(this.name.split("/").slice(0, -1).join("/"));
+                        loadContent(cwd);
                     }
                 },
-            {
-                text:"Properties",
-                icon:"/usr/share/icons/breeze-dark/actions/document-properties.svg",
-                action:()=>{
-                    this.api.spawnWindow("/apps/properties",{path:this.name});
+                {
+                    text: "Properties",
+                    icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
+                    action: () => {
+                        this.api.spawnWindow("/apps/properties", { path: this.name });
+                    },
+                },
+                {
+                    text: "Rename",
+                    icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
+                    action: async () => {
+                        let newName = await this.api.dialog("prompt", "New File Name", ["Rename"], path.basename(this.name));
+                        this.api.filesystem("move",this.name,{new:cwd+"/"+newName});
+                        loadContent(cwd);
+                    }
                 }
-            }]);
+                ]);
         })
     }
 }

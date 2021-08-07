@@ -98,6 +98,7 @@ document.getElementById("fileUpload").addEventListener("change",event=>{
        let content = reader.result;
        let name = fileName.split("/").slice(-1);
        api.filesystem("write",cwd+"/"+name, {content:content});
+       loadContent(cwd);
     }
     reader.readAsBinaryString(file);
 })
