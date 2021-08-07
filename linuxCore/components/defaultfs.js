@@ -118,7 +118,7 @@ export const defaultfs = async function () {
                                                 changeDate: 0,
                                                 owner: "demo",
                                                 permission: [7, 5, 5],
-                                                type: "bin"
+                                                type: "file"
                                             },
                                             content: await downloadBinary("/assets/next.png")
                                         }
@@ -260,7 +260,7 @@ export const defaultfs = async function () {
                                                 changeDate: 0,
                                                 owner: "root",
                                                 permission: [7, 5, 5],
-                                                type: "bin"
+                                                type: "file"
                                             },
                                             content: await downloadBinary("assets/NotoSans-Regular.ttf")
                                         }

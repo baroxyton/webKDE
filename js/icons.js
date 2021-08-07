@@ -110,7 +110,7 @@ class DesktopApp {
                 }
             }, {
                 text: "Properties",
-                icon: "/usr/share/icons/breeze-dark/actions/dialog-object-properties.svg",
+                icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
                 action:()=>{
                     new WebKWin("/apps/properties",{
                         path:"/home/demo/Desktop/"+this.name
