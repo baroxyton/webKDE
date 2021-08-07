@@ -78,7 +78,7 @@
 }
 
 .location:hover, .location.selected {
-    background-color: rgba(var(--Colors_Selection_DecorationFocus_raw),0.5);
+    background-color: rgba(var(--Colors_Selection_DecorationFocus_raw), 0.5);
 }
 
 .icon {
@@ -106,6 +106,20 @@
     text-overflow: ellipsis;
 }
 
-.icon:hover > .iconImage, .icon:hover > .iconText{
-    background-color:  rgba(var(--Colors_Selection_DecorationFocus_raw),0.5);
+.icon:hover>.iconImage, .icon:hover>.iconText {
+    background-color: rgba(var(--Colors_Selection_DecorationFocus_raw), 0.5);
+}
+
+#fileUpload {
+    visibility: hidden;
+}
+
+label[for="fileUpload"] {
+    position: absolute;
+    right: 0px;
+    margin: 3px;
+    cursor:pointer;
+}
+label[for="fileUpload"] > button{
+    pointer-events: none;
 }

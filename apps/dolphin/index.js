@@ -55,7 +55,7 @@ document.getElementById("content").addEventListener("contextmenu", event => {
             text: "New Folder",
             icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
             action:async ()=>{
-                let result = await api.dialog("prompt", "New folder name", "New Folder");
+                let result = await api.dialog("prompt", "New folder name", ["Create"],"New Folder");
                 api.filesystem("mkdir", cwd+"/"+result);
                 loadContent(cwd);
             }
@@ -64,7 +64,7 @@ document.getElementById("content").addEventListener("contextmenu", event => {
             text: "New Text File",
             icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
             action:async()=>{
-                let result = await api.dialog("prompt","New File Name",[],"newFile.txt");
+                let result = await api.dialog("prompt","New File Name",["Create"],"newFile.txt");
                 api.filesystem("write",cwd+"/"+result,{content:""});
                 loadContent(cwd);
             }
