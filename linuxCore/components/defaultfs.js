@@ -120,7 +120,7 @@ export const defaultfs = async function () {
                                                 permission: [7, 5, 5],
                                                 type: "bin"
                                             },
-                                            content: await downloadBinary("/assets/icecold2.png")
+                                            content: await downloadBinary("/assets/next.png")
                                         }
                                     }
                                 }
