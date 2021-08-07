@@ -34,6 +34,9 @@ let filesystem = new IndexedObject("filesystem", defaultfs);
 window.fs = filesystem;
 //get direct reference to file
 export function getFile(fullpath) {
+    // use path.resolve() to make processing easier
+    //removes stuff like doubleslashes
+    fullpath = path.resolve(fullpath);
     //remove / on end to make processing easier
     if (fullpath.endsWith("/")) {
         fullpath = fullpath.slice(0, -1);
@@ -108,14 +111,14 @@ export const fileapi = {
             }
             file.content[dirName] = builders.buildDir(user)
         },
-        readMeta:function(path){
+        readMeta: function (path) {
             let file = getFile(path);
             if (file instanceof Error) {
                 return "";
             }
             return file.meta;
         },
-        delete:function(path){
+        delete: function (path) {
             if (getFile(path) instanceof Error) {
                 return;
             }
@@ -124,16 +127,16 @@ export const fileapi = {
             let file = getFile(parentDir);
             delete file.content[dirName]
         },
-        move:function(oldPath,newPath){
+        move: function (oldPath, newPath) {
             let file = getFile(oldPath);
             let newParentDir = getFile(fileParse.join(newPath, ".."));
-            if(!(file instanceof Error) && !(newParentDir instanceof Error)){
+            if (!(file instanceof Error) && !(newParentDir instanceof Error)) {
                 let name = fileParse.basename(newPath);
                 newParentDir.content[name] = file;
                 this.delete(oldPath);
             }
         },
-        getFile:function(file){
+        getFile: function (file) {
             return getFile(file);
         }
     },
