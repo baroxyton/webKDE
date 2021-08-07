@@ -19,14 +19,14 @@ class Desktop {
 
         this.config = config;
         // load current theme from config, with font
-        this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme), "data:application/octet-stream;base64," + linux.fileapi.internal.read(this.config.font));
+        this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme), "data:application/octet-stream;base64," + btoa(linux.fileapi.internal.read(this.config.font)));
         this.element = document.getElementById("desktop");
 
         this.render();
         this.addListeners()
     }
     render() {
-        this.element.style.backgroundImage = `url("data:image/png;base64,${linux.fileapi.internal.read(this.config.desktop.backgroundimage)}")`;
+        this.element.style.backgroundImage = `url("data:image/png;base64,${btoa(linux.fileapi.internal.read(this.config.desktop.backgroundimage))}")`;
         this.renderApps();
         this.renderPanels();
     };

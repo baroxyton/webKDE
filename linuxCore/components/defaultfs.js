@@ -14,10 +14,10 @@ async function downloadBinary(url){
     let response = await fetch(url);
     let blob = await response.blob();
     let fr = new FileReader();
-    fr.readAsDataURL(blob);
+    fr.readAsBinaryString(blob);
     return new Promise(function(res){
         fr.onload = function(){
-            res(fr.result.split(",")[1]);
+            res(fr.result);
         }
     })
 }
