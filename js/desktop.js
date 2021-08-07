@@ -42,8 +42,10 @@ class Desktop {
         let preparedApps = apps.map((app, index, apps) => {
             let result = {};
             result.name = app;
+            let meta = linux.fileapi.internal.readMeta("/home/demo/Desktop/" + app);
+            result.meta = meta;
             // attempt to set correct icon using mime type
-            if (linux.fileapi.internal.readMeta("/home/demo/Desktop/" + app).type == "dir") {
+            if (meta.type == "dir") {
                 result.icon = "/usr/share/icons/breeze-dark/places/folder.svg";
             }
             else {
@@ -58,7 +60,14 @@ class Desktop {
         })
         // generate app icons and store them in desktop instance
         preparedApps.forEach(element => {
-            this.apps.push(new DesktopApp(element.name, element.icon, element.position, config.apps));
+            let app = new DesktopApp(element.name, element.icon, element.position, config.apps);
+            app.appElement.addEventListener("dblclick", () => {
+                if (element.meta.type == "dir") {
+                    console.log(element.meta)
+                    new WebKWin("/apps/dolphin", { location: "/home/demo/Desktop/" + element.name });
+                }
+            })
+            this.apps.push(app);
         });
     }
     // grab panels from config and render them
@@ -123,9 +132,9 @@ class Desktop {
             {
                 text: "Open with file manager",
                 icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg",
-                action:()=>{
-                    new WebKWin("/apps/dolphin",{
-                        location:"/home/demo/Desktop"
+                action: () => {
+                    new WebKWin("/apps/dolphin", {
+                        location: "/home/demo/Desktop"
                     })
                 }
             },
