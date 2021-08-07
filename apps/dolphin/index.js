@@ -80,3 +80,12 @@ document.getElementById("content").addEventListener("contextmenu", event => {
 })
 window.loadContent = loadContent;
 api.loadIcons();
+api.channel.onevent = data => {
+    switch (data.event) {
+        case "sigterm":
+
+            // Add custom exit handler here
+            api.quit();
+            break;
+    }
+}
