@@ -2,6 +2,8 @@ import OSApi from "../../appApi/frontend/api.js"
 import { fileapi } from "../../linuxCore/index.js";
 import Icon from "./icons.js"
 let api = new OSApi();
+window.locationHistory = [];
+window.historyPosition = 0;
 window.cwd = "/home/demo"
 function done() {
     api.done({
@@ -10,9 +12,25 @@ function done() {
     });
 }
 let loadedIcons = [];
-async function loadContent(path) {
-    if (!path.startsWith("/")) {
+async function loadContent(path, navigate) {
+    if (!path?.startsWith("/")) {
         path = "/home/demo/" + path;
+    }
+    if (!navigate) {
+        locationHistory.push(path);
+        historyPosition = locationHistory.length - 1;
+    }
+    else {
+        path = locationHistory[historyPosition];
+    }
+    document.querySelector(".back").classList.remove("active");
+    document.querySelector(".forward").classList.remove("active");
+    if (historyPosition != 0) {
+        console.log("active")
+        document.querySelector(".back").classList.add("active");
+    }
+    if (locationHistory[historyPosition + 1]) {
+        document.querySelector(".forward").classList.add("active");
     }
     cwd = path;
     document.getElementById("location").value = path;
@@ -55,18 +73,18 @@ document.getElementById("content").addEventListener("contextmenu", event => {
         {
             text: "New Folder",
             icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
-            action:async ()=>{
-                let result = await api.dialog("prompt", "New folder name", ["Create"],"New Folder");
-                api.filesystem("mkdir", cwd+"/"+result);
+            action: async () => {
+                let result = await api.dialog("prompt", "New folder name", ["Create"], "New Folder");
+                api.filesystem("mkdir", cwd + "/" + result);
                 loadContent(cwd);
             }
         },
         {
             text: "New Text File",
             icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
-            action:async()=>{
-                let result = await api.dialog("prompt","New File Name",["Create"],"newFile.txt");
-                api.filesystem("write",cwd+"/"+result,{content:""});
+            action: async () => {
+                let result = await api.dialog("prompt", "New File Name", ["Create"], "newFile.txt");
+                api.filesystem("write", cwd + "/" + result, { content: "" });
                 loadContent(cwd);
             }
         },
@@ -90,15 +108,29 @@ api.channel.onevent = data => {
             break;
     }
 }
-document.getElementById("fileUpload").addEventListener("change",event=>{
+document.getElementById("fileUpload").addEventListener("change", event => {
     let file = event.target.files[0];
     let fileName = file.name;
     let reader = new FileReader();
-    reader.onload = ()=>{
-       let content = reader.result;
-       let name = fileName.split("/").slice(-1);
-       api.filesystem("write",cwd+"/"+name, {content:content});
-       loadContent(cwd);
+    reader.onload = () => {
+        let content = reader.result;
+        let name = fileName.split("/").slice(-1);
+        api.filesystem("write", cwd + "/" + name, { content: content });
+        loadContent(cwd);
     }
     reader.readAsBinaryString(file);
+})
+document.querySelector(".back").addEventListener("click", () => {
+    if (historyPosition == 0) {
+        return
+    }
+    historyPosition--;
+    loadContent(null, true);
+});
+document.querySelector(".forward").addEventListener("click", () => {
+    if(!locationHistory[historyPosition+1]){
+        return;
+    }
+    historyPosition++;
+    loadContent(null, true);
 })

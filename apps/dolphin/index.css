@@ -42,7 +42,10 @@
     color: var(--Colors_View_ForegroundInactive);
     filter: brightness(0.5);
 }
-
+.back.active, .forward.active{
+    filter: brightness(1) !important;
+    color: var(--Colors_View_ForegroundNormal) !important;
+}
 .back:hover, .forward:hover {
     border: 1px var(--Colors_View_ForegroundActive) solid;
 }

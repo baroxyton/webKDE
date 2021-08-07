@@ -64,8 +64,7 @@ class Icon {
                 ]);
         });
         this.element.addEventListener("dblclick", () => {
-            console.log("double")
-            if(this.meta.type == "dir"){
+            if (this.meta.type == "dir") {
                 loadContent(this.name);
             }
         })
