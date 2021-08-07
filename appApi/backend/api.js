@@ -2,6 +2,7 @@ import api from "../frontend/api.js";
 import Channel from "./communication.js"
 import { path as pathRequest } from "../../linuxCore/lib/path.js";
 import { checkPermission } from "/linuxCore/components/checkPermission.js"
+import { getFile } from "../../linuxCore/components/fileapi.js";
 class ProgramApi {
     constructor(user, windowObject) {
         window.api = this;
@@ -96,6 +97,25 @@ class ProgramApi {
             return;
         }
         switch (call) {
+            case "move":
+                if (!checkPermission("demo", file, "w")) {
+                    console.log(parent);
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                if (!checkPermission("demo", getFile(pathRequest.join(additionalArguments.new, "..")), "w")) {
+                    console.log(parent);
+                    request.respond({
+                        type: "error",
+                        content: "Missing permission"
+                    });
+                    return;
+                }
+                debug.fileapi.internal.move(target, additionalArguments.new);
+                break;
             case "write":
                 if (!checkPermission("demo", parent, "w")) {
                     console.log(parent);
