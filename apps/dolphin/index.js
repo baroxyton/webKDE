@@ -50,10 +50,15 @@ async function loadContent(path, navigate) {
     await Promise.all(promises);
     api.loadIcons();
 }
-(async function () {
-    await loadContent("/home/demo");
-    done();
-})()
+api.gotData.then(async () => {
+    let data = api.data;
+    let location = data.args?.location;
+    if (location) {
+        loadContent(location);
+        return;
+    }
+    loadContent("/home/demo");
+})
 document.getElementById("location").addEventListener("keyup", event => {
     if (event.key == "Enter") {
         loadContent(event.target.value);
@@ -128,7 +133,7 @@ document.querySelector(".back").addEventListener("click", () => {
     loadContent(null, true);
 });
 document.querySelector(".forward").addEventListener("click", () => {
-    if(!locationHistory[historyPosition+1]){
+    if (!locationHistory[historyPosition + 1]) {
         return;
     }
     historyPosition++;
