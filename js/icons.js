@@ -92,6 +92,7 @@ class DesktopApp {
             }, {
                 text: "Delete",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
+                seperator:true,
                 action: () => {
                     let confirm = new WebKWin("/apps/dialog", {
                         type: "confirm",

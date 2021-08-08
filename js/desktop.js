@@ -90,6 +90,7 @@ class Desktop {
             // spawn context menu
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: 'Create new...',
+                seperator:true,
                 icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
                 submenus: [{
                     text: "Folder",

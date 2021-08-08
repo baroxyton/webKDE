@@ -81,7 +81,7 @@ class ThemeLoader {
         }
         .menu{
             background-color:rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
-            border: 1px rgb(${this.parsedTheme["Colors:Window"].ForegroundInactive}) solid;
+            border: 1px rgba(${this.parsedTheme["Colors:Window"].ForegroundInactive},0.5) solid;
         }
         .menuText{
             color:rgb(${this.parsedTheme["Colors:View"].ForegroundNormal});
@@ -89,6 +89,9 @@ class ThemeLoader {
         .menuItem:hover{
             background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.4);
             box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8);
+        }
+        .menuItem.menuSeparator{
+            border-bottom: 1px rgba(${this.parsedTheme["Colors:Window"].ForegroundInactive},0.5) solid;
         }
         .desktopdrag{
             background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.2);

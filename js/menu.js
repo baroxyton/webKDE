@@ -38,6 +38,9 @@ class DesktopMenu {
                 iconElement.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(item.icon))}")`;
                 itemElement.appendChild(iconElement);
             }
+            if(item.seperator){
+                itemElement.classList.add("menuSeparator");
+            }
             // Item was clicked
             itemElement.addEventListener("mouseup", event => {
                 // Ignore anything other than leftclick. Ignore, if it's a menu with submenus
