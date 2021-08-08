@@ -1,5 +1,4 @@
 import OSApi from "../../appApi/frontend/api.js"
-import { fileapi } from "../../linuxCore/index.js";
 import Icon from "./icons.js"
 let api = new OSApi();
 window.locationHistory = [];
@@ -57,7 +56,8 @@ api.gotData.then(async () => {
         loadContent(location);
         return;
     }
-    loadContent("/home/demo");
+    await loadContent("/home/demo");
+    done();
 })
 document.getElementById("location").addEventListener("keyup", event => {
     if (event.key == "Enter") {
