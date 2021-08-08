@@ -105,6 +105,9 @@ class ThemeLoader {
         button:focus{
             color: rgb(${this.parsedTheme["Colors:Button"].ForegroundActive});
         }
+        ::selection{
+            background-color: rgba(${this.parsedTheme["Colors:Button"].ForegroundActive},0.5);
+        }
         `
         
         document.head.appendChild(this.element);
