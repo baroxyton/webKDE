@@ -1,6 +1,7 @@
 import OSApi from "../../appApi/frontend/api.js"
 let api = new OSApi();
 api.gotData.then(async () => {
+    api.loadIcons();
     api.showToolbar([
         {
             name: "File",
@@ -16,7 +17,7 @@ api.gotData.then(async () => {
                 { text: "About WebKDE", icon: "/usr/share/icons/breeze-dark/apps/kdeapp.svg" }
             ]
         }
-    ])
+    ]);
     api.done({
         title: "Kate",
         icon: "/usr/share/icons/breeze-dark/apps/kate.svg"
