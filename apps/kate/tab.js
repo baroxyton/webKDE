@@ -2,6 +2,7 @@
 import { path as pathParser } from "../../linuxCore/lib/path.js";
 class Tab {
     constructor(api, path) {
+        tabList.push(this);
         this.text = "";
         this.api = api;
         this.path = path;
@@ -14,11 +15,19 @@ class Tab {
         this.render();
     }
     select() {
+        let currentlySelected = tabList.find(element=>element.selected);
+        console.log(currentlySelected,tabList);
+        currentlySelected?.unselect();
         this.selected = true;
         this.api.resize({
             title: `${this.name} - Kate`
         });
         this.render();
+    }
+    unselect(){
+        console.log("unselect");
+        this.selected = false;
+        this.render(); 
     }
     render() {
         if (!this.element) {
@@ -33,10 +42,19 @@ class Tab {
 
             document.querySelector(".tabs").appendChild(this.element);
             this.api.loadIcons();
+            this.addListeners();
         }
         if (this.selected) {
             this.element.classList.add("selected");
         }
+        else{
+            this.element.classList.remove("selected");
+        }
+    }
+    addListeners() {
+        this.element.addEventListener("click", event => {
+            this.select();
+        });
     }
     remove() {
         this.element.outerHTML = null;

@@ -1,6 +1,7 @@
 import OSApi from "../../appApi/frontend/api.js"
 import Tab from "./tab.js";
 let api = new OSApi();
+window.tabList = [];
 api.gotData.then(async () => {
     new Tab(api, "/tab/test")
     let tab = new Tab(api);

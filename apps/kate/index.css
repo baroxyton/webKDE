@@ -27,7 +27,7 @@ body{
     display:flex;
     justify-content: center;
     text-align: center;
-    border: 1px var(--Colors_View_ForegroundInactive) solid;
+    border: 1px rgba(var(--Colors_View_ForegroundInactive_raw), 0.5) solid;
     border-bottom:none;
     width:100%;
     position:relative;
@@ -36,6 +36,8 @@ body{
 .tab.selected{
     background-color:var(--Colors_Window_BackgroundAlternate);
     border-top: 2px var(--Colors_View_ForegroundActive) solid;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 .tabIcon{
     height:20px;
