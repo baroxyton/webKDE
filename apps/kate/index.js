@@ -1,6 +1,8 @@
 import OSApi from "../../appApi/frontend/api.js"
+import Tab from "./tab.js";
 let api = new OSApi();
 api.gotData.then(async () => {
+    new Tab(api, "/path/test")
     api.loadIcons();
     api.showToolbar([
         {
