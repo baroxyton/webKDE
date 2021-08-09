@@ -28,10 +28,14 @@ body{
     justify-content: center;
     text-align: center;
     border: 1px var(--Colors_View_ForegroundInactive) solid;
-    border-top: 2px var(--Colors_View_ForegroundActive) solid;
     border-bottom:none;
     width:100%;
     position:relative;
+    background-color:var(--Colors_Window_BackgroundNormal);
+}
+.tab.selected{
+    background-color:var(--Colors_Window_BackgroundAlternate);
+    border-top: 2px var(--Colors_View_ForegroundActive) solid;
 }
 .tabIcon{
     height:20px;
