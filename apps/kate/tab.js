@@ -78,6 +78,9 @@ class Tab {
         this.element.addEventListener("click", event => {
             this.select();
         });
+        this.iconElement.addEventListener("click",event=>{
+            this.remove();
+        })
         document.getElementById("input").addEventListener("keyup", event => {
             if (!this.selected) {
                 console.log(this.name);
@@ -90,6 +93,9 @@ class Tab {
     }
     remove() {
         this.element.outerHTML = null;
+        this.unselect();
+        tabList.splice(tabList.indexOf(this),1);
+        (tabList[0]||new Tab()).select();
     }
     save(){
         if(!this.unsaved){
