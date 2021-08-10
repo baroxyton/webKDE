@@ -48,6 +48,18 @@ body{
     margin:2.5px;
     filter:grayscale(1);
 }
+.saveIcon{
+    height:20px;
+    width:20px;
+    justify-self: flex-start;
+    position:absolute;
+    left:0px;
+    margin:2.5px;
+    display:none;
+}
+.unsaved > .saveIcon{
+    display:block;
+}
 .tabIcon:hover{
     filter:brightness(2);
 }
