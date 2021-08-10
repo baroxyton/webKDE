@@ -21,6 +21,7 @@ class Desktop {
         // load current theme from config, with font
         this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme), "data:application/octet-stream;base64," + btoa(linux.fileapi.internal.read(this.config.font)));
         this.element = document.getElementById("desktop");
+        this.window = WebKWin;
 
         this.render();
         this.addListeners()

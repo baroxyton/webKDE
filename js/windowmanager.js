@@ -5,6 +5,11 @@ import DesktopMenu from "./menu.js"
 
 class WebKWin {
     constructor(url, args) {
+        let urlProtocol = new URL(url, String(location)).protocol;
+        if (urlProtocol == "javascript:") {
+            console.log("prevented xss!");
+            url = "https://en.wikipedia.org/wiki/Xss";
+        }
         this.args = args || {};
         this.url = url;
         this.position = desktop.mousePosition;
@@ -138,10 +143,10 @@ class WebKWin {
             }
         });
         document.body.addEventListener("mouseup", event => {
-            if(this.resize){
-            this.resize = null;
-            document.body.style.cursor = "default";
-            this.cover.style.display = "none";
+            if (this.resize) {
+                this.resize = null;
+                document.body.style.cursor = "default";
+                this.cover.style.display = "none";
             }
         });
 
