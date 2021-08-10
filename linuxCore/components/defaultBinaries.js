@@ -319,8 +319,11 @@ let defaultBinaries = {
         api.io.stderr.output.write("this command was not found");
         api.application.quit()
     }),
-    "test":compile(async function(){
-        api.spawnWindow("/apps/dolphin",{location:"/test"})
+    "kate":compile(async function(){
+        api.spawnWindow("/apps/kate",{location:api.args[0]});
+    }),
+    "dolphin":compile(async function(){
+        api.spawnWindow("/apps/dolphin",{location:api.args[0]});
     })
 };
 //commands implemented so far:
