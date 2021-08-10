@@ -95,7 +95,7 @@ class Tab {
         this.element.outerHTML = null;
         this.unselect();
         tabList.splice(tabList.indexOf(this),1);
-        (tabList[0]||new Tab()).select();
+        (tabList[0]||new Tab(this.api)).select();
     }
     save(){
         if(!this.unsaved){
