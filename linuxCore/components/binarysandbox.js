@@ -1,4 +1,4 @@
-AsyncFunction = (async function() {}).constructor
+AsyncFunction = (async function () { }).constructor
 
 class Pipe {
     constructor() {
@@ -42,7 +42,7 @@ function getCallback(data, isPersistent) {
     data.callbackId = callbackId;
     postMessage(data);
     callbackId++;
-    return new Promise(function(res) {
+    return new Promise(function (res) {
         function onRes(data) {
             res(data)
         }
@@ -82,14 +82,14 @@ api = {
     // api.env.read(key) to read env value
     // api-env.write(key, value) to set env value
     env: {
-        read: async function(key) {
+        read: async function (key) {
             let env = await getCallback({
                 type: "env",
                 key
             });
             return env
         },
-        write: function(key, value) {
+        write: function (key, value) {
             postMessage({
                 type: "env",
                 key,
@@ -98,19 +98,22 @@ api = {
         }
     },
     // api.exec(command) to exec command. Executed with current process user
-    exec: async function(command) {
+    exec: async function (command) {
         let data = await getCallback({ type: "exec", command })
         return data;
     },
+    spawnWindow: async function (url, args) {
+        getCallback({ type: "spawnWindow", url, args })
+    },
     // Execute javascript outside of sandbox (Example: alert(1) )
     // Requires root permissions
-    execjs: async function(code) {
+    execjs: async function (code) {
         let data = await getCallback({ type: "execjs", code });
         return data;
     },
     // Terminate own process
     application: {
-        quit: function() {
+        quit: function () {
             api.io.stdout.output.done()
         }
     },
@@ -118,7 +121,7 @@ api = {
     args: [],
     // Use api.fs("operation",[arguments]) to execute filesystem operation
     // binaryApi.js has all arguments and operations
-    fs: async function(operation, args) {
+    fs: async function (operation, args) {
         let data = await getCallback({ type: "fs", operation, args })
         console.log(data);
         return data;
@@ -126,46 +129,46 @@ api = {
 
     // Prompt user for root permission
     // Application is terminated if the user cancels the request
-    elevate: async function() {
+    elevate: async function () {
         let data = await getCallback({ type: "elevate" })
         if (!data) {
             api.io.stderr.output.write("Denied root access");
             api.application.quit()
-        } 
+        }
         api.user = "root"
     },
     // Makes web request, use proxy to avoid CORS
-    web: async function(url) {
+    web: async function (url) {
         let data = await (await fetch("https://proxy.ironblockhd.repl.co/?url=" + encodeURIComponent(url))).text();
         return data;
     }
 }
-api.io.stdout.output.onwrite = function(data) {
+api.io.stdout.output.onwrite = function (data) {
     postMessage({ type: "stdout", data })
 }
-api.io.stdin.output.onwrite = function(data) {
+api.io.stdin.output.onwrite = function (data) {
     postMessage({ type: "stdin", data })
 }
-api.io.stderr.output.onwrite = function(data) {
+api.io.stderr.output.onwrite = function (data) {
     postMessage({ type: "stderr", data })
 }
-api.io.stdout.output.ondone = function() {
+api.io.stdout.output.ondone = function () {
     postMessage({ type: "exit" })
 };
-(function() {
-    window = (function() { return this })();
+(function () {
+    window = (function () { return this })();
 
     function hide(name) {
-        window.__defineGetter__(name, function() {
+        window.__defineGetter__(name, function () {
             return null
         })
     }
     let ban = ["Caches", "localStorage", "indexed", "location", "navigator", "onerror", "performance", "webkitIndexedDB", "importScripts"]
-    ban.forEach(function(obj) {
+    ban.forEach(function (obj) {
         hide(obj)
     })
 })();
-onmessage = function(e) {
+onmessage = function (e) {
     let data = e.data;
     console.log(data)
     switch (data.type) {

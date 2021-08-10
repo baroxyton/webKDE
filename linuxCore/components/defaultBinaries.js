@@ -1,4 +1,5 @@
 //default/example binaries. Source code and documentation for api can be found in binarysandbox.js
+import api from "../../appApi/frontend/api.js";
 import { compile } from "./binarycompile.js"
 let defaultBinaries = {
     //change directory command for navigation
@@ -318,7 +319,9 @@ let defaultBinaries = {
         api.io.stderr.output.write("this command was not found");
         api.application.quit()
     }),
-
+    "test":compile(async function(){
+        api.spawnWindow("/apps/dolphin",{location:"/test"})
+    })
 };
 //commands implemented so far:
 //cd, sleep, ls, cat, echo, whoami, sudo, touch, rm, grep, curl, nano, compile, javascript, mkdir

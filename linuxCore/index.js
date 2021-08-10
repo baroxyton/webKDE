@@ -15,14 +15,15 @@ fileapi.onready.then(refreshCommands);
 function refreshCommands() {
     allCommands = []
     data.env.PATH.split(":").forEach(function (dir) {
-        let commands = [Object.keys(getFile(dir).content)];
+        let commands = Object.keys(getFile(dir).content);
         commands.forEach(function (command) {
             allCommands.push({
                 command: command,
                 dir: dir + "/" + command
             })
         })
-    })
+    });
+    console.log(allCommands)
 }
 //some defaults
 export let data = {
@@ -376,6 +377,9 @@ export async function runBinary(path, args, api) {
                 }
                 runCommand(data.command, hook)
                 break;
+                case "spawnWindow":
+                    new desktop.window(data.url, data.args);
+                    break;
             case "execjs":
                 if (api.data.user != "root") {
                     execWorker.postMessage({

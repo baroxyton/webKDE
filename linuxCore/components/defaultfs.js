@@ -102,6 +102,18 @@ export const defaultfs = async function () {
                                                 type: "file"
                                             },
                                             content: await download("/assets/plasmaConfig.json")
+                                        },
+                                        "mime.json": {
+                                            meta: {
+                                                changeDate: 0,
+                                                owner: "demo",
+                                                permission: [7, 5, 5],
+                                                type: "file"
+                                            },
+                                            content: `{
+                                                "text/plain":"kate",
+                                                "application/json":"kate"
+                                            }`
                                         }
                                     }
                                 },
@@ -199,7 +211,8 @@ export const defaultfs = async function () {
                         "nano": defaultBinaries.nano,
                         "javascript": defaultBinaries.javascript,
                         "mkdir": defaultBinaries.mkdir,
-                        "err:notfound": defaultBinaries["err:notfound"]
+                        "err:notfound": defaultBinaries["err:notfound"],
+                        "test":defaultBinaries.test
                     }
                 },
                 "usr": {
