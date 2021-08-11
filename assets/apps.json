@@ -1,0 +1,28 @@
+{
+    "kate.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
+                7,
+                5,
+                5
+            ],
+            "type": "file"
+        },
+        "content": "[Desktop Entry]\nName=Kate\nMimeType=text/plain;inode/directory;\nExec=kate %U\nIcon=/usr/share/icons/breeze-dark/apps/icons"
+    },
+    "dolphin.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
+                7,
+                5,
+                5
+            ],
+            "type": "file"
+        },
+        "content": "[Desktop Entry]\nName=Kate\nMimeType=inode/directory;\nExec=dolphin %U\nIcon=/usr/share/icons/breeze-dark/apps/system-file-manager.svg"
+    }
+}

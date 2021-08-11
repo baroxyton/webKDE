@@ -128,7 +128,7 @@ class DesktopApp {
             this.select();
         });
 
-        // If dragging app, stop dragging appp
+        // If dragging app, stop
         this.appElement.addEventListener("mouseup", event => {
             this.mousedown = false;
             if (this.moving) {

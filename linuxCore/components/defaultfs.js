@@ -7,7 +7,7 @@ async function download(url) {
     let result = await response.text();
     return result;
 }
-async function downloadBinary(url){
+async function downloadBinary(url) {
     if (localStorage.downloaded) {
         return "{}";
     }
@@ -15,8 +15,8 @@ async function downloadBinary(url){
     let blob = await response.blob();
     let fr = new FileReader();
     fr.readAsBinaryString(blob);
-    return new Promise(function(res){
-        fr.onload = function(){
+    return new Promise(function (res) {
+        fr.onload = function () {
             res(fr.result);
         }
     })
@@ -212,8 +212,8 @@ export const defaultfs = async function () {
                         "javascript": defaultBinaries.javascript,
                         "mkdir": defaultBinaries.mkdir,
                         "err:notfound": defaultBinaries["err:notfound"],
-                        "kate":defaultBinaries.kate,
-                        "dolphin":defaultBinaries.dolphin
+                        "kate": defaultBinaries.kate,
+                        "dolphin": defaultBinaries.dolphin
                     }
                 },
                 "usr": {
@@ -279,6 +279,15 @@ export const defaultfs = async function () {
                                             content: await downloadBinary("assets/NotoSans-Regular.ttf")
                                         }
                                     }
+                                },
+                                "applications": {
+                                    meta: {
+                                        changeDate: 0,
+                                        owner: "root",
+                                        permission: [7, 5, 5],
+                                        type: "dir"
+                                    },
+                                    content: JSON.parse(await download("assets/apps.json"))
                                 }
                             }
                         }
