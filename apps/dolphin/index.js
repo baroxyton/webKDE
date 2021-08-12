@@ -35,7 +35,7 @@ async function loadContent(path, navigate) {
     document.getElementById("location").value = path;
     loadedIcons.forEach(icon => icon.remove());
     loadedIcons = [];
-    api.resize({ title: "Dolphin - " + path });
+    api.resize({ title: "Dolphin - " + path, icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg" });
     document.querySelector(".location.selected")?.classList.remove("selected");
     document.querySelector(`[location="${path}"]`)?.classList.add("selected");
     let contents = await api.filesystem("list", path);

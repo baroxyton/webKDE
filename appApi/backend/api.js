@@ -38,7 +38,7 @@ class ProgramApi {
                     this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
                     this.window.style.width = this.windowObject.width + "px";
                     this.window.style.height = this.windowObject.height + "px";
-                    if (this.windowObject.maxHeight || this.windowObject.maxWidth) {
+                    if ((this.windowObject.maxHeight || this.windowObject.maxWidth)&&!this.windowObject.fullscreen) {
                         this.windowObject.actions.children[1].style.display = "none";
                     }
                     this.window.style.visibility = "visible";

@@ -324,8 +324,6 @@ class WebKWin {
             width: this.width,
             minHeight: this.minHeight,
             minWidth: this.minWidth,
-            maxHeight: this.maxHeight,
-            maxWidth: this.maxWidth,
             position: this.position
         }
         this.height = this.minHeight = this.maxHeight = height;
