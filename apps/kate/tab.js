@@ -10,13 +10,13 @@ class Tab {
         if (!this.path) {
             this.name = "Untitled"
         }
-        this.unsaved = false;
-        this.selected = false;
         this.render();
     }
     select() {
         let currentlySelected = tabList.find(element => element.selected);
-        currentlySelected?.unselect();
+        if (currentlySelected != this) {
+            currentlySelected?.unselect();
+        }
         this.selected = true;
         this.api.resize({
             title: `${this.name} - Kate`
@@ -29,6 +29,9 @@ class Tab {
         this.render();
     }
     render() {
+        if (this.removed) {
+            return;
+        }
         if (!this.element) {
             this.element = document.createElement("div");
             this.element.innerText = this.name;
@@ -38,7 +41,7 @@ class Tab {
             this.iconElement.classList.add("tabIcon");
             this.saveElement.classList.add("saveIcon");
             this.iconElement.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/window-close.svg");
-            this.saveElement.setAttribute("icon","/usr/share/icons/breeze-dark/actions/document-save.svg");
+            this.saveElement.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/document-save.svg");
             this.element.appendChild(this.iconElement);
             this.element.appendChild(this.saveElement);
             this.element.classList.add("tab");
@@ -54,10 +57,10 @@ class Tab {
         else {
             this.element.classList.remove("selected");
         }
-        if(this.unsaved){
+        if (this.unsaved) {
             this.element.classList.add("unsaved");
         }
-        else{
+        else {
             this.element.classList.remove("unsaved");
         }
     }
@@ -76,12 +79,15 @@ class Tab {
     }
     addListeners() {
         this.element.addEventListener("click", event => {
-            this.select();
+            if (event.target == this.element) {
+                this.select();
+            }
         });
-        this.iconElement.addEventListener("click",event=>{
+        this.iconElement.addEventListener("click", event => {
             this.remove();
         })
         document.getElementById("input").addEventListener("keyup", event => {
+            console.log(this);
             if (!this.selected) {
                 console.log(this.name);
                 return;
@@ -92,24 +98,26 @@ class Tab {
         });
     }
     remove() {
+        this.removed = true;
         this.element.outerHTML = null;
         this.unselect();
-        tabList.splice(tabList.indexOf(this),1);
-        (tabList[0]||new Tab(this.api)).select();
+        tabList.splice(tabList.indexOf(this), 1);
+        let tab = tabList[0] || new Tab(this.api);
+        tab.select();
     }
-    save(){
-        if(!this.unsaved){
+    save() {
+        if (!this.unsaved) {
             return;
         }
-        if(!this.path){
+        if (!this.path) {
             this.saveAs();
             return;
         }
-        this.api.filesystem("write", this.path, {content:this.text});
+        this.api.filesystem("write", this.path, { content: this.text });
         this.unsaved = false;
         this.render();
     }
-    saveAs(){
+    saveAs() {
 
     }
 }

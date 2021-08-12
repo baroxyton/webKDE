@@ -1,4 +1,3 @@
-import desktopDrag from "./desktopDrag.js";
 import parseDesktopFile from "./parseDesktopFile.js";
 import toMime from "./toMime.js"
 function openFile(filePath, mime) {

@@ -3,8 +3,8 @@ import Tab from "./tab.js";
 let api = new OSApi();
 window.tabList = [];
 api.gotData.then(async () => {
-    new Tab(api, "/home/demo/Desktop/info.txt")
-    let tab = new Tab(api);
+    let tabLocation = api.data.args.location;
+    let tab = new Tab(api, tabLocation);
     tab.select();
 
     api.loadIcons();
