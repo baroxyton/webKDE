@@ -15,6 +15,21 @@ let show = (path) => {
         minWidth: innerWidth
     });
 }
+async function getSize(file){
+    console.log(file);
+    let byteSize = JSON.stringify((await api.filesystem("read", file)).data.content).length;
+    let stringSize = byteSize + "B";
+    if(byteSize > 1000){
+        stringSize = (byteSize/1000).toFixed(1) + "KB";
+    }
+    if(byteSize > 10e6){
+        stringSize = (byteSize/10e6).toFixed(1) + "MiB";
+    }
+    if(byteSize > 10e9){
+        stringSize = (byteSize/10e9).toFixed(1) + "GB";
+    }
+    return stringSize;
+}
 async function loadData(filepath,meta) {
     let mime  = toMime(filepath);
     let iconPath = `/usr/share/icons/breeze-dark/mimetypes/`+mime.replace("/","-") + ".svg";
@@ -27,6 +42,7 @@ async function loadData(filepath,meta) {
     document.getElementById("fileType").innerText = `Mime Type: ${mime}`;
     document.getElementById("filePermission").innerText = `File Permission: ${meta.permission.join("")}`;
     document.getElementById("fileOwner").innerText = `Owner: ${meta.owner}`;
+    document.getElementById("fileSize").innerText = `Size: ${await getSize(filepath)}`
     document.getElementById("typeImage").style.backgroundImage = `url("${iconUrl}")`;
 }
 window.quit = (data)=>api.quit(data);
