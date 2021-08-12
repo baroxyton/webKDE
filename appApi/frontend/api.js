@@ -142,6 +142,9 @@ class OSApi {
             }
         })
     }
+    openFile(path){
+        this.channel.write("openFile",{path})
+    }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
 export { OSApi as default };

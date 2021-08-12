@@ -52,6 +52,9 @@ class ProgramApi {
                 case "spawnWindow":
                     this.spawnWindow(data);
                     break;
+                case "openFile":
+                    desktop.openFile(data.read().path);
+                    break;
                 case "quit":
                     this.windowObject.remove();
                     break;
