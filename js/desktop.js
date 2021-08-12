@@ -8,6 +8,7 @@ import "./windowmanager.js"
 import * as linux from "../linuxCore/index.js";
 import ThemeLoader from "./themeparser.js"
 import WebKWin from "./windowmanager.js"
+import openFile from "./openFile.js"
 let config;
 
 class Desktop {
@@ -22,7 +23,8 @@ class Desktop {
         this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme), "data:application/octet-stream;base64," + btoa(linux.fileapi.internal.read(this.config.font)));
         this.element = document.getElementById("desktop");
         this.window = WebKWin;
-
+        this.openFile = openFile;
+        
         this.render();
         this.addListeners()
     }

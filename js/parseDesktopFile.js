@@ -25,3 +25,4 @@ function parseDesktopFile(data) {
     })
     return result;
 }
+export {parseDesktopFile as default};
