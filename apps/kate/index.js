@@ -26,7 +26,13 @@ api.gotData.then(async () => {
                 {
                     text: "Save as..", icon: "/usr/share/icons/breeze-dark/actions/document-save-as.svg", action: () => {
                         tabList.find(tab => tab.selected).saveAs()
-                    }
+                    },
+                    seperator:true
+                },
+                {
+                    text: "Quit",
+                    icon: "/usr/share/icons/breeze-dark/actions/gtk-quit.svg",
+                    action:()=>api.quit()
                 }
             ],
         },
@@ -41,3 +47,19 @@ api.gotData.then(async () => {
         icon: "/usr/share/icons/breeze-dark/apps/kate.svg"
     });
 });
+api.channel.onevent = async data => {
+    switch (data.event) {
+        case "sigterm":
+            // Add custom exit handler here
+            if (tabList.find(tab => {
+                return tab.unsaved;
+            })) {
+                let quit = await api.dialog("confirm", "discard changes and quit", ["No", "Yes"]);
+                if (quit == 1) { api.quit() }
+            }
+            else{
+            api.quit();
+            }
+            break;
+    }
+}

@@ -1,4 +1,5 @@
 "use strict";
+import api from "../../appApi/frontend/api.js";
 import { path as pathParser } from "../../linuxCore/lib/path.js";
 class Tab {
     constructor(api, path) {
@@ -97,7 +98,13 @@ class Tab {
             this.render();
         });
     }
-    remove() {
+    async remove() {
+        if(this.unsaved){
+            let doSave = await this.api.dialog("confirm","save file",["Don't save", "Save"]);
+            if(doSave){
+                this.save();
+            }
+        }
         this.removed = true;
         this.element.outerHTML = null;
         this.unselect();

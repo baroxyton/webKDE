@@ -9,7 +9,7 @@ api.gotData.then(function (data) {
             icon = "/usr/share/icons/breeze-dark/status/dialog-error.svg";
             break;
         case "confirm":
-            title = `Are you sure to ${data.args.subject}`;
+            title = `Confirm ${data.args.subject}`;
             icon = "/usr/share/icons/breeze-dark/status/dialog-question.svg";
             break;
         case "prompt":
