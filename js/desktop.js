@@ -24,7 +24,7 @@ class Desktop {
         this.element = document.getElementById("desktop");
         this.window = WebKWin;
         this.openFile = openFile;
-        
+
         this.render();
         this.addListeners()
     }
@@ -65,10 +65,7 @@ class Desktop {
         preparedApps.forEach(element => {
             let app = new DesktopApp(element.name, element.icon, element.position, config.apps);
             app.appElement.addEventListener("dblclick", () => {
-                if (element.meta.type == "dir") {
-                    console.log(element.meta)
-                    new WebKWin("/apps/dolphin", { location: "/home/demo/Desktop/" + element.name });
-                }
+                    this.openFile("/home/demo/Desktop/" + element.name)
             })
             this.apps.push(app);
         });
