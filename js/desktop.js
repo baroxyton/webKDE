@@ -64,10 +64,6 @@ class Desktop {
         // generate app icons and store them in desktop instance
         preparedApps.forEach(element => {
             let app = new DesktopApp(element.name, element.icon, element.position, config.apps);
-            app.appElement.addEventListener("dblclick", () => {
-                    console.log(element.name);
-                    this.openFile("/home/demo/Desktop/" + element.name)
-            })
             this.apps.push(app);
         });
     }

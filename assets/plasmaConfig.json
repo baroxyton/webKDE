@@ -2,7 +2,14 @@
     "desktop": {
         "backgroundimage": "/home/demo/Pictures/wallpaper.png",
         "theme": "breeze-dark",
-        "icons": {},
+        "icons": {
+            "credits.txt": {
+                "position": {
+                    "x": 3,
+                    "y": 2
+                }
+            }
+        },
         "panels": [
             {
                 "height": 45,

@@ -163,6 +163,9 @@ class DesktopApp {
             this.appElement.style.left = (event.pageX - this.mousedownPosition.x) + "px";
             this.appElement.style.top = (event.pageY - this.mousedownPosition.y) + "px";
         });
+        this.appElement.addEventListener("dblclick", () => {
+            desktop.openFile("/home/demo/Desktop/" + this.name)
+    })
     }
     // Stop drag click moving icon and place it in the app grid
     stopMoving() {

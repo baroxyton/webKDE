@@ -65,7 +65,7 @@ export const defaultfs = async function () {
                                         permission: [7, 5, 5],
                                         type: "file"
                                     },
-                                    content: "Welcome! This is a linux simulator"
+                                    content: "Welcome! This is your home directory"
                                 },
                                 "Desktop": {
                                     meta: {
@@ -75,14 +75,14 @@ export const defaultfs = async function () {
                                         type: "dir"
                                     },
                                     content: {
-                                        "info.txt": {
+                                        "credits.txt": {
                                             meta: {
                                                 changeDate: 0,
                                                 owner: "demo",
                                                 permission: [7, 5, 5],
                                                 type: "file"
                                             },
-                                            content: "A web clone of linux and KDE!"
+                                            content: "Credits: \n\nKDE idea & concept: https://kde.org\n\nBreeze dark & light theme\nLicense: LGPL\nSource: https://github.com/KDE/breeze/\n\npath.js browserify port\nLicense: MIT\nSource: https://github.com/browserify/path-browserify/blob/master/LICENSE\n\nbash tokonizer\nLicense: MIT\nSource: https://github.com/substack/node-shell-quote"
                                         }
                                     }
                                 },
@@ -136,6 +136,24 @@ export const defaultfs = async function () {
                                             content: await downloadBinary("/assets/next.png")
                                         }
                                     }
+                                },
+                                "Downloads": {
+                                    meta: {
+                                        changeDate: 0,
+                                        owner: "demo",
+                                        permission: [7, 5, 5],
+                                        type: "dir"
+                                    },
+                                    content: {}
+                                },
+                                "Documents": {
+                                    meta: {
+                                        changeDate: 0,
+                                        owner: "demo",
+                                        permission: [7, 5, 5],
+                                        type: "dir"
+                                    },
+                                    content: {}
                                 }
                             }
                         }
