@@ -34,9 +34,9 @@ let filesystem = new IndexedObject("filesystem", defaultfs);
 window.fs = filesystem;
 //get direct reference to file
 export function getFile(fullpath) {
-    // use path.resolve() to make processing easier
+    // use path.join() to make processing easier
     //removes stuff like doubleslashes
-    fullpath = path.resolve(fullpath);
+    fullpath = path.join(fullpath);
     //remove / on end to make processing easier
     if (fullpath.endsWith("/")) {
         fullpath = fullpath.slice(0, -1);
