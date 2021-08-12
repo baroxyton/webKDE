@@ -21,7 +21,7 @@ function openFile(filePath, mime) {
         return;
     }
     let file = apps[application + ".desktop"];
-    let command = parseDesktopFile(file.content)["Desktop Entry"].Exec[0].replace("%U", filePath);
+    let command = parseDesktopFile(file.content)["Desktop Entry"].Exec[0].replace("%U", `"${filePath}"`);
     debug.runCommand(command);
 }
 export {openFile as default};
