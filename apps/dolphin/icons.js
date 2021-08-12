@@ -1,6 +1,7 @@
 "use strict";
 import { path } from "../../linuxCore/lib/path.js";
 import getMime from "../../js/toMime.js"
+import api from "../../appApi/frontend/api.js";
 class Icon {
     constructor(api, name) {
         this.name = name;
@@ -66,7 +67,9 @@ class Icon {
         this.element.addEventListener("dblclick", () => {
             if (this.meta.type == "dir") {
                 loadContent(this.name);
+                return;
             }
+            this.api.openFile(this.name);
         })
     }
 }
