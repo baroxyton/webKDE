@@ -70,6 +70,18 @@ class DesktopApp {
         // Show context menu when rightclicking
         this.appElement.addEventListener("contextmenu", event => {
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
+                text:"Open",
+                icon:"/usr/share/icons/breeze-dark/actions/quickopen-file.svg",
+                action:()=>{
+                    desktop.openFile("/home/demo/Desktop/"+this.name)
+                }
+            },
+                {
+                text: "Open with..",
+                icon:"/usr/share/icons/breeze-dark/categories/applications-other.svg",
+                seperator:true
+            },
+                {
                 text: "Rename..",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
                 action:()=>{
