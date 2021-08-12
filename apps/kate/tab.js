@@ -80,6 +80,9 @@ class Tab {
     }
     addListeners() {
         this.element.addEventListener("click", event => {
+            if (event.button != 0) {
+                return;
+            }
             if (event.target == this.element) {
                 this.select();
             }
@@ -97,11 +100,31 @@ class Tab {
             this.text = event.target.value;
             this.render();
         });
+        this.element.addEventListener("contextmenu", event => {
+            this.api.menu({ x: event.pageX, y: event.pageY }, [{
+                text: "Close Document",
+                icon: "/usr/share/icons/breeze-dark/actions/document-close.svg",
+                action: () => {this.remove()}
+            }, {
+                text: "Close other Documents",
+                icon: "/usr/share/icons/breeze-dark/actions/document-close.svg",
+                action: () => {
+                    let otherDocs = tabList.filter(tab=>tab!=this);
+                    otherDocs.forEach(tab=>tab.remove());
+                },
+                seperator:true
+            },
+            {
+                text: "Save",
+                icon: "/usr/share/icons/breeze-dark/actions/document-save.svg",
+                action: () => this.save()
+            }]);
+        })
     }
     async remove() {
-        if(this.unsaved){
-            let doSave = await this.api.dialog("confirm","save file",["Don't save", "Save"]);
-            if(doSave){
+        if (this.unsaved) {
+            let doSave = await this.api.dialog("confirm", "save file", ["Don't save", "Save"]);
+            if (doSave) {
                 this.save();
             }
         }

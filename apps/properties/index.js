@@ -22,11 +22,11 @@ async function getSize(file){
     if(byteSize > 1000){
         stringSize = (byteSize/1000).toFixed(1) + "KB";
     }
-    if(byteSize > 10e6){
-        stringSize = (byteSize/10e6).toFixed(1) + "MiB";
+    if(byteSize > 10e5){
+        stringSize = (byteSize/10e5).toFixed(1) + "MiB";
     }
-    if(byteSize > 10e9){
-        stringSize = (byteSize/10e9).toFixed(1) + "GB";
+    if(byteSize > 10e8){
+        stringSize = (byteSize/10e8).toFixed(1) + "GB";
     }
     return stringSize;
 }
