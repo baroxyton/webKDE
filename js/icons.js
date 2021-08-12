@@ -138,6 +138,10 @@ class DesktopApp {
 
         // Remove highlight when pressing desktop
         document.getElementById("desktop").addEventListener("mouseup", event => {
+            this.mousedown = null;
+            if(this.moving){
+            this.stopMoving();
+            }
             if (event.target.id != "desktop") {
                 return;
             }
@@ -156,7 +160,7 @@ class DesktopApp {
         });
         // On older machines you can easily escape the icon by moving the mouse fast. Add event as callback
         document.getElementById("desktop").addEventListener("mousemove", async event => {
-            if (!this.moving) {
+            if (!this.mousedown) {
                 return;
             }
             this.movePosition = { x: event.pageX, y: event.pageY };
