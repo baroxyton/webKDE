@@ -125,7 +125,7 @@ class Tab {
         if (this.unsaved) {
             let doSave = await this.api.dialog("confirm", "save file", ["Don't save", "Save"]);
             if (doSave) {
-                this.save();
+                await this.save();
             }
         }
         this.removed = true;
@@ -135,20 +135,22 @@ class Tab {
         let tab = tabList[0] || new Tab(this.api);
         tab.select();
     }
-    save() {
+    async save() {
         if (!this.unsaved) {
             return;
         }
         if (!this.path) {
-            this.saveAs();
+            await this.saveAs();
             return;
         }
         this.api.filesystem("write", this.path, { content: this.text });
         this.unsaved = false;
         this.render();
     }
-    saveAs() {
-
+    async saveAs() {
+        this.path = await this.api.fileDialog(["*.txt", "*.json"]);
+        this.name = pathParser.basename(this.path);
+        this.save();
     }
 }
 export { Tab as default };

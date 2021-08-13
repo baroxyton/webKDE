@@ -17,7 +17,10 @@ api.gotData.then(async () => {
                         new Tab(api);
                     }
                 },
-                { text: "Open", icon: "/usr/share/icons/breeze-dark/actions/document-open.svg", seperator: true },
+                { text: "Open", icon: "/usr/share/icons/breeze-dark/actions/document-open.svg", seperator: true, action:async ()=>{
+                    let location = await api.fileDialog(["*.json","*.txt"]);
+                    new Tab(api, location);
+                } },
                 {
                     text: "Save", icon: "/usr/share/icons/breeze-dark/actions/document-save.svg", action: () => {
                         tabList.find(tab => tab.selected).save()
