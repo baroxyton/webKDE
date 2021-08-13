@@ -8,6 +8,22 @@ class Icon {
         this.api = api;
     }
     async render() {
+
+        let fileIsAllowed = false;
+        let meta = (await this.api.filesystem("readMeta", this.name)).read().content;
+        this.meta = meta;
+        if (filechooser) {
+            allowedFiletypes.forEach(filetype => {
+                let regex = new RegExp(filetype.replaceAll(".", "\.").replaceAll("*", "(.*?)") + "$");
+                if (this.name.match(regex)) {
+                    fileIsAllowed = true;
+                }
+            });
+        }
+        if (meta.type == "dir") {
+            fileIsAllowed = true;
+        }
+
         this.element = document.createElement("div");
         this.textElement = document.createElement("div");
         this.iconElement = document.createElement("div");
@@ -17,15 +33,15 @@ class Icon {
         this.iconElement.classList.add("iconImage");
 
         this.textElement.innerText = this.name.split("/").slice(-1);
-        let meta = (await this.api.filesystem("readMeta", this.name)).read().content;
-        this.meta = meta;
         if (meta.type == "dir") {
             this.iconElement.setAttribute("icon", `/usr/share/icons/breeze-dark/places/folder.svg`);
         }
         else {
             this.iconElement.setAttribute("icon", `/usr/share/icons/breeze-dark/mimetypes/${getMime(this.name).replace("/", "-")}.svg`);
         }
-
+        if (filechooser && !fileIsAllowed) {
+            this.element.style.display = "none";
+        }
         this.element.appendChild(this.iconElement);
         this.element.appendChild(this.textElement);
 
@@ -69,7 +85,19 @@ class Icon {
                 loadContent(this.name);
                 return;
             }
+            else if (filechooser) {
+                selectFile();
+                return;
+            }
             this.api.openFile(this.name);
+        });
+        this.element.addEventListener("click", event => {
+            if (event.button != 0) {
+                return;
+            }
+            if (filechooser && this.meta.type != "dir") {
+                document.querySelector("#fileSelector > input").value = this.name.split("/").slice(-1);
+            }
         })
     }
 }

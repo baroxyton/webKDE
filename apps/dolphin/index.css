@@ -126,3 +126,17 @@ label[for="fileUpload"] {
 label[for="fileUpload"] > button{
     pointer-events: none;
 }
+#fileSelector{
+    display:none;
+    position:fixed;
+    bottom:0;
+    left:20vw;
+    width:80vw;
+}
+#fileSelector > select, #fileSelector > input, #fileSelector > button{
+    float:right;
+    margin:3px;
+}
+#fileSelector > input{
+    background-color:var(--Colors_View_BackgroundNormal);
+}

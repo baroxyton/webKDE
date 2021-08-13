@@ -92,7 +92,7 @@ class ThemeLoader {
         user-select:none;
         text-align:center;
         }
-        input,button,textarea,table{
+        input,button,textarea,table,select{
             border:0px;
             padding:5px;
             background-color: rgb(${this.parsedTheme["Colors:Button"].BackgroundNormal});

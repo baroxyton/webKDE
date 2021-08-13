@@ -74,9 +74,9 @@ class OSApi {
             args
         };
         let result = await this.channel.write("filesystem", request, true);
-        if(result.read().type == "error"){
+        if (result.read().type == "error") {
             console.log(request);
-            this.dialog("error",result.read().content);
+            this.dialog("error", result.read().content);
         }
         return result;
     }
@@ -127,23 +127,33 @@ class OSApi {
                 this.listeners.push(what);
             }
         }
-        let request = { url, args:winArgs };
+        let request = { url, args: winArgs };
         this.channel.write("spawnWindow", request);
         let output = new FakeWinApi();
         return output
     }
-    dialog(type="prompt",subject="[unspecified]",buttons=[],inputText=""){
-        let win = this.spawnWindow("/apps/dialog",{type,subject,buttons,inputText});
-        return new Promise(res=>{
-            win.onevent = data=>{
-                if(data.event=="quit"){
+    dialog(type = "prompt", subject = "[unspecified]", buttons = [], inputText = "") {
+        let win = this.spawnWindow("/apps/dialog", { type, subject, buttons, inputText });
+        return new Promise(res => {
+            win.onevent = data => {
+                if (data.event == "quit") {
                     res(data.data);
                 }
             }
         })
     }
-    openFile(path){
-        this.channel.write("openFile",{path})
+    openFile(path) {
+        this.channel.write("openFile", { path })
+    }
+    fileDialog(allowedTypes, startingPoint) {
+        let win = this.spawnWindow("/apps/dolphin", { chooser:true, location: startingPoint, allowedFiletypes: allowedTypes });
+        return new Promise(res => {
+            win.onevent = data => {
+                if (data.event == "quit") {
+                    res(data.data);
+                }
+            }
+        })
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());

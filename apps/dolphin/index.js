@@ -49,16 +49,48 @@ async function loadContent(path, navigate) {
     await Promise.all(promises);
     api.loadIcons();
 }
+window.filechooser = false;
+window.allowedFiletypes = [];
 api.gotData.then(async () => {
     let data = api.data;
-    let location = data.args?.location;
+    let location = data.args.location;
+    let isFileChooser = data.args.chooser;
+    let types = data.args.allowedFiletypes;
+    filechooser = isFileChooser;
     if (location) {
         loadContent(location);
         return;
     }
+    if (isFileChooser) {
+        loadFileSelector(types);
+    }
     await loadContent("/home/demo");
     done();
+});
+function loadFileSelector(types) {
+    document.getElementById("content").style.height = "calc(100% - 87px)";
+    document.getElementById("fileSelector").style.display = "block";
+    if (types) {
+        let customTypes = document.createElement("option");
+        customTypes.value = JSON.stringify(types);
+        customTypes.innerText = types.join(", ");
+        customTypes.selected = true;
+        document.getElementById("filetypes").appendChild(customTypes);
+    }
+    let allTypes = document.createElement("option");
+    allTypes.value = '["*.*"]';
+    allTypes.innerText = "All Files (*.*)";
+    document.getElementById("filetypes").appendChild(allTypes);
+    allowedFiletypes = JSON.parse(document.getElementById("filetypes").options[document.getElementById("filetypes").selectedIndex].value);
+}
+document.getElementById("filetypes").addEventListener("change", event => {
+    allowedFiletypes = JSON.parse(event.target.options[event.target.selectedIndex].value);
+    loadContent(cwd);
 })
+window.selectFile = () => {
+    api.quit(cwd + "/" + document.querySelector("#fileSelector > input").value);
+}
+document.querySelector("#fileSelector > button").addEventListener("click", event => selectFile());
 document.getElementById("location").addEventListener("keyup", event => {
     if (event.key == "Enter") {
         loadContent(event.target.value);
