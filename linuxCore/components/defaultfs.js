@@ -212,29 +212,7 @@ export const defaultfs = async function () {
                         permission: [7, 5, 5],
                         type: "dir"
                     },
-                    content: {
-                        "echo": defaultBinaries.echo,
-                        "sleep": defaultBinaries.sleep,
-                        "ls": defaultBinaries.ls,
-                        "whoami": defaultBinaries.whoami,
-                        "cd": defaultBinaries.cd,
-                        "cat": defaultBinaries.cat,
-                        "sudo": defaultBinaries.sudo,
-                        "touch": defaultBinaries.touch,
-                        "rm": defaultBinaries.rm,
-                        "grep": defaultBinaries.grep,
-                        "curl": defaultBinaries.curl,
-                        "clear": defaultBinaries.clear,
-                        "pwd": defaultBinaries.pwd,
-                        "compile": defaultBinaries.compile,
-                        "nano": defaultBinaries.nano,
-                        "javascript": defaultBinaries.javascript,
-                        "mkdir": defaultBinaries.mkdir,
-                        "err:notfound": defaultBinaries["err:notfound"],
-                        "kate": defaultBinaries.kate,
-                        "dolphin": defaultBinaries.dolphin,
-                        "xdg-open": defaultBinaries["xdg-open"]
-                    }
+                    content: defaultBinaries
                 },
                 "usr": {
                     meta: {
