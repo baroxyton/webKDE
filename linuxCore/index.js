@@ -380,6 +380,8 @@ export async function runBinary(path, args, api) {
                 case "spawnWindow":
                     new desktop.window(data.url, data.args);
                     break;
+                case "openFile":
+                    desktop.openFile(data.location);
             case "execjs":
                 if (api.data.user != "root") {
                     execWorker.postMessage({

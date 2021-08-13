@@ -3,7 +3,7 @@ import api from "../../appApi/frontend/api.js";
 import { compile } from "./binarycompile.js"
 let defaultBinaries = {
     //change directory command for navigation
-    cd: compile(async function() {
+    cd: compile(async function () {
         //get current path
         let currentDir = await api.env.read("PWD");
         //combine paths with api
@@ -18,17 +18,17 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //sleep command for waiting after the next command
-    sleep: compile(async function() {
+    sleep: compile(async function () {
         //parse argument
         let ms = parseFloat(api.args[0]) * 1000
-            //use promises to exit after specified time
-        await new Promise(function(res) {
+        //use promises to exit after specified time
+        await new Promise(function (res) {
             setTimeout(res, ms)
         });
         api.application.quit();
     }),
     //ls command for listing directory contents
-    ls: compile(async function() {
+    ls: compile(async function () {
         //get current path/working directory
         let currentDir = await api.env.read("PWD");
         //check if "a"-argument is passed
@@ -58,7 +58,7 @@ let defaultBinaries = {
         output = JSON.parse(output);
         //if a argument wasnt passed hide dot-files
         if (!specialArgs.includes("a")) {
-            output = output.filter(function(file) {
+            output = output.filter(function (file) {
                 if (!file.startsWith(".")) {
                     return true
                 }
@@ -69,7 +69,7 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //cat-command for reading files
-    cat: compile(async function() {
+    cat: compile(async function () {
         //get specified file
         let currentDir = await api.env.read("PWD");
         let dir = await api.fs("resolve", [currentDir, api.args[0]]);
@@ -91,7 +91,7 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //echo command for printing arguments
-    echo: compile(async function() {
+    echo: compile(async function () {
         //concat all args
         let output = api.args.join(" ");
         //print concated args and quit
@@ -99,7 +99,7 @@ let defaultBinaries = {
         api.application.quit()
     }),
     //whoami command for printing current user
-    whoami: compile(async function() {
+    whoami: compile(async function () {
         //get current user
         let name = api.user;
         //print and quit
@@ -107,19 +107,19 @@ let defaultBinaries = {
         api.application.quit()
     }),
     //sudo command for executing commands as root-user
-    sudo: compile(async function() {
+    sudo: compile(async function () {
         //concat all arguments
         let command = api.args.join(" ");
         //elevate to root user if user confirms
         await api.elevate()
-            //execute command with elevated privilages,
-            //print output and quit.
+        //execute command with elevated privilages,
+        //print output and quit.
         let result = await api.exec(command);
         api.io.stdout.output.write(result);
         api.application.quit();
     }),
     //touch command for creating file
-    touch: compile(async function() {
+    touch: compile(async function () {
         //get path
         let currentDir = await api.env.read("PWD");
         let dir = await api.fs("resolve", [currentDir, api.args[0]]);
@@ -132,7 +132,7 @@ let defaultBinaries = {
         api.application.quit()
     }),
     //rm command for removing files
-    rm: compile(async function() {
+    rm: compile(async function () {
         //get path
         let currentDir = await api.env.read("PWD");
         let dir = await api.fs("resolve", [currentDir, api.args[0]]);
@@ -146,23 +146,23 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //grep command for filtering output
-    grep: compile(async function() {
+    grep: compile(async function () {
         //when input process writes data, filter and output
-        api.io.stdin.input.onwrite = function(txt) {
-                txt = txt.split("\n");
-                txt.forEach(function(item) {
-                    if (item.includes(api.args[0])) {
-                        api.io.stdout.output.write(item);
-                    }
-                })
-            }
-            //when input process ends, exit as well
-        api.io.stdin.input.ondone = function() {
+        api.io.stdin.input.onwrite = function (txt) {
+            txt = txt.split("\n");
+            txt.forEach(function (item) {
+                if (item.includes(api.args[0])) {
+                    api.io.stdout.output.write(item);
+                }
+            })
+        }
+        //when input process ends, exit as well
+        api.io.stdin.input.ondone = function () {
             api.application.quit()
         }
     }),
     //curl command for making requests
-    curl: compile(async function() {
+    curl: compile(async function () {
         //make sure url is valid
         let url = api.args[0];
         if (!url.startsWith("https://")) {
@@ -172,19 +172,19 @@ let defaultBinaries = {
         //make web request. Uses proxy to avoid CORS problems
         let output = await api.web(url);
         //print output and quit
-        output.split("\n").forEach(function(line) {
+        output.split("\n").forEach(function (line) {
             api.io.stdout.output.write(line + "\n");
         });
         api.application.quit();
     }),
     //clear command for clearing terminal
-    clear: compile(async function() {
+    clear: compile(async function () {
         //inbuilt in my REPL demo
         api.io.stderr.output.write("{{{clear}}}");
         api.application.quit();
     }),
     //pwd for printing current path
-    pwd: compile(async function() {
+    pwd: compile(async function () {
         //get path
         let path = await api.env.read("PWD");
         //print output and quit
@@ -192,64 +192,64 @@ let defaultBinaries = {
         api.application.quit()
     }),
     //nano, a terminal editor
-    nano: compile(async function() {
+    nano: compile(async function () {
         //key event. Refresh screen after every possibility to make experience smooth
-        api.io.keys.input.onwrite = function(e) {
-                //when a key is pressed, clear the command input to prevent misunderstandings
-                api.io.stdin.output.write("{{{clear}}}");
-                //when ctrl+o is pressed save and exit
-                if (e.key == "o" && e.ctrlKey) {
-                    console.log("pressed combination")
-                    api.fs("write", [path, content]);
-                    api.application.quit()
-                }
-                //when right arrow is pressed, move carret to right
-                if (e.key == "ArrowRight") {
-                    if (cursor_position < content.length) {
-                        cursor_position++;
-                        render_frame();
-                        return
-                    }
-                }
-                //when left arrow is pressed, move carret to left
-                if (e.key == "ArrowLeft") {
-                    if (cursor_position != 0) {
-                        cursor_position--;
-                        render_frame();
-                        return
-                    }
-                }
-                //when backspace is pressed, remove character and move carret to left
-                if (e.key == "Backspace") {
-                    content = content.slice(0, cursor_position - 1) + content.slice(cursor_position);
-                    cursor_position--;
-                    render_frame();
-                    return
-                }
-                //when enter key is pressed, add linefeed character and move carret to right
-                if (e.key == "Enter") {
-                    content = content.slice(0, cursor_position) + "\n" + content.slice(cursor_position);
-                    cursor_position++;
-                    render_frame();
-                    return
-                }
-                //when normal key (letter, symbol etc) is pressed, add linefeed character and move carret to right
-                if (e.key.length == 1) {
-                    content = content.slice(0, cursor_position) + e.key + content.slice(cursor_position);
+        api.io.keys.input.onwrite = function (e) {
+            //when a key is pressed, clear the command input to prevent misunderstandings
+            api.io.stdin.output.write("{{{clear}}}");
+            //when ctrl+o is pressed save and exit
+            if (e.key == "o" && e.ctrlKey) {
+                console.log("pressed combination")
+                api.fs("write", [path, content]);
+                api.application.quit()
+            }
+            //when right arrow is pressed, move carret to right
+            if (e.key == "ArrowRight") {
+                if (cursor_position < content.length) {
                     cursor_position++;
                     render_frame();
                     return
                 }
             }
-            //current carret visibility
+            //when left arrow is pressed, move carret to left
+            if (e.key == "ArrowLeft") {
+                if (cursor_position != 0) {
+                    cursor_position--;
+                    render_frame();
+                    return
+                }
+            }
+            //when backspace is pressed, remove character and move carret to left
+            if (e.key == "Backspace") {
+                content = content.slice(0, cursor_position - 1) + content.slice(cursor_position);
+                cursor_position--;
+                render_frame();
+                return
+            }
+            //when enter key is pressed, add linefeed character and move carret to right
+            if (e.key == "Enter") {
+                content = content.slice(0, cursor_position) + "\n" + content.slice(cursor_position);
+                cursor_position++;
+                render_frame();
+                return
+            }
+            //when normal key (letter, symbol etc) is pressed, add linefeed character and move carret to right
+            if (e.key.length == 1) {
+                content = content.slice(0, cursor_position) + e.key + content.slice(cursor_position);
+                cursor_position++;
+                render_frame();
+                return
+            }
+        }
+        //current carret visibility
         let show_cursor = true;
         let content = "";
         //toggle carret visibility twice a second
-        setInterval(function() {
-                show_cursor = !show_cursor;
-                render_frame();
-            }, 500)
-            //current caret position
+        setInterval(function () {
+            show_cursor = !show_cursor;
+            render_frame();
+        }, 500)
+        //current caret position
         let cursor_position = 0;
         //function to re-render the screen
         function render_frame() {
@@ -275,7 +275,7 @@ let defaultBinaries = {
         render_frame()
     }),
     //compile-command to create binaries from within the simulation
-    compile: compile(async function() {
+    compile: compile(async function () {
         let currentDir = await api.env.read("PWD");
         let path = await api.fs("resolve", [currentDir, api.args[0]]);
         let fileContent = await api.fs("read", [path]);
@@ -284,9 +284,9 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //javascript command for executing javascript
-    javascript: compile(function() {
+    javascript: compile(function () {
         output = "";
-        api.io.stderr.input.onwrite = function(code) {
+        api.io.stderr.input.onwrite = function (code) {
             output += "> " + code + "\n";
             output += eval(code) + "\n";
             api.io.stderr.output.write("{{{clear}}}");
@@ -294,7 +294,7 @@ let defaultBinaries = {
         }
     }),
     //mkdir command to create directory
-    mkdir: compile(async function() {
+    mkdir: compile(async function () {
         //get specified path
         let currentDir = await api.env.read("PWD");
         let dir = await api.fs("resolve", [currentDir, api.args[0]]);
@@ -315,15 +315,18 @@ let defaultBinaries = {
         api.application.quit();
     }),
     //shows "command not found"-error
-    "err:notfound": compile(async function() {
+    "err:notfound": compile(async function () {
         api.io.stderr.output.write("this command was not found");
         api.application.quit()
     }),
-    "kate":compile(async function(){
-        api.spawnWindow("/apps/kate",{location:api.args[0]});
+    "kate": compile(async function () {
+        api.spawnWindow("/apps/kate", { location: api.args[0] });
     }),
-    "dolphin":compile(async function(){
-        api.spawnWindow("/apps/dolphin",{location:api.args[0]});
+    "dolphin": compile(async function () {
+        api.spawnWindow("/apps/dolphin", { location: api.args[0] });
+    }),
+    "xdg-open": compile(async function () {
+        api.openFile(api.args[0]);
     })
 };
 //commands implemented so far:

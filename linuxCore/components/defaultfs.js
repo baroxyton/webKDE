@@ -232,7 +232,8 @@ export const defaultfs = async function () {
                         "mkdir": defaultBinaries.mkdir,
                         "err:notfound": defaultBinaries["err:notfound"],
                         "kate": defaultBinaries.kate,
-                        "dolphin": defaultBinaries.dolphin
+                        "dolphin": defaultBinaries.dolphin,
+                        "xdg-open": defaultBinaries["xdg-open"]
                     }
                 },
                 "usr": {

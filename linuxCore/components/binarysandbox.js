@@ -105,6 +105,9 @@ api = {
     spawnWindow: async function (url, args) {
         getCallback({ type: "spawnWindow", url, args })
     },
+    openFile: async function(location){
+        getCallback({type:"openFile",location});
+    },
     // Execute javascript outside of sandbox (Example: alert(1) )
     // Requires root permissions
     execjs: async function (code) {
