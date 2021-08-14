@@ -9,8 +9,8 @@ function openFile(filePath, mime) {
         application = defaultMimes[mime];
     }
     else {
-        for (testapplication in apps) {
-            let mimes = parseDesktopFile(apps[testapplication].content).MimeType;
+        for (let testapplication in apps) {
+            let mimes = parseDesktopFile(apps[testapplication].content)["Desktop Entry"].MimeType||[];
             if (mimes.includes(mime)) {
                 application = testapplication.split(".")[0];
             }
