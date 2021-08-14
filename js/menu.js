@@ -41,6 +41,9 @@ class DesktopMenu {
             if(item.seperator){
                 itemElement.classList.add("menuSeparator");
             }
+            if(item.disabled){
+                itemElement.classList.add("disabled");
+            }
             // Item was clicked
             itemElement.addEventListener("mouseup", event => {
                 // Ignore anything other than leftclick. Ignore, if it's a menu with submenus

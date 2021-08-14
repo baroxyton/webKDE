@@ -69,6 +69,10 @@ html, body {
     border-radius: 3px;
     display: flex;
 }
+.menuItem.disabled{
+    filter:brightness(0.5);
+    pointer-events: none;
+}
 .menuText{
     margin-left:5px;
 }
