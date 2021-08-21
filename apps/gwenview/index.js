@@ -35,7 +35,8 @@ function updateToolbar() {
         {
             text: "Save",
             icon: "/usr/share/icons/breeze-dark/actions/document-save.svg",
-            disabled: !canSave
+            disabled: !canSave,
+            action:saveFile
         },
         {
             text: "Save As",
@@ -57,12 +58,14 @@ function updateToolbar() {
         items: [
             {
                 text: "Undo",
-                disabled: !canEdit,
+                disabled: (!canEdit)||(!editingHistory[editingIndex-1]),
+                action:historyBack,
                 icon: "/usr/share/icons/breeze-dark/actions/edit-undo.svg"
             },
             {
                 text: "Redo",
-                disabled: !canEdit,
+                action:historyForward,
+                disabled: (!canEdit)||(!editingHistory[editingIndex+1]),
                 icon: "/usr/share/icons/breeze-dark/actions/edit-redo.svg"
             }
         ]
@@ -72,7 +75,7 @@ function updateToolbar() {
             {
                 text: "Crop",
                 icon: "/usr/share/icons/breeze-dark/actions/transform-crop.svg",
-                disabled: !canEdit
+                disabled: true
             },
             {
                 text: "Draw",
@@ -84,9 +87,10 @@ function updateToolbar() {
     }]);
 }
 updateToolbar();
+let fileLocation;
 let canvasContext = document.getElementById("imageCanvas").getContext("2d");
 async function openFile(locationArg) {
-    let fileLocation = locationArg || await api.fileDialog(["*.png", "*.jpg", "*.bpm", "*.jpeg"]);
+    fileLocation = locationArg || await api.fileDialog(["*.png", "*.jpg", "*.bpm", "*.jpeg"]);
     api.resize({ title: "Gwenview - " + fileLocation.split("/").slice(-1) });
     let fileContent = (await api.filesystem("read", fileLocation)).data.content;
     let imageURL = `data:${toMime(fileLocation)};base64,${btoa(fileContent)}`;
@@ -110,7 +114,40 @@ let editingHistory = [];
 let editingIndex = 0;
 let startedPath = false;
 let oldPos = {};
+function saveToHistory() {
+    let data = canvasContext.getImageData(0, 0, document.getElementById("imageCanvas").width, document.getElementById("imageCanvas").height);
+    if (editingIndex != editingHistory.length - 1) {
+        editingHistory.splice(editingIndex);
+    }
+    editingHistory.push(data);
+    editingIndex = editingHistory.length - 1;
+    canSave = true;
+    updateToolbar();
+}
+function historyBack(){
+    editingIndex--;
+    updateToolbar();
+    canvasContext.putImageData(editingHistory[editingIndex],0,0);
+}
+function historyForward(){
+    editingIndex++;
+    updateToolbar();
+    canvasContext.putImageData(editingHistory[editingIndex],0,0);
+}
+async function saveFile(){
+    canSave = false;
+    let imageUrl = document.getElementById("imageCanvas").toDataURL();
+    let imageBlob = (await (await fetch(imageUrl)).blob());
+    let fileReader = new FileReader();
+    fileReader.onload = ()=>{
+        api.filesystem("write",fileLocation,{content:fileReader.result});
+    }
+    fileReader.readAsBinaryString(imageBlob);
+}
 function startDrawing() {
+    if(!editingHistory.length){
+        saveToHistory();
+    }
     isDrawing = true;
     document.getElementById("imageDisplay").style.height = "90vh";
     document.getElementById("imageDisplay").style.top = "10vh";
@@ -127,6 +164,7 @@ document.getElementById("imageCanvas").addEventListener("mouseup", event => {
     mouseDown = false;
     startedPath = false;
     oldPos = {};
+    saveToHistory();
 });
 document.getElementById("imageCanvas").addEventListener("mousedown", event => {
     mouseDown = true;
@@ -137,8 +175,8 @@ document.getElementById("imageCanvas").addEventListener("mousedown", event => {
 });
 document.getElementById("drawMenu").querySelector("button").addEventListener("click", stopDrawing);
 document.getElementById("imageCanvas").addEventListener("mousemove", event => {
-    let ratioY = event.target.scrollHeight/event.target.height;
-    let ratioX = event.target.scrollWidth/event.target.width;
+    let ratioY = event.target.scrollHeight / event.target.height;
+    let ratioX = event.target.scrollWidth / event.target.width;
     if (!isDrawing || !mouseDown) {
         return;
     }
@@ -148,7 +186,7 @@ document.getElementById("imageCanvas").addEventListener("mousemove", event => {
     }
     canvasContext.lineCap = "round";
     let rect = event.target.getBoundingClientRect()
-    let pos = { x: (event.clientX-rect.left)/ratioX, y: (event.clientY-rect.top)/ratioY };
+    let pos = { x: (event.clientX - rect.left) / ratioX, y: (event.clientY - rect.top) / ratioY };
     canvasContext.moveTo(oldPos.x || pos.x, oldPos.y || pos.y);
     canvasContext.lineTo(pos.x, pos.y);
     canvasContext.stroke();
