@@ -174,7 +174,5 @@ html, body {
     border:0;
     position:absolute;
     border-radius: 5px;
-    height:20vh;
-    width:30vh;
     overflow: hidden;
 }
