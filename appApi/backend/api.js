@@ -1,15 +1,15 @@
-import api from "../frontend/api.js";
 import Channel from "./communication.js"
 import { path as pathRequest } from "../../linuxCore/lib/path.js";
 import { checkPermission } from "/linuxCore/components/checkPermission.js"
 import { getFile } from "../../linuxCore/components/fileapi.js";
+import WebKWin from "../../js/windowmanager.js";
 class ProgramApi {
-    constructor(user, windowObject) {
+    constructor(user, windowObject, iframe) {
         window.api = this;
         this.windowObject = windowObject;
         this.window = windowObject.element;
         this.user = user;
-        this.channel = new Channel(this.window.querySelector("iframe"));
+        this.channel = new Channel(iframe || this.window.querySelector("iframe"));
         this.channel.onevent = data => {
             switch (data.event) {
                 case "loaded":
@@ -22,10 +22,14 @@ class ProgramApi {
                     });
                     break;
                 case "showToolbar":
-                    this.windowObject.showToolbar(data.read());
+                    this.windowObject?.showToolbar(data.read());
                     break;
                 case "done":
                 case "resize":
+                    if (!this.windowObject.title) {
+                        this.window.style.visibility = "visible";
+                        break;
+                    }
                     this.windowObject.titleText = data.read().title || this.windowObject.titleText || this.windowObject.url;
                     this.windowObject.iconLocation = data.read().icon || this.windowObject.iconLocation || "/usr/share/icons/breeze-dark/categories/applications-all.svg";
                     this.windowObject.title.innerText = this.windowObject.titleText;
@@ -38,7 +42,7 @@ class ProgramApi {
                     this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
                     this.window.style.width = this.windowObject.width + "px";
                     this.window.style.height = this.windowObject.height + "px";
-                    if ((this.windowObject.maxHeight || this.windowObject.maxWidth)&&!this.windowObject.fullscreen) {
+                    if ((this.windowObject.maxHeight || this.windowObject.maxWidth) && !this.windowObject.fullscreen) {
                         this.windowObject.actions.children[1].style.display = "none";
                     }
                     this.window.style.visibility = "visible";
@@ -47,7 +51,7 @@ class ProgramApi {
                     this.filesystem(data);
                     break;
                 case "menu":
-                    this.windowObject.menu(data.read());
+                    this.windowObject?.menu(data.read());
                     break;
                 case "spawnWindow":
                     this.spawnWindow(data);
@@ -56,12 +60,16 @@ class ProgramApi {
                     desktop.openFile(data.read().path);
                     break;
                 case "quit":
-                    this.windowObject.remove();
+                    this.windowObject?.remove();
                     break;
             }
         }
         setTimeout(() => {
             if (this.supported) {
+                return;
+            }
+            if (!this.windowObject.title) {
+                this.window.style.visibility = "visible";
                 return;
             }
             this.window.style.visibility = "visible";
@@ -192,7 +200,7 @@ class ProgramApi {
     spawnWindow(request) {
         let url = request.read().url;
         let args = request.read().args;
-        let spawnedWin = new this.windowObject.constructor(url, args);
+        let spawnedWin = new WebKWin(url, args);
         this.channel.onevent = function (data) {
             if (data.event == "windowApi") {
                 spawnedWin.api.channel.write(...data.read().args);

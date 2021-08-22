@@ -8,6 +8,7 @@ import "./windowmanager.js"
 import * as linux from "../linuxCore/index.js";
 import ThemeLoader from "./themeparser.js"
 import WebKWin from "./windowmanager.js"
+import WidgetWindow from "./widgetWindow.js"
 import openFile from "./openFile.js"
 let config;
 

@@ -170,3 +170,11 @@ html, body {
     float:left;
     margin-left:2px;
 }
+.widgetWindow{
+    border:0;
+    position:absolute;
+    border-radius: 5px;
+    height:20vh;
+    width:30vh;
+    overflow: hidden;
+}
