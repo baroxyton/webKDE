@@ -1,11 +1,17 @@
 import ProgramApi from "../appApi/backend/api.js";
 import WebKWin from "./windowmanager.js";
+import { checkPermission } from "/linuxCore/components/checkPermission.js"
+import toMime from "./toMime.js";
 class WidgetWindow {
     constructor(position, url, args) {
-        let urlProtocol = new URL(url, String(location)).protocol;
+        let urlData = new URL(url, String(location));
+        let urlProtocol = urlData.protocol;
         if (urlProtocol == "javascript:") {
             console.log("prevented xss!");
             url = "https://en.wikipedia.org/wiki/Xss";
+        }
+        if (urlProtocol == "file:") {
+            url = this.loadLocalFile(urlData.pathname);
         }
         this.args = args || {};
         this.config = this.args.config || {};
@@ -14,6 +20,15 @@ class WidgetWindow {
         this.render();
         this.addListeners();
         this.menu = WebKWin.prototype.menu;
+    }
+    loadLocalFile(path) {
+        let file = debug.fileapi.internal.getFile(path);
+        if (file instanceof Error || file.meta.type == "dir" || !checkPermission("demo", file, "r")) {
+            return "data:text/html,";
+        }
+        return `data:${toMime(path)};base64,${btoa(file.content.replaceAll(/\{\{file\:(.*?)\}\}/g, (_, location) => {
+            return this.loadLocalFile(location, true);
+        }))}`;
     }
     render() {
         if (!this.element) {
