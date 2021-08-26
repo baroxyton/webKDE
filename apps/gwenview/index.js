@@ -2,6 +2,25 @@ import OSApi from "../../appApi/frontend/api.js";
 import toMime from "../../js/toMime.js"
 let api = new OSApi();
 
+let fileLocation;
+let canvasContext = document.getElementById("imageCanvas").getContext("2d");
+
+let isDrawing = false;
+let mouseDown = false;
+
+let drawingSize = 5;
+let drawingColor = "#000000";
+
+let editingHistory = [];
+let editingIndex = 0;
+let canSave = false;
+let canEdit = false;
+
+let startedPath = false;
+
+// Old touch position for drawing
+let oldPos = {};
+
 api.channel.onevent = data => {
     switch (data.event) {
         case "sigterm":
@@ -11,19 +30,8 @@ api.channel.onevent = data => {
             break;
     }
 }
-// Got api data (user, application arguments and all that stuff)
-api.gotData.then(async () => {
-    // Render window
-    api.done({
-        title: "Gwenview - Select Image",
-        icon: "/usr/share/icons/breeze-dark/apps/gwenview.svg"
-    });
-    if (api.data.args.location) {
-        openFile(api.data.args.location);
-    }
-})
-window.canSave = false;
-window.canEdit = false;
+
+// Update toolbar with disabled status
 function updateToolbar() {
     api.showToolbar([{
         name: "File", items: [{
@@ -36,7 +44,7 @@ function updateToolbar() {
             text: "Save",
             icon: "/usr/share/icons/breeze-dark/actions/document-save.svg",
             disabled: !canSave,
-            action:saveFile
+            action: saveFile
         },
         {
             text: "Save As",
@@ -58,14 +66,14 @@ function updateToolbar() {
         items: [
             {
                 text: "Undo",
-                disabled: (!canEdit)||(!editingHistory[editingIndex-1]),
-                action:historyBack,
+                disabled: (!canEdit) || (!editingHistory[editingIndex - 1]),
+                action: historyBack,
                 icon: "/usr/share/icons/breeze-dark/actions/edit-undo.svg"
             },
             {
                 text: "Redo",
-                action:historyForward,
-                disabled: (!canEdit)||(!editingHistory[editingIndex+1]),
+                action: historyForward,
+                disabled: (!canEdit) || (!editingHistory[editingIndex + 1]),
                 icon: "/usr/share/icons/breeze-dark/actions/edit-redo.svg"
             }
         ]
@@ -86,9 +94,8 @@ function updateToolbar() {
         ]
     }]);
 }
-updateToolbar();
-let fileLocation;
-let canvasContext = document.getElementById("imageCanvas").getContext("2d");
+
+
 async function openFile(locationArg) {
     fileLocation = locationArg || await api.fileDialog(["*.png", "*.jpg", "*.bpm", "*.jpeg"]);
     api.resize({ title: "Gwenview - " + fileLocation.split("/").slice(-1) });
@@ -106,14 +113,6 @@ async function openFile(locationArg) {
         updateToolbar();
     }
 }
-let isDrawing = false;
-let mouseDown = false;
-let drawingSize = 5;
-let drawingColor = "#000000";
-let editingHistory = [];
-let editingIndex = 0;
-let startedPath = false;
-let oldPos = {};
 function saveToHistory() {
     let data = canvasContext.getImageData(0, 0, document.getElementById("imageCanvas").width, document.getElementById("imageCanvas").height);
     if (editingIndex != editingHistory.length - 1) {
@@ -124,28 +123,28 @@ function saveToHistory() {
     canSave = true;
     updateToolbar();
 }
-function historyBack(){
+function historyBack() {
     editingIndex--;
     updateToolbar();
-    canvasContext.putImageData(editingHistory[editingIndex],0,0);
+    canvasContext.putImageData(editingHistory[editingIndex], 0, 0);
 }
-function historyForward(){
+function historyForward() {
     editingIndex++;
     updateToolbar();
-    canvasContext.putImageData(editingHistory[editingIndex],0,0);
+    canvasContext.putImageData(editingHistory[editingIndex], 0, 0);
 }
-async function saveFile(){
+async function saveFile() {
     canSave = false;
     let imageUrl = document.getElementById("imageCanvas").toDataURL();
     let imageBlob = (await (await fetch(imageUrl)).blob());
     let fileReader = new FileReader();
-    fileReader.onload = ()=>{
-        api.filesystem("write",fileLocation,{content:fileReader.result});
+    fileReader.onload = () => {
+        api.filesystem("write", fileLocation, { content: fileReader.result });
     }
     fileReader.readAsBinaryString(imageBlob);
 }
 function startDrawing() {
-    if(!editingHistory.length){
+    if (!editingHistory.length) {
         saveToHistory();
     }
     isDrawing = true;
@@ -191,4 +190,17 @@ document.getElementById("imageCanvas").addEventListener("mousemove", event => {
     canvasContext.lineTo(pos.x, pos.y);
     canvasContext.stroke();
     oldPos = pos;
-})
+});
+
+// Got api data (user, application arguments and all that stuff)
+api.gotData.then(async () => {
+    // Render window
+    api.done({
+        title: "Gwenview - Select Image",
+        icon: "/usr/share/icons/breeze-dark/apps/gwenview.svg"
+    });
+    updateToolbar();
+    if (api.data.args.location) {
+        openFile(api.data.args.location);
+    }
+});
