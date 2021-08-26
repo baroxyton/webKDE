@@ -21,6 +21,50 @@ async function downloadBinary(url) {
         }
     })
 }
+function generateFile(content) {
+    return {
+        meta: {
+            changeDate: 0,
+            owner: "root",
+            permission: [7, 5, 5],
+            type: "file"
+        },
+        content
+    }
+}
+async function downloadDirectory(url, isbinary) {
+    let dirData = {
+        meta: {
+            changeDate: 0,
+            owner: "root",
+            permission: [7, 5, 5],
+            type: "dir"
+        },
+        content: {
+
+        }
+    };
+
+    if (localStorage.downloaded) {
+        return "{}";
+    }
+    let downloadCmd = (isbinary ? downloadBinary : download);
+    let fileIndex = (await downloadCmd(url + "/index.txt")).split("\n");
+    fileIndex.map(async function (item) {
+        let content;
+        if (item.endsWith("/")) {
+            content = (await downloadDirectory(["/", url, item].join("/").replace(/(\/){1,}/g, "/")));
+            console.log(content);
+            item = item.slice(0, -1);
+        }
+        else {
+            content = generateFile(await downloadCmd(["/", url, item].join("/").replace(/(\/){1,}/g, "/")));
+        }
+        dirData.content[item] = content;
+    });
+    return dirData;
+};
+
 export const defaultfs = async function () {
     let fs = {
         "/": {
@@ -286,7 +330,8 @@ export const defaultfs = async function () {
                                         type: "dir"
                                     },
                                     content: JSON.parse(await download("assets/apps.json"))
-                                }
+                                },
+                                "widgets": await downloadDirectory("/widgets")
                             }
                         }
                     }
