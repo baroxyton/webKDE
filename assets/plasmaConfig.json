@@ -18,7 +18,11 @@
                 "left": 0,
                 "items": [
                     {
-                        "type": "SearchMenuWidget"
+                        "type": "SearchMenuWidget",
+                        "config":{
+                            "width":"40vw",
+                            "height":"60vh"
+                        }
                     },
                     {
                         "type": "ClockWidget",

@@ -188,5 +188,5 @@ html, body {
     visibility: hidden;
 }
 .widgetWindow.loaded{
-    animation: widgetAnimation 0.25s forwards;
+    animation: widgetAnimation 0.1s forwards;
 }

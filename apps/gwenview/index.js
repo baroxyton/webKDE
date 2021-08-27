@@ -113,6 +113,7 @@ async function openFile(locationArg) {
         updateToolbar();
     }
 }
+
 function saveToHistory() {
     let data = canvasContext.getImageData(0, 0, document.getElementById("imageCanvas").width, document.getElementById("imageCanvas").height);
     if (editingIndex != editingHistory.length - 1) {
@@ -123,16 +124,19 @@ function saveToHistory() {
     canSave = true;
     updateToolbar();
 }
+
 function historyBack() {
     editingIndex--;
     updateToolbar();
     canvasContext.putImageData(editingHistory[editingIndex], 0, 0);
 }
+
 function historyForward() {
     editingIndex++;
     updateToolbar();
     canvasContext.putImageData(editingHistory[editingIndex], 0, 0);
 }
+
 async function saveFile() {
     canSave = false;
     let imageUrl = document.getElementById("imageCanvas").toDataURL();
@@ -143,6 +147,7 @@ async function saveFile() {
     }
     fileReader.readAsBinaryString(imageBlob);
 }
+
 function startDrawing() {
     if (!editingHistory.length) {
         saveToHistory();
@@ -152,19 +157,22 @@ function startDrawing() {
     document.getElementById("imageDisplay").style.top = "10vh";
     document.getElementById("drawMenu").style.display = "flex";
 }
+
 function stopDrawing() {
     isDrawing = false;
     document.getElementById("imageDisplay").style.height = "100vh";
     document.getElementById("imageDisplay").style.top = "0vh";
     document.getElementById("drawMenu").style.display = "none";
 }
-document.querySelector("#noImage > button").addEventListener("click", openFile);
+
+
 document.getElementById("imageCanvas").addEventListener("mouseup", event => {
     mouseDown = false;
     startedPath = false;
     oldPos = {};
     saveToHistory();
 });
+
 document.getElementById("imageCanvas").addEventListener("mousedown", event => {
     mouseDown = true;
     drawingSize = Number(document.querySelector("input[type='number']").value);
@@ -172,7 +180,8 @@ document.getElementById("imageCanvas").addEventListener("mousedown", event => {
     drawingColor = document.querySelector("input[type='color']").value;
     canvasContext.strokeStyle = drawingColor;
 });
-document.getElementById("drawMenu").querySelector("button").addEventListener("click", stopDrawing);
+
+
 document.getElementById("imageCanvas").addEventListener("mousemove", event => {
     let ratioY = event.target.scrollHeight / event.target.height;
     let ratioX = event.target.scrollWidth / event.target.width;
@@ -204,3 +213,6 @@ api.gotData.then(async () => {
         openFile(api.data.args.location);
     }
 });
+
+document.getElementById("drawMenu").querySelector("button").addEventListener("click", stopDrawing);
+document.querySelector("#noImage > button").addEventListener("click", () => openFile());
