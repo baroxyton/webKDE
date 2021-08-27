@@ -1,6 +1,8 @@
 "use strict";
+import WidgetWindow from "./widgetWindow.js";
 class Widget {
-    constructor(icon, panel) {
+    constructor(icon, panel, config) {
+        this.config = config;
         this.panel = panel;
         this.icon = icon;
         this.render()
@@ -12,7 +14,7 @@ class Widget {
         this.element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.icon))}")`;
         this.element.classList.add("widget");
         this.panel.appendChild(this.element);
-
+        this.element.addEventListener("click",event=>this.callAction(event));
         // Addiitonal method, that widgets can add
         if (this.rendered) {
             this.rendered()
@@ -34,6 +36,11 @@ class Widget {
 
     // Called when clicking
     callAction(event) {
+        if(this.popup){
+            let panelRect = this.panel.getBoundingClientRect();
+            new WidgetWindow({x:this.element.offsetTop,y:panelRect.top}, this.popup, {config:this.config||{}});
+            return;
+        }
         if (this.action) {
             this.action(event);
         }
@@ -42,15 +49,15 @@ class Widget {
 // Start menu/search widget
 export class SearchMenuWidget extends Widget {
     constructor(panel, options) {
-        super("/usr/share/icons/breeze-dark/apps/kde.svg", panel);
-
+        super("/usr/share/icons/breeze-dark/apps/kde.svg", panel, options);
+        this.popup = "file:///usr/share/widgets/startMenu/index.html"
     }
 }
 
 // Panel widget with apps you can click to start
 class AppsWidget extends Widget {
     constructor(panel, options) {
-        super("/", panel);
+        super("/", panel, options);
     }
     rendered() {
         // Use full height
