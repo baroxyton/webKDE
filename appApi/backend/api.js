@@ -27,6 +27,7 @@ class ProgramApi {
                 case "done":
                 case "resize":
                     if (!this.windowObject.title) {
+                        this.window.classList.add("loaded");
                         this.window.style.visibility = "visible";
                         break;
                     }
