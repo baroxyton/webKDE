@@ -170,9 +170,23 @@ html, body {
     float:left;
     margin-left:2px;
 }
+@keyframes widgetAnimation {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, -100%);
+        opacity: 1;
+     }
+}
 .widgetWindow{
     border:0;
     position:absolute;
     border-radius: 5px;
     overflow: hidden;
+    visibility: hidden;
+}
+.widgetWindow.loaded{
+    animation: widgetAnimation 0.25s forwards;
 }
