@@ -266,6 +266,17 @@ export const defaultfs = async function () {
                         type: "dir"
                     },
                     content: {
+                        "lib": {
+                            meta: {
+                                changeDate: 0,
+                                owner: "root",
+                                permission: [7, 5, 5],
+                                type: "dir"
+                            },
+                            content: {
+                                "api": await downloadDirectory("/assets/portapi")
+                            }
+                        },
                         "bin": {
                             meta: {
                                 changeDate: 0,
