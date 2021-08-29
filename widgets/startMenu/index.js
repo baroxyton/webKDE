@@ -55,8 +55,11 @@ class Category{
         renderedCategories.push(this);
         this.element = document.createElement("div");
         this.element.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/draw-arrow-forward.svg");
+        this.element.classList.add("categoryElement");
         this.iconElement = document.createElement("div");
+        this.iconElement.classList.add("categoryIcon")
         this.iconElement.setAttribute("icon",`/usr/share/icons/breeze-dark/categories/applications-${this.category}.svg`);
+        this.iconElement.innerHTML = "&nbsp;".repeat(5)
         this.element.innerText = this.category;
         this.element.appendChild(this.iconElement);
         document.getElementById("categories").appendChild(this.element);
@@ -82,11 +85,11 @@ async function updateApps() {
             if (fileCategories.includes(category) || category == "all") {
                 assignedApplications[category] = assignedApplications[category] || [];
                 assignedApplications[category].push(app);
-                api.loadIcons();
             }
         });
     });
-    Object.keys(assignedApplications).forEach(category=>new Category(category))
+    Object.keys(assignedApplications).forEach(category=>new Category(category));
+    api.loadIcons();
 }
 api.channel.onevent = data => {
     switch (data.event) {

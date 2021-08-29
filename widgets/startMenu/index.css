@@ -1,57 +1,86 @@
-.topBar{
-    height:40px;
+.topBar {
+    height: 40px;
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background-color:var(--Colors_View_BackgroundAlternate);
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(var(--Colors_View_BackgroundNormal_raw), 0.9);
     vertical-align: middle;
     box-shadow: 0px 0px 1px var(--Colors_View_ForegroundInactive);
     border-bottom: 1px rgba(var(--Colors_View_ForegroundInactive_raw), 1) solid;
 }
-.topBar > *{
- margin:3px;
- float:left;
- display:inline;
+
+.topBar>* {
+    margin: 3px;
+    float: left;
+    display: inline;
 }
-.categories{
-    position:fixed;
-    top:40px;
-    left:0;
-    height:calc(100% - 80px);
-    width:25%;
+
+.categories {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    height: calc(100% - 80px);
+    width: 25%;
     background-color: rgba(var(--Colors_View_BackgroundAlternate_raw), 0.8);
-    border-right:1px rgba(var(--Colors_View_ForegroundInactive_raw), 1) solid;
+    border-right: 1px rgba(var(--Colors_View_ForegroundInactive_raw), 1) solid;
 }
-.content{
-    position:fixed;
-    top:40px;
-    left:25%;
-    height:calc(100% - 80px);
-    width:75%;
+
+.content {
+    position: fixed;
+    top: 40px;
+    left: 25%;
+    height: calc(100% - 80px);
+    width: 75%;
     background-color: rgba(var(--Colors_View_BackgroundAlternate_raw), 0.8);
 }
-.shutdownMenu{
-    position:fixed;
-    bottom:0;
-    height:40px;
-    width:100%;
-    left:0;
+
+.shutdownMenu {
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+    left: 0;
     background-color: rgba(var(--Colors_View_BackgroundNormal_raw), 0.9);
     border-top: 1px rgba(var(--Colors_View_ForegroundInactive_raw), 0.5) solid;
 }
-body{
+
+body {
     background-color: transparent !important;
 }
-.userIcon{
-    height:40px;
+
+.userIcon {
+    height: 40px;
     width: 40px;
-    background-size:cover;
-    background-repeat:no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
 }
-#search{
-    float:right;
+
+#search {
+    float: right;
     background-color: var(--Colors_View_BackgroundNormal);
-    width:50%;
+    width: 50%;
+}
+
+.categoryIcon {
+    float: left;
+    background-repeat: no-repeat;
+    display:inline;
+    background-size:100% auto;
+    font-size:1.2em;
+    margin-right:5px;
+    background-position:top left;
+}
+
+.categoryElement {
+    width: calc(100% -10px);
+    margin-left:5px;
+    border-radius:3px;
+    text-align:initial;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: auto 50%;
 }
