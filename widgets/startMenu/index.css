@@ -61,26 +61,36 @@ body {
     float: right;
     background-color: var(--Colors_View_BackgroundNormal);
     width: 50%;
+    margin-top:5px;
+    margin-right: 5px;
 }
 
 .categoryIcon {
-    float: left;
     background-repeat: no-repeat;
     display:inline;
     background-size:100% auto;
-    font-size:1.2em;
-    margin-right:5px;
+    font-size:1.4em;
+    margin-right:10px;
+    margin-left:5px;
     background-position:top left;
 }
 
 .categoryElement {
-    width: calc(100% -10px);
+    display:flex;
+    width: calc(100% - 10px);
     margin-left:5px;
     border-radius:3px;
     text-align:initial;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    padding-bottom: 8px;
+    padding-top: 8px;
     background-repeat: no-repeat;
     background-position: right;
     background-size: auto 50%;
+    overflow-x:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.categoryElement.selected{
+    background-color: rgba(var(--Colors_Selection_DecorationFocus_raw), 0.3);
+    box-shadow: inset 0px 0px 0px 1px var(--Colors_Selection_DecorationFocus);
 }

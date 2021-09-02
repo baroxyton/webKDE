@@ -19,6 +19,7 @@ let categories = [
 ];
 let assignedApplications = {};
 let renderedCategories = [];
+let renderedApps = [];
 function parseApp(data) {
     let result = {};
     let sections = data.split("\n\n");
@@ -45,27 +46,64 @@ function parseApp(data) {
     })
     return result;
 }
-
-class Category{
-    constructor(category){
-        this.category = category;
+class App{
+    constructor(appData){
+        this.appData = appData;
+        renderedCategories.push(this);
         this.render();
     }
     render(){
-        renderedCategories.push(this);
         this.element = document.createElement("div");
-        this.element.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/draw-arrow-forward.svg");
+        this.element.classList.add("app");
+        this.element.innerText = this.appData.name;
+        document.querySelector(".content").appendChild(this.element);
+    }
+    remove(){
+        this.element.outerHTML = "";
+        renderedCategories.splice(renderedCategories.indexOf(this),1);
+    }
+}
+class Category{
+    constructor(category){
+        this.category = category;
+        this.selected = false;
+        renderedCategories.push(this);
+        this.render();
+        this.addListeners()
+    }
+    render(){
+        this.element = document.createElement("div");
+        this.element.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/arrow-right.svg");
         this.element.classList.add("categoryElement");
         this.iconElement = document.createElement("div");
         this.iconElement.classList.add("categoryIcon")
         this.iconElement.setAttribute("icon",`/usr/share/icons/breeze-dark/categories/applications-${this.category}.svg`);
         this.iconElement.innerHTML = "&nbsp;".repeat(5)
-        this.element.innerText = this.category;
-        this.element.appendChild(this.iconElement);
+        this.element.innerHTML = this.iconElement.outerHTML+this.category;
         document.getElementById("categories").appendChild(this.element);
+    }
+    addListeners(){
+        this.element.addEventListener("click",e=>this.select());
+        this.element.addEventListener("mouseover", e=>this.select());
+    }
+    select(){
+        renderedCategories.find(category=>category.selected)?.unselect();
+        this.selected = true;
+        this.element.classList.add("selected");
+        this.renderApps();
+    }
+    unselect(){
+        this.selected = false;
+        this.element.classList.remove("selected");
+        renderedApps.forEach(app=>app.remove());
     }
     remove(){
         this.element.outerHTML = "";
+        renderedCategories.splice(renderedCategories.indexOf(this),1);
+    }
+    renderApps(){
+        let apps = assignedApplications[this.category];
+        apps.forEach(app=>new App(app));
     }
 }
 async function updateApps() {
