@@ -49,7 +49,7 @@ function parseApp(data) {
 class App{
     constructor(appData){
         this.appData = appData;
-        renderedCategories.push(this);
+        renderedApps.push(this);
         this.render();
     }
     render(){
@@ -60,7 +60,7 @@ class App{
     }
     remove(){
         this.element.outerHTML = "";
-        renderedCategories.splice(renderedCategories.indexOf(this),1);
+        renderedApps.splice(renderedApps.indexOf(this),1);
     }
 }
 class Category{
@@ -87,7 +87,10 @@ class Category{
         this.element.addEventListener("mouseover", e=>this.select());
     }
     select(){
-        renderedCategories.find(category=>category.selected)?.unselect();
+        if(this.selected){
+            return;
+        }
+        renderedCategories.find(category=>category.unselect())
         this.selected = true;
         this.element.classList.add("selected");
         this.renderApps();

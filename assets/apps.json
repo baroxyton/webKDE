@@ -23,7 +23,7 @@
             ],
             "type": "file"
         },
-        "content": "[Desktop Entry]\nName=Kate\nMimeType=inode/directory\nExec=dolphin %U\nIcon=/usr/share/icons/breeze-dark/apps/system-file-manager.svg\nCategories=system;utilities"
+        "content": "[Desktop Entry]\nName=Dolphin\nMimeType=inode/directory\nExec=dolphin %U\nIcon=/usr/share/icons/breeze-dark/apps/system-file-manager.svg\nCategories=system;utilities"
     },
     "gwenview.desktop":{
         "meta":{

@@ -24,6 +24,7 @@
     width: 25%;
     background-color: rgba(var(--Colors_View_BackgroundAlternate_raw), 0.8);
     border-right: 1px rgba(var(--Colors_View_ForegroundInactive_raw), 1) solid;
+    overflow-y: auto;
 }
 
 .content {
@@ -33,6 +34,7 @@
     height: calc(100% - 80px);
     width: 75%;
     background-color: rgba(var(--Colors_View_BackgroundAlternate_raw), 0.8);
+    overflow-y: auto;
 }
 
 .shutdownMenu {
