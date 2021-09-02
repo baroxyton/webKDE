@@ -54,6 +54,7 @@ class App{
     }
     render(){
         this.element = document.createElement("div");
+        this.element.setAttribute("icon",this.appData.icon);
         this.element.classList.add("app");
         this.element.innerText = this.appData.name;
         document.querySelector(".content").appendChild(this.element);
@@ -107,6 +108,7 @@ class Category{
     renderApps(){
         let apps = assignedApplications[this.category];
         apps.forEach(app=>new App(app));
+        api.loadIcons();
     }
 }
 async function updateApps() {
@@ -132,22 +134,11 @@ async function updateApps() {
     Object.keys(assignedApplications).forEach(category=>new Category(category));
     api.loadIcons();
 }
-api.channel.onevent = data => {
-    switch (data.event) {
-        case "sigterm":
 
-            // Add custom exit handler here
-            api.quit();
-            break;
-    }
-}
 // Got api data (user, application arguments and all that stuff)
 api.loadIcons()
 api.gotData.then(async () => {
     // Render window
-    api.done({
-        title: "Title",
-        icon: "/usr/share/icons/breeze-dark/categories/applications-development.svg"
-    });
+    api.done();
 })
 updateApps();

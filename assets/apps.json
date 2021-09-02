@@ -10,7 +10,7 @@
             ],
             "type": "file"
         },
-        "content": "[Desktop Entry]\nName=Kate\nMimeType=text/plain;inode/directory;\nExec=kate %U\nIcon=/usr/share/icons/breeze-dark/apps/icons\nCategories=utilities"
+        "content": "[Desktop Entry]\nName=Kate\nMimeType=text/plain;inode/directory;\nExec=kate %U\nIcon=/usr/share/icons/breeze-dark/apps/kate.svg\nCategories=utilities"
     },
     "dolphin.desktop": {
         "meta": {
