@@ -46,74 +46,74 @@ function parseApp(data) {
     })
     return result;
 }
-class App{
-    constructor(appData){
+class App {
+    constructor(appData) {
         this.appData = appData;
         renderedApps.push(this);
         this.render();
     }
-    render(){
+    render() {
         this.element = document.createElement("div");
-        this.element.setAttribute("icon",this.appData.icon);
+        this.element.setAttribute("icon", this.appData.icon);
         this.element.classList.add("app");
         this.element.innerText = this.appData.name;
         document.querySelector(".content").appendChild(this.element);
     }
-    remove(){
+    remove() {
         this.element.outerHTML = "";
-        renderedApps.splice(renderedApps.indexOf(this),1);
+        renderedApps.splice(renderedApps.indexOf(this), 1);
     }
 }
-class Category{
-    constructor(category){
+class Category {
+    constructor(category) {
         this.category = category;
         this.selected = false;
         renderedCategories.push(this);
         this.render();
         this.addListeners()
     }
-    render(){
+    render() {
         this.element = document.createElement("div");
         this.element.setAttribute("icon", "/usr/share/icons/breeze-dark/actions/arrow-right.svg");
         this.element.classList.add("categoryElement");
         this.iconElement = document.createElement("div");
         this.iconElement.classList.add("categoryIcon")
-        this.iconElement.setAttribute("icon",`/usr/share/icons/breeze-dark/categories/applications-${this.category}.svg`);
+        this.iconElement.setAttribute("icon", `/usr/share/icons/breeze-dark/categories/applications-${this.category}.svg`);
         this.iconElement.innerHTML = "&nbsp;".repeat(5)
-        this.element.innerHTML = this.iconElement.outerHTML+this.category;
+        this.element.innerHTML = this.iconElement.outerHTML + this.category;
         document.getElementById("categories").appendChild(this.element);
     }
-    addListeners(){
-        this.element.addEventListener("click",e=>this.select());
-        this.element.addEventListener("mouseover", e=>this.select());
+    addListeners() {
+        this.element.addEventListener("click", e => this.select());
+        this.element.addEventListener("mouseover", e => this.select());
     }
-    select(){
-        if(this.selected){
+    select() {
+        if (this.selected) {
             return;
         }
-        renderedCategories.find(category=>category.unselect())
+        renderedCategories.find(category => category.unselect())
         this.selected = true;
         this.element.classList.add("selected");
         this.renderApps();
     }
-    unselect(){
+    unselect() {
         this.selected = false;
         this.element.classList.remove("selected");
-        renderedApps.forEach(app=>app.remove());
+        renderedApps.forEach(app => app.remove());
     }
-    remove(){
+    remove() {
         this.element.outerHTML = "";
-        renderedCategories.splice(renderedCategories.indexOf(this),1);
+        renderedCategories.splice(renderedCategories.indexOf(this), 1);
     }
-    renderApps(){
+    renderApps() {
         let apps = assignedApplications[this.category];
-        apps.forEach(app=>new App(app));
+        apps.forEach(app => new App(app));
         api.loadIcons();
     }
 }
 async function updateApps() {
     assignedApplications = {};
-    renderedCategories.forEach(category=>category.remove());
+    renderedCategories.forEach(category => category.remove());
     let appData = [];
     let appList = (await api.filesystem("list", "/usr/share/applications")).read().content;
     appData = await Promise.all(appList.map(async app => (await api.filesystem("read", "/usr/share/applications/" + app)).read().content));
@@ -131,14 +131,27 @@ async function updateApps() {
             }
         });
     });
-    Object.keys(assignedApplications).forEach(category=>new Category(category));
+    filterApps();
+    Object.keys(assignedApplications).forEach(category => new Category(category));
     api.loadIcons();
 }
 
+function filterApps() {
+    renderedApps.forEach(app => {
+        if (app.appData.name.toLowerCase().includes(document.getElementById("search").value.toLowerCase())) {
+            app.element.style.display = 'grid';
+        }
+        else {
+            app.element.style.display = 'none';
+        }
+    })
+}
+
+document.getElementById("search").addEventListener("keyup", filterApps);
 // Got api data (user, application arguments and all that stuff)
 api.loadIcons()
 api.gotData.then(async () => {
     // Render window
     api.done();
-})
+});
 updateApps();
