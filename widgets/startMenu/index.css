@@ -110,4 +110,9 @@ body {
     vertical-align: bottom;
     display:grid;
     align-content: end;
+    border-radius:5px;
+}
+.app:hover{
+    background-color: rgba(var(--Colors_Selection_DecorationFocus_raw), 0.3);
+    box-shadow: inset 0px 0px 0px 1px var(--Colors_Selection_DecorationFocus);
 }
