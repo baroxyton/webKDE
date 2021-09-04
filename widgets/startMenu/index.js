@@ -51,6 +51,7 @@ class App {
         this.appData = appData;
         renderedApps.push(this);
         this.render();
+        this.addListeners();
     }
     render() {
         this.element = document.createElement("div");
@@ -62,6 +63,12 @@ class App {
     remove() {
         this.element.outerHTML = "";
         renderedApps.splice(renderedApps.indexOf(this), 1);
+    }
+    addListeners(){
+        this.element.addEventListener("click", event=>{
+            api.simpleRunCommand(this.appData.cmd.replaceAll(" %U", ""));
+            api.quit();
+        });
     }
 }
 class Category {
