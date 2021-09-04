@@ -155,6 +155,9 @@ class OSApi {
             }
         })
     }
+    async simpleRunCommand(command){
+        return await this.channel.write("simpleRunCommand",{command});   
+    }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
 export { OSApi as default };

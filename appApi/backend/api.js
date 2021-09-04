@@ -60,6 +60,11 @@ class ProgramApi {
                 case "openFile":
                     desktop.openFile(data.read().path);
                     break;
+                case "simpleRunCommand":
+                    debug.getCommandOutput(data.read().command).then(output => {
+                        data.respond(output);
+                    });
+                    break;
                 case "quit":
                     this.windowObject?.remove();
                     break;
