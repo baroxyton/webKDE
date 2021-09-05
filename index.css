@@ -124,6 +124,7 @@ html, body {
     cursor: initial !important;
 }
 .kwintitle{
+    overflow:hidden;
     width:100%;
     text-align: center;
     user-select: none;
