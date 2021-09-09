@@ -20,8 +20,8 @@
                     {
                         "type": "SearchMenuWidget",
                         "config":{
-                            "width":"60vw",
-                            "height":"60vh"
+                            "width":"660px",
+                            "height":"500px"
                         }
                     },
                     {
