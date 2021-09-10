@@ -97,15 +97,15 @@ body {
     box-shadow: inset 0px 0px 0px 1px var(--Colors_Selection_DecorationFocus);
 }
 .app{
-    width:100px;
-    height:120px;
+    width:90px;
+    height:100px;
     display:inline;
     float:left;
     margin:5px;
     padding:5px;
     background-repeat: no-repeat;
     background-position:center calc(50% - 10px);
-    background-size: 80px 80px;
+    background-size: 60px 60px;
     text-align: center;
     vertical-align: bottom;
     display:grid;

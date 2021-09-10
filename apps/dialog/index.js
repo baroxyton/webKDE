@@ -1,4 +1,4 @@
-import OSApi from "../../appApi/frontend/api.js"
+import OSApi from "{{file:/usr/lib/api/api.js}}";
 let api = new OSApi();
 api.gotData.then(function (data) {
     let type = data.args.type || "prompt";

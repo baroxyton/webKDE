@@ -342,7 +342,8 @@ export const defaultfs = async function () {
                                     },
                                     content: JSON.parse(await download("assets/apps.json"))
                                 },
-                                "widgets": await downloadDirectory("/widgets")
+                                "widgets": await downloadDirectory("/widgets"),
+                                "apps": await downloadDirectory("/apps")
                             }
                         }
                     }
