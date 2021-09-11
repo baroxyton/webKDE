@@ -94,7 +94,7 @@ class Desktop {
                     text: "Folder",
                     icon: "/usr/share/icons/breeze-dark/actions/folder-new.svg",
                     action: () => {
-                        let prompt = new WebKWin("/apps/dialog", {
+                        let prompt = new WebKWin("file:///usr/share/apps/dialog/index.html", {
                             type: "prompt",
                             subject: "new folder name",
                             buttons: ["Create"],
@@ -112,7 +112,7 @@ class Desktop {
                     text: "Text Document",
                     icon: "/usr/share/icons/breeze-dark/actions/x-shape-text.svg",
                     action: () => {
-                        let prompt = new WebKWin("/apps/dialog", {
+                        let prompt = new WebKWin("file:///usr/share/apps/dialog/index.html", {
                             type: "prompt",
                             subject: "new file name",
                             buttons: ["Create"],

@@ -85,7 +85,7 @@ class DesktopApp {
                 text: "Rename..",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
                 action:()=>{
-                    let namePrompt = new WebKWin("/apps/dialog",{
+                    let namePrompt = new WebKWin("file:///usr/share/apps/dialog/index.html",{
                         type:"prompt",
                         subject:"new file name",
                         buttons:["Rename"],
@@ -106,7 +106,7 @@ class DesktopApp {
                 icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
                 seperator:true,
                 action: () => {
-                    let confirm = new WebKWin("/apps/dialog", {
+                    let confirm = new WebKWin("file:///usr/share/apps/dialog/index.html", {
                         type: "confirm",
                         subject: "permanently delete " + this.name,
                         buttons: ["Don't delete", "<a style='color:red'>Delete</a>"]

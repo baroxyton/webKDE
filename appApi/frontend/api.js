@@ -133,7 +133,7 @@ class OSApi {
         return output
     }
     dialog(type = "prompt", subject = "[unspecified]", buttons = [], inputText = "") {
-        let win = this.spawnWindow("/apps/dialog", { type, subject, buttons, inputText });
+        let win = this.spawnWindow("file:///usr/share/apps/dialog/index.html", { type, subject, buttons, inputText });
         return new Promise(res => {
             win.onevent = data => {
                 if (data.event == "quit") {
