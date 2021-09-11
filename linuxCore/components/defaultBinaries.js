@@ -326,7 +326,7 @@ let defaultBinaries = {
         api.spawnWindow("/apps/dolphin", { location: api.args[0] });
     }),
     "gwenview": compile(async function(){
-        api.spawnWindow("/apps/gwenview", { location: api.args[0] });
+        api.spawnWindow("file:///usr/share/apps/gwenview/index.html", { location: api.args[0] });
     }),
     "xdg-open": compile(async function () {
         api.openFile(api.args[0]);
