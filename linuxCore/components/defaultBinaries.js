@@ -320,7 +320,7 @@ let defaultBinaries = {
         api.application.quit()
     }),
     "kate": compile(async function () {
-        api.spawnWindow("/apps/kate", { location: api.args[0] });
+        api.spawnWindow("file:///usr/share/apps/kate/index.html", { location: api.args[0] });
     }),
     "dolphin": compile(async function () {
         api.spawnWindow("/apps/dolphin", { location: api.args[0] });

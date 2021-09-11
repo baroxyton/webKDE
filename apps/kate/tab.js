@@ -1,6 +1,5 @@
 "use strict";
-import api from "../../appApi/frontend/api.js";
-import { path as pathParser } from "../../linuxCore/lib/path.js";
+import { path as pathParser } from "{{file:/usr/lib/api/path.js}}";
 class Tab {
     constructor(api, path) {
         tabList.push(this);

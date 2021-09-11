@@ -1,4 +1,5 @@
 api.js
+path.js
 communication.js
 themeLoader.js
 toMime.js

@@ -1,5 +1,5 @@
-import OSApi from "../../appApi/frontend/api.js"
-import Tab from "./tab.js";
+import OSApi from "{{file:/usr/lib/api/api.js}}"
+import Tab from "{{file:/usr/share/apps/kate/tab.js}}";
 let api = new OSApi();
 window.tabList = [];
 api.gotData.then(async () => {

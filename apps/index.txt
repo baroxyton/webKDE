@@ -1,2 +1,3 @@
 dialog/
 gwenview/
+kate/
