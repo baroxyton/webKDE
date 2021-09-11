@@ -1,7 +1,6 @@
 "use strict";
-import { path } from "../../linuxCore/lib/path.js";
-import getMime from "../../js/toMime.js"
-import api from "../../appApi/frontend/api.js";
+import { path } from "{{file:/usr/lib/api/path.js}}";
+import getMime from "{{file:/usr/lib/api/toMime.js}}"
 class Icon {
     constructor(api, name) {
         this.name = name;

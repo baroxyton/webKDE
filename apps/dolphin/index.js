@@ -1,5 +1,5 @@
-import OSApi from "../../appApi/frontend/api.js"
-import Icon from "./icons.js"
+import OSApi from "{{file:/usr/lib/api/api.js}}";
+import Icon from "{{file:/usr/share/apps/dolphin/icons.js}}"
 let api = new OSApi();
 window.locationHistory = [];
 window.historyPosition = 0;
