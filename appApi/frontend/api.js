@@ -146,7 +146,7 @@ class OSApi {
         this.channel.write("openFile", { path })
     }
     fileDialog(allowedTypes, startingPoint) {
-        let win = this.spawnWindow("/apps/dolphin", { chooser:true, location: startingPoint, allowedFiletypes: allowedTypes });
+        let win = this.spawnWindow("file:///usr/share/apps/dolphin/index.html", { chooser:true, location: startingPoint, allowedFiletypes: allowedTypes });
         return new Promise(res => {
             win.onevent = data => {
                 if (data.event == "quit") {

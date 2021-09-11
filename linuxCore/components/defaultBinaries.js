@@ -323,7 +323,7 @@ let defaultBinaries = {
         api.spawnWindow("file:///usr/share/apps/kate/index.html", { location: api.args[0] });
     }),
     "dolphin": compile(async function () {
-        api.spawnWindow("/apps/dolphin", { location: api.args[0] });
+        api.spawnWindow("file:///usr/share/apps/dolphin/index.html", { location: api.args[0] });
     }),
     "gwenview": compile(async function(){
         api.spawnWindow("file:///usr/share/apps/gwenview/index.html", { location: api.args[0] });

@@ -132,7 +132,7 @@ class Desktop {
                 text: "Open with file manager",
                 icon: "/usr/share/icons/breeze-dark/apps/system-file-manager.svg",
                 action: () => {
-                    new WebKWin("/apps/dolphin", {
+                    new WebKWin("file:///usr/share/apps/dolphin/index.html", {
                         location: "/home/demo/Desktop"
                     })
                 }
