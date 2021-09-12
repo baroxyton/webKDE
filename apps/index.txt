@@ -2,3 +2,4 @@ dialog/
 gwenview/
 kate/
 dolphin/
+properties/

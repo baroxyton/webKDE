@@ -1,5 +1,5 @@
-import OSApi from "../../appApi/frontend/api.js"
-import toMime from "/js/toMime.js"
+import OSApi from "{{file:/usr/lib/api/api.js}}";
+import toMime from "{{file:/usr/lib/api/toMime.js}}";
 let api = new OSApi();
 api.gotData.then(async function () {
     let filePath = api.data.args.path;
