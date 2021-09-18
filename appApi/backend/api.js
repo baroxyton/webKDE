@@ -1,6 +1,6 @@
 import Channel from "./communication.js"
 import { path as pathRequest } from "../../linuxCore/lib/path.js";
-import { checkPermission } from "/linuxCore/components/checkPermission.js"
+import { checkPermission } from "../../linuxCore/components/checkPermission.js"
 import { getFile } from "../../linuxCore/components/fileapi.js";
 import WebKWin from "../../js/windowmanager.js";
 class ProgramApi {

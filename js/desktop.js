@@ -214,4 +214,5 @@ linux.fileapi.onready.then(() => {
     window.desktop = new Desktop(config);
     // set flag to not download filesystem assets on next reload
     localStorage.downloaded = true;
+    console.log("downloaded")
 });

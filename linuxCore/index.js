@@ -239,7 +239,7 @@ export async function runCommand(command, hook) {
 
 export async function runBinary(path, args, api) {
     let content = getFile(path).content;
-    let execWorker = new Worker("/linuxCore/components/binarysandbox.js");
+    let execWorker = new Worker("./linuxCore/components/binarysandbox.js");
     api.worker = execWorker
     execWorker.postMessage({
         type: "run",

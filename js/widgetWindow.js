@@ -1,6 +1,6 @@
 import ProgramApi from "../appApi/backend/api.js";
 import WebKWin from "./windowmanager.js";
-import { checkPermission } from "/linuxCore/components/checkPermission.js"
+import { checkPermission } from "../linuxCore/components/checkPermission.js"
 import toMime from "./toMime.js";
 class WidgetWindow {
     constructor(position, url, args) {

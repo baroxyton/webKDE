@@ -3,7 +3,7 @@ async function download(url) {
     if (localStorage.downloaded) {
         return "{}";
     }
-    let response = await fetch(url);
+    let response = await fetch("./"+url);
     let result = await response.text();
     return result;
 }
@@ -11,7 +11,7 @@ async function downloadBinary(url) {
     if (localStorage.downloaded) {
         return "{}";
     }
-    let response = await fetch(url);
+    let response = await fetch("./"+url);
     let blob = await response.blob();
     let fr = new FileReader();
     fr.readAsBinaryString(blob);
@@ -50,7 +50,10 @@ async function downloadDirectory(url, isbinary) {
     }
     let downloadCmd = (isbinary ? downloadBinary : download);
     let fileIndex = (await downloadCmd(url + "/index.txt")).split("\n");
-    fileIndex.map(async function (item) {
+    await Promise.all(fileIndex.map(async function (item) {
+        if(!item){
+            return;
+        }
         let content;
         if (item.endsWith("/")) {
             content = (await downloadDirectory(["/", url, item].join("/").replace(/(\/){1,}/g, "/")));
@@ -61,7 +64,7 @@ async function downloadDirectory(url, isbinary) {
             content = generateFile(await downloadCmd(["/", url, item].join("/").replace(/(\/){1,}/g, "/")));
         }
         dirData.content[item] = content;
-    });
+    }));
     return dirData;
 };
 
