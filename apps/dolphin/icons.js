@@ -65,7 +65,7 @@ class Icon {
                     text: "Properties",
                     icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
                     action: () => {
-                        this.api.spawnWindow("/apps/properties", { path: this.name });
+                        this.api.spawnWindow("file:///usr/share/apps/properties/index.html", { path: this.name });
                     },
                 },
                 {

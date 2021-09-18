@@ -146,7 +146,7 @@ class Desktop {
                 text: "Properties",
                 icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
                 action: () => {
-                    new WebKWin("/apps/properties", {
+                    new WebKWin("file:///usr/share/apps/properties/index.html", {
                         path: "/home/demo/Desktop/"
                     })
                 }
