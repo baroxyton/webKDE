@@ -87,6 +87,9 @@ class DesktopMenu {
     // Close menu when clicking desktop
     addListeners() {
         document.getElementById("desktop").addEventListener("mousedown", event => {
+            if(this.removed){
+                return;
+            }
             if (event.target.classList.contains("menu") || event.target.classList.contains("menuItem") || event.target.parentElement.classList.contains("menuItem")) {
                 return;
             }
@@ -94,6 +97,7 @@ class DesktopMenu {
         });
     }
     remove() {
+        this.removed = true;
         this.element.outerHTML = "";
     }
 }
@@ -110,6 +114,9 @@ class DesktopSubmenu extends DesktopMenu {
     addListeners() {
         // Detect moving off element instead of clicking to close submenu
         document.getElementById("desktop").addEventListener("mousemove", event => {
+            if(this.removed){
+                return;
+            }
             if (event.target != this.element && event.target.parentElement != this.element && event.target.parentElement.parentElement != this.element && event.target != this.parent && event.target.parentElement != this.parent) {
                 this.parent.object.expanded = false;
                 this.remove()

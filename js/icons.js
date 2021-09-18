@@ -16,10 +16,12 @@ class DesktopApp {
         if (this.appElement) {
             this.appElement.outerHTML = "";
         }
+        this.removed = true;
     }
     render() {
         this.remove();
-
+        this.removed = false;
+        
         // Create elements
         this.appElement = document.createElement("div");
         this.iconElement = document.createElement("div");
@@ -150,6 +152,9 @@ class DesktopApp {
 
         // Remove highlight when pressing desktop
         document.getElementById("desktop").addEventListener("mouseup", event => {
+            if(this.removed){
+                return;
+            }
             this.mousedown = null;
             if(this.moving){
             this.stopMoving();
@@ -172,6 +177,9 @@ class DesktopApp {
         });
         // On older machines you can easily escape the icon by moving the mouse fast. Add event as callback
         document.getElementById("desktop").addEventListener("mousemove", async event => {
+            if(this.removed){
+                return;
+            }
             if (!this.mousedown) {
                 return;
             }

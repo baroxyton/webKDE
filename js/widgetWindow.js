@@ -45,7 +45,7 @@ class WidgetWindow {
         this.element.style.height = this.cover.style.height = this.config.height || "25vh";
         document.getElementById("desktop").appendChild(this.element);
         document.getElementById("desktop").appendChild(this.cover);
-        document.body.addEventListener("mouseup",()=>this.remove());
+        document.body.addEventListener("mouseup",()=>this.removed?0:this.remove());
     }
     addListeners() {
         this.cover.addEventListener("mouseup", event => {
@@ -56,6 +56,7 @@ class WidgetWindow {
         });
     }
     remove() {
+        this.removed = true;
         this.element.outerHTML = "";
         this.cover.outerHTML = "";
     };

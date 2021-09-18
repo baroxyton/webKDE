@@ -9,7 +9,8 @@ class Panel {
     // Render widgets and dimensions from config
     render() {
         this.remove();
-
+        this.removed = false;
+        
         this.panelElement = document.createElement("div");
         this.panelElement.classList.add("panel");
 
@@ -29,6 +30,7 @@ class Panel {
     }
     
     remove() {
+        this.removed = true;
         if (this.panelElement) {
             this.panelElement.outerHTML = "";
         }

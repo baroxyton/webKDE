@@ -34,6 +34,7 @@ class DesktopDrag {
         }
     }
     remove() {
+        this.removed = true;
         this.element.outerHTML = "";
     }
     change(position) {

@@ -29,6 +29,7 @@ class Widget {
     }
 
     remove() {
+        this.removed  = true;
         if (this.element) {
             this.element.outerHTML = "";
         }

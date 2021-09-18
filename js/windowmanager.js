@@ -110,6 +110,9 @@ class WebKWin {
 
         // Mouse move: drag & resize window
         document.body.addEventListener("mousemove", event => {
+            if(this.removed){
+                return;
+            }
             if (this.mousePos) {
                 this.position = { x: event.pageX - this.mousePos.x, y: event.pageY - this.mousePos.y };
                 this.element.style.left = this.position.x + "px";
@@ -158,6 +161,9 @@ class WebKWin {
             }
         });
         document.body.addEventListener("mouseup", event => {
+            if(this.removed){
+                return;
+            }
             if (this.resize) {
                 this.resize = null;
                 document.body.style.cursor = "default";
@@ -181,7 +187,9 @@ class WebKWin {
         
         */
         document.body.addEventListener("mousedown", event => {
-
+            if(this.removed){
+                return;
+            }
             // Resize box
             let pixelsIn = 2;
             let pixelsAround = 5;
@@ -330,6 +338,7 @@ class WebKWin {
         this.api.sigterm()
     }
     remove() {
+        this.removed = true;
         this.element.outerHTML = "";
     }
     enterFullscreen() {
