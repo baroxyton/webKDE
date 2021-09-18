@@ -24,7 +24,6 @@ class Tab {
         this.render();
     }
     unselect() {
-        console.log("unselect");
         this.selected = false;
         this.render();
     }
@@ -74,7 +73,6 @@ class Tab {
                 this.text = text = (await this.api.filesystem("read", this.path)).read().content;
             }
         }
-        console.log("set text to", text);
         document.getElementById("input").value = text;
     }
     addListeners() {
@@ -90,9 +88,7 @@ class Tab {
             this.remove();
         })
         document.getElementById("input").addEventListener("keyup", event => {
-            console.log(this);
             if (!this.selected) {
-                console.log(this.name);
                 return;
             }
             this.unsaved = true;

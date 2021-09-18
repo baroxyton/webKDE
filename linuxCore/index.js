@@ -23,7 +23,6 @@ function refreshCommands() {
             })
         })
     });
-    console.log(allCommands)
 }
 //some defaults
 export let data = {
@@ -231,7 +230,6 @@ export async function runCommand(command, hook) {
                     api.io.stdin.done()
                 }
             default:
-                console.log(end);
                 break;
         }
         return api;
@@ -299,7 +297,6 @@ export async function runBinary(path, args, api) {
                 let desiredFunc = api.fs[data.operation];
                 let pipe = desiredFunc(...data.args);
                 if (typeof pipe == "string") {
-                    console.log("its string")
                     execWorker.postMessage({
                         type: "callback",
                         id: data.callbackId,
@@ -326,7 +323,6 @@ export async function runBinary(path, args, api) {
             case "env":
                 if (data.value) {
                     api.data.env[data.key] = data.value;
-                    console.log("changed env to ", api.data.env)
                     return
                 }
                 if (data.key) {

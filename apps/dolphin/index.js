@@ -25,7 +25,6 @@ async function loadContent(path, navigate) {
     document.querySelector(".back").classList.remove("active");
     document.querySelector(".forward").classList.remove("active");
     if (historyPosition != 0) {
-        console.log("active")
         document.querySelector(".back").classList.add("active");
     }
     if (locationHistory[historyPosition + 1]) {

@@ -147,7 +147,6 @@ export function mathParser(calcString) {
 
     // Generic calculate function
     function calculate(token, calculator) {
-        console.log(result)
         let newResult = [];
         let skip;
         result.forEach((item, index, array) => {

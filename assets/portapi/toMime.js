@@ -5,7 +5,6 @@ let mime = { ".aac": "audio/aac", ".abw": "application/x-abiword", ".arc": "appl
 function toMime(filename) {
     if (filename.includes("/")&&typeof debug != "undefined") {
         let meta = debug.fileapi.internal.readMeta(filename);
-        console.log(meta);
         if (meta?.type == "dir") {
             return "inode/directory";
         }

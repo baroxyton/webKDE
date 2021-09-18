@@ -116,7 +116,6 @@ class ProgramApi {
         switch (call) {
             case "move":
                 if (!checkPermission("demo", file, "w")) {
-                    console.log(parent);
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -124,7 +123,6 @@ class ProgramApi {
                     return;
                 }
                 if (!checkPermission("demo", getFile(pathRequest.join(additionalArguments.new, "..")), "w")) {
-                    console.log(parent);
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -135,7 +133,6 @@ class ProgramApi {
                 break;
             case "write":
                 if (!checkPermission("demo", parent, "w")) {
-                    console.log(parent);
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -146,7 +143,6 @@ class ProgramApi {
                 break;
             case "mkdir":
                 if (!checkPermission("demo", parent, "w")) {
-                    console.log(parent);
                     request.respond({
                         type: "error",
                         content: "Missing permission"

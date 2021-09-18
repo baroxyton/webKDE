@@ -76,7 +76,6 @@ class ThemeLoader {
             }
         } 
         result += "}";
-        console.log(result);
         return result;
     }
 
