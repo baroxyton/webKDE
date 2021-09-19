@@ -65,6 +65,14 @@ class ProgramApi {
                         data.respond(output);
                     });
                     break;
+                case "updateMousePosition":
+                    let x = Number(data.read().x);
+                    let y = Number(data.read().y);
+                    let rect = this.window.getBoundingClientRect();
+                    x += rect.left;
+                    y += rect.top;
+                    desktop.mousePosition = { x, y };
+                    break;
                 case "quit":
                     this.windowObject?.remove();
                     break;

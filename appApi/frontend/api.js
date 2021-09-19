@@ -21,6 +21,8 @@ class OSApi {
                     break;
             }
         }
+        document.body.addEventListener("mouseup", event => this.updateMousePosition(event.clientX, event.clientY));
+        document.body.addEventListener("touchend", event => { this.updateMousePosition(event.touches[0].clientX, event.touches[0].clientY) });
     }
 
     // Data structure:
@@ -146,7 +148,7 @@ class OSApi {
         this.channel.write("openFile", { path })
     }
     fileDialog(allowedTypes, startingPoint) {
-        let win = this.spawnWindow("file:///usr/share/apps/dolphin/index.html", { chooser:true, location: startingPoint, allowedFiletypes: allowedTypes });
+        let win = this.spawnWindow("file:///usr/share/apps/dolphin/index.html", { chooser: true, location: startingPoint, allowedFiletypes: allowedTypes });
         return new Promise(res => {
             win.onevent = data => {
                 if (data.event == "quit") {
@@ -155,8 +157,11 @@ class OSApi {
             }
         })
     }
-    async simpleRunCommand(command){
-        return await this.channel.write("simpleRunCommand",{command});   
+    async simpleRunCommand(command) {
+        return await this.channel.write("simpleRunCommand", { command });
+    }
+    updateMousePosition(x, y) {
+        this.channel.write("updateMousePosition", { x, y })
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());

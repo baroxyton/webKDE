@@ -21,6 +21,8 @@ class OSApi {
                     break;
             }
         }
+        document.body.addEventListener("mouseup", event => this.updateMousePosition(event.clientX, event.clientY));
+        document.body.addEventListener("touchend", event => { this.updateMousePosition(event.touches[0].clientX, event.touches[0].clientY) });
     }
 
     // Data structure:
@@ -157,6 +159,10 @@ class OSApi {
     }
     async simpleRunCommand(command) {
         return await this.channel.write("simpleRunCommand", { command });
+    }
+
+    updateMousePosition(x, y) {
+        this.channel.write("updateMousePosition", { x, y })
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
