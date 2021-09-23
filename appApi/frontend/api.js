@@ -21,8 +21,8 @@ class OSApi {
                     break;
             }
         }
-        document.body.addEventListener("mouseup", event => this.updateMousePosition(event.clientX, event.clientY));
-        document.body.addEventListener("touchend", event => { this.updateMousePosition(event.touches[0].clientX, event.touches[0].clientY) });
+        document.body.addEventListener("mousedown", event => this.updateMousePosition(event.clientX, event.clientY));
+        document.body.addEventListener("touchstart", event => { this.updateMousePosition(event.touches[0].clientX, event.touches[0].clientY) });
     }
 
     // Data structure:
