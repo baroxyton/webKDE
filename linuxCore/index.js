@@ -35,6 +35,21 @@ export let data = {
     computer: "linux",
     user: "demo"
 }
+export class Tty {
+    constructor(startPosition = "/", user = "demo", envOverride = null) {
+        this.user = user;
+        this.env = envOverride || { ...data.env };
+        this.env.LOGNAME = this.user;
+        this.env.PWD = startPosition;
+    }
+    get computer() {
+        return data.computer;
+    }
+    runCommand(command, hook) {
+        return runCommand(command, hook, this);
+    }
+};
+export let mainTty = new Tty("/", "demo", data.env);
 
 export function parseCommand(command) {
     //parse arguments and operators
@@ -132,12 +147,12 @@ export let processes = [{
     user: "root",
     api: {}
 }]
-export async function runCommand(command, hook) {
+export async function runCommand(command, hook, tty = mainTty) {
     let apiGen = (hook && hook.generateApi || generateApi)
     let parsed = parseCommand(command);
 
     async function parseArgsRun(treeBranch, index, api) {
-        api = api || apiGen(data, data.user);
+        api = api || apiGen(tty, tty.user);
         let binary;
         let args = [];
         let end = treeBranch.command.end;
@@ -169,7 +184,7 @@ export async function runCommand(command, hook) {
         if (hook && hook.changeCommand) {
             hook.changeCommand(api, binary, args, api.pid)
         }
-        runBinary(binary, args, api);
+        runBinary(binary, args, api, tty);
         switch (end) {
             case "none":
                 api.io.stdout.ondone = function () {
@@ -221,7 +236,7 @@ export async function runCommand(command, hook) {
                 break;
             case "|":
                 api.hideout = true
-                let newApi = apiGen(data, data.user);
+                let newApi = apiGen(tty, tty.user);
                 parseArgsRun(parsed[index + 1], index + 1, newApi);
                 api.io.stdout.onwrite = function (txt) {
                     newApi.io.stdin.write(txt)
@@ -237,7 +252,7 @@ export async function runCommand(command, hook) {
     await parseArgsRun(parsed[0], 0)
 }
 
-export async function runBinary(path, args, api) {
+export async function runBinary(path, args, api, tty = mainTty) {
     let content = getFile(path).content;
     let execWorker = new Worker("./linuxCore/components/binarysandbox.js");
     api.worker = execWorker
@@ -373,11 +388,11 @@ export async function runBinary(path, args, api) {
                 }
                 runCommand(data.command, hook)
                 break;
-                case "spawnWindow":
-                    new desktop.window(data.url, data.args);
-                    break;
-                case "openFile":
-                    desktop.openFile(data.location);
+            case "spawnWindow":
+                new desktop.window(data.url, data.args);
+                break;
+            case "openFile":
+                desktop.openFile(data.location);
             case "execjs":
                 if (api.data.user != "root") {
                     execWorker.postMessage({
