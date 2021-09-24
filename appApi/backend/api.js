@@ -5,6 +5,7 @@ import { getFile } from "../../linuxCore/components/fileapi.js";
 import WebKWin from "../../js/windowmanager.js";
 class ProgramApi {
     constructor(user, windowObject, iframe) {
+        this.tty = new desktop.Tty("/", user);
         window.api = this;
         this.windowObject = windowObject;
         this.window = windowObject.element;

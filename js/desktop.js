@@ -25,7 +25,9 @@ class Desktop {
         this.element = document.getElementById("desktop");
         this.window = WebKWin;
         this.openFile = openFile;
-
+        this.Tty = linux.Tty;
+        this.mainTty = linux.mainTty;
+        
         this.render();
         this.addListeners()
     }
