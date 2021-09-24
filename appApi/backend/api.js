@@ -124,14 +124,14 @@ class ProgramApi {
         }
         switch (call) {
             case "move":
-                if (!checkPermission("demo", file, "w")) {
+                if (!checkPermission(this.user, file, "w")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
                     });
                     return;
                 }
-                if (!checkPermission("demo", getFile(pathRequest.join(additionalArguments.new, "..")), "w")) {
+                if (!checkPermission(this.user, getFile(pathRequest.join(additionalArguments.new, "..")), "w")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -141,27 +141,27 @@ class ProgramApi {
                 debug.fileapi.internal.move(target, additionalArguments.new);
                 break;
             case "write":
-                if (!checkPermission("demo", parent, "w")) {
+                if (!checkPermission(this.user, parent, "w")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
                     });
                     return;
                 }
-                debug.fileapi.internal.write("demo", target, additionalArguments.content);
+                debug.fileapi.internal.write(this.user, target, additionalArguments.content);
                 break;
             case "mkdir":
-                if (!checkPermission("demo", parent, "w")) {
+                if (!checkPermission(this.user, parent, "w")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
                     });
                     return;
                 }
-                debug.fileapi.internal.mkdir("demo", target);
+                debug.fileapi.internal.mkdir(this.user, target);
                 break;
             case "read":
-                if (!checkPermission("demo", file, "r")) {
+                if (!checkPermission(this.user, file, "r")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -180,7 +180,7 @@ class ProgramApi {
                 })
                 break;
             case "list":
-                if (!checkPermission("demo", file, "r")) {
+                if (!checkPermission(this.user, file, "r")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
@@ -193,7 +193,7 @@ class ProgramApi {
                 })
                 break;
             case "delete":
-                if (!checkPermission("demo", file, "w")) {
+                if (!checkPermission(this.user, file, "w")) {
                     request.respond({
                         type: "error",
                         content: "Missing permission"
