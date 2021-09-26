@@ -14,7 +14,7 @@ api.channel.onevent = data => {
 api.gotData.then(async () => {
 // Render window
 api.done({
-    title: "Title",
-    icon: "/usr/share/icons/breeze-dark/categories/applications-development.svg"
+    title: "Konsole",
+    icon: "/usr/share/icons/breeze-dark/apps/utilities-terminal.svg"
 });
 })

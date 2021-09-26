@@ -1,0 +1,13 @@
+body{
+    font-family: monospace;
+    overflow-y: auto;
+    text-align: unset;
+}
+.inputwrap{
+    display:flex;
+}
+#input{
+    width:100%;
+    margin-left:5px;
+    text-align: unset;
+}
