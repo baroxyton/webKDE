@@ -1,13 +1,19 @@
-body{
-    font-family: monospace;
-    overflow-y: auto;
-    text-align: unset;
+body {
+    font-family: monospace !important;
+    overflow-y: scroll;
+    text-align:start !important;
 }
-.inputwrap{
-    display:flex;
+
+.inputwrap {
+    display: flex;
 }
-#input{
-    width:100%;
-    margin-left:5px;
-    text-align: unset;
+
+#input {
+    width: 100%;
+    margin-left: 5px;
+}
+
+.caret {
+    background-color: var(--Colors_View_ForegroundNormal);
+    color:var(--Colors_View_BackgroundNormal);
 }
