@@ -2,6 +2,8 @@ body {
     font-family: monospace !important;
     overflow-y: scroll;
     text-align:start !important;
+    font-weight:550;
+    font-size: 1.2em;
 }
 
 .inputwrap {
@@ -11,6 +13,9 @@ body {
 #input {
     width: 100%;
     margin-left: 5px;
+}
+#user{
+    white-space: nowrap;
 }
 
 .caret {
