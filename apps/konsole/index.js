@@ -10,7 +10,7 @@ let preinput = "demo@linux:/ $";
 async function updatePreinput() {
     user = api.data.user;
     ttyLocation = (await api.readEnv("PWD")).read();
-    preinput = `${user}@linux:${ttyLocation.replace((await api.readEnv("HOME", "~")).read())} $`;
+    preinput = `${user}@linux:${ttyLocation.replace((await api.readEnv("HOME")).read(), "~")} $`;
     document.getElementById("user").innerText = preinput;
 }
 function runCommand(command) {

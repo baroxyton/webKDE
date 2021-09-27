@@ -27,10 +27,12 @@ function refreshCommands() {
 //some defaults
 export let data = {
     env: {
+        USER:"demo",
         HOME: "/home/demo",
         PWD: "/home/demo",
         PATH: "/bin:/usr/bin",
-        LOGNAME: "demo"
+        LOGNAME: "demo",
+        EDITOR:"/bin/nano"
     },
     computer: "linux",
     user: "demo"
