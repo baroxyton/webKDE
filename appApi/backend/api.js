@@ -74,8 +74,20 @@ class ProgramApi {
                     y += rect.top;
                     desktop.mousePosition = { x, y };
                     break;
+                case "tty":
+                    this.ttyData(data);
+                    break;
                 case "quit":
                     this.windowObject?.remove();
+                    break;
+                case "listenv":
+                    data.respond(Object.keys(this.tty.env))
+                    break;
+                case "readenv":
+                    data.respond(this.tty.env[data.read().key] || "");
+                    break;
+                case "setenv":
+                    this.tty.env[data.read().key] = String(data.read().value);
                     break;
             }
         }
@@ -100,7 +112,7 @@ class ProgramApi {
             this.windowObject.height = innerHeight * 0.3;
             this.window.style.width = this.windowObject.width + "px";
             this.window.style.height = this.windowObject.height + "px";
-        }, 5000);
+        }, 3000);
     }
     sigterm() {
         this.channel.write("sigterm");
@@ -207,7 +219,71 @@ class ProgramApi {
                 });
                 break;
         }
+    };
+    ttyData(request) {
+        let data = request.read();
+        let call = data.call;
+        let additionalArguments = data.args;
+        switch (call) {
+            case "run":
+                let hook = {
+                    changeCommand: (api, binary, args, pid) => {
+                        this.commandApi = api;
+                        this.commandApi.io.stdout.onwrite = data => {
+                            this.channel.write("ttyData", {
+                                type: "io",
+                                io: "stdout",
+                                event: "write",
+                                data
+                            });
+                        }
+                        this.commandApi.io.stdout.ondone = data => {
+                            this.channel.write("ttyData", {
+                                type: "io",
+                                io: "stdout",
+                                event: "done",
+                                data
+                            });
+                        }
+                        this.commandApi.io.stderr.output.onwrite = data => {
+                            this.channel.write("ttyData", {
+                                type: "io",
+                                io: "stderr",
+                                event: "write",
+                                data
+                            });
+                        }
+                        this.commandApi.io.stdin.output.onwrite = data => {
+                            this.channel.write("ttyData", {
+                                type: "io",
+                                io: "stdin",
+                                event: "write",
+                                data
+                            });
+                        }
+                    },
+                    ondone: () => {
+                        this.channel.write("ttyData", {
+                            type: "process",
+                            event: "quit"
+                        })
+                    },
+                }
+                this.tty.runCommand(additionalArguments.command, hook);
+                break;
+            case "sendKey":
+                this.commandApi?.io.keys.write(additionalArguments.event);
+                break;
+            case "io":
+                let pipe = this.commandApi?.io[additionalArguments.io];
+                if (pipe.input) {
+                    pipe = pipe.input;
+                }
+                pipe?.write(additionalArguments.data);
+                break;
+        }
     }
+
     spawnWindow(request) {
         let url = request.read().url;
         let args = request.read().args;
