@@ -58,7 +58,7 @@ class ThemeLoader {
             font-family: linuxFont;
             src: url("${this.font}");
           }
-          *{
+          body{
               font-family:linuxFont;
           }`
     }
