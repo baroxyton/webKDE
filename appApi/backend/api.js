@@ -281,6 +281,9 @@ class ProgramApi {
                 }
                 pipe?.write(additionalArguments.data);
                 break;
+            case "quit":
+                this.commandApi.io.stdout.done();
+            break;
         }
     }
 

@@ -16,11 +16,11 @@ class OSApi {
             sendKey: event => {
                 let filteredEvent = {};
                 for (let key in event) {
-                    if (typeof event[key] != "object"&& typeof event[key] != "function") {
+                    if (typeof event[key] != "object" && typeof event[key] != "function") {
                         filteredEvent[key] = event[key];
                     }
                 };
-                this._ttyCall("sendKey", { event:filteredEvent })
+                this._ttyCall("sendKey", { event: filteredEvent })
             },
             sendIo: (pipe, data) => {
                 this._ttyCall("io", { io: pipe, data });
@@ -33,6 +33,9 @@ class OSApi {
                 add: function (func) {
                     this.listeners.push(func);
                 }
+            },
+            quitProcess: () => {
+                this._ttyCall("quit");
             }
         }
     }
