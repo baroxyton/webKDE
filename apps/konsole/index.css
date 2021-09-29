@@ -1,24 +1,32 @@
 body {
     font-family: monospace !important;
     overflow-y: scroll;
-    text-align:start !important;
-    font-weight:550;
+    text-align: start !important;
+    font-weight: 550;
     font-size: 1.2em;
+    user-select:text !important;
 }
-
+::selection {
+    background-color: var(--Colors_View_ForegroundNormal);
+    color: var(--Colors_View_BackgroundNormal);
+}
 .inputwrap {
     display: flex;
 }
 
 #input {
     width: 100%;
-    margin-left: 5px;
+    margin-left: 9px;
 }
-#user{
+
+#user {
     white-space: nowrap;
 }
 
 .caret {
     background-color: var(--Colors_View_ForegroundNormal);
-    color:var(--Colors_View_BackgroundNormal);
+    color: var(--Colors_View_BackgroundNormal);
+}
+#content{
+    user-select:text !important;
 }
