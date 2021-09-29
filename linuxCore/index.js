@@ -27,12 +27,12 @@ function refreshCommands() {
 //some defaults
 export let data = {
     env: {
-        USER:"demo",
+        USER: "demo",
         HOME: "/home/demo",
         PWD: "/home/demo",
         PATH: "/bin:/usr/bin",
         LOGNAME: "demo",
-        EDITOR:"/bin/nano"
+        EDITOR: "/bin/nano"
     },
     computer: "linux",
     user: "demo"
@@ -292,7 +292,7 @@ export async function runBinary(path, args, api, tty = mainTty) {
         });
     }
     api.io.stdout.ondone = function () {
-        api.worker.terminate()
+        api.worker.terminate();
     }
     execWorker.onmessage = function (e) {
         console.log(e.data)

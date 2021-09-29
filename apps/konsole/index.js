@@ -68,6 +68,12 @@ function addToLog(text) {
 
 document.body.addEventListener("keydown", event => {
     event.preventDefault();
+    if (event.ctrlKey) {
+        shortcut(event);
+        if (!commandIsRunning) {
+            return;
+        }
+    }
     if (commandIsRunning) {
         api.tty.sendKey(event);
     }
@@ -95,7 +101,12 @@ document.body.addEventListener("keydown", event => {
             break;
         case "Enter":
             let command = inputContent;
-            addToLog(`${preinput} ${inputContent}\n`);
+            if (commandIsRunning) {
+                addToLog(`${inputContent}\n`);
+            }
+            else {
+                addToLog(`${preinput} ${inputContent}\n`);
+            }
             inputContent = "";
             caretPosition = 0;
             loadInputContent();
@@ -113,7 +124,31 @@ document.body.addEventListener("keydown", event => {
             caretPosition++;
             loadInputContent();
     }
-})
+});
+function shortcut(event) {
+    if (event.key == "Control") {
+        return;
+    }
+    if (commandIsRunning) {
+        inputContent += "^" + event.key.toUpperCase();
+        caretPosition = inputContent.length;
+        loadInputContent();
+    }
+    if (event.key == "c" && event.ctrlKey) {
+        if (commandIsRunning) {
+            api.tty.quitProcess();
+            return;
+        }
+        addToLog(`${preinput} ${inputContent}^C\n`);
+        inputContent = "";
+        caretPosition = 0;
+        loadInputContent();
+        return;
+    }
+    inputContent += "^" + event.key.toUpperCase();
+    caretPosition = inputContent.length;
+    loadInputContent();
+}
 api.channel.onevent = data => {
     switch (data.event) {
         case "sigterm":
@@ -133,7 +168,4 @@ api.gotData.then(async () => {
     setTimeout(a => api.tty.run("ls"), 1000);
     await updatePreinput();
 });
-api.tty.onData.add(function (data) {
-    console.log(data)
-})
 loadInputContent();
