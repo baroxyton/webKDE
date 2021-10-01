@@ -3,3 +3,4 @@ gwenview/
 kate/
 dolphin/
 properties/
+konsole/

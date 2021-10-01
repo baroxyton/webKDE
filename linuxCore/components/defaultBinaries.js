@@ -329,7 +329,7 @@ let defaultBinaries = {
         api.spawnWindow("file:///usr/share/apps/gwenview/index.html", { location: api.args[0] });
     }),
     "konsole":compile(async function(){
-        api.spawnWindow("/apps/konsole", { location: api.args[0] });
+        api.spawnWindow("file:///usr/share/apps/konsole/index.html", { location: api.args[0] });
     }),
     "xdg-open": compile(async function () {
         api.openFile(api.args[0]);

@@ -1,5 +1,4 @@
-import OSApi from "../../appApi/frontend/api.js";
-import { data } from "../../linuxCore/index.js";
+import OSApi from "{{file:/usr/lib/api/api.js}}";
 let api = new OSApi();
 let inputContent = "";
 let caretPosition = 0;

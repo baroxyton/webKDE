@@ -3,13 +3,15 @@ body {
     overflow-y: scroll;
     text-align: start !important;
     font-weight: 550;
-    font-size: 1.2em;
-    user-select:text !important;
+    user-select: text !important;
+    font-size: 0.9em !important;
 }
+
 ::selection {
-    background-color: var(--Colors_View_ForegroundNormal);
+    background-color: var(--Colors_View_ForegroundNormal) !important;
     color: var(--Colors_View_BackgroundNormal);
 }
+
 .inputwrap {
     display: flex;
 }
@@ -27,6 +29,7 @@ body {
     background-color: var(--Colors_View_ForegroundNormal);
     color: var(--Colors_View_BackgroundNormal);
 }
-#content{
-    user-select:text !important;
+
+#content {
+    user-select: text !important;
 }
