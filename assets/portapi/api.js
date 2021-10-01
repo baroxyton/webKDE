@@ -9,6 +9,35 @@ class OSApi {
             this.gotDataRes = res;
         });
         this.menuCount = 0;
+        this.tty = {
+            run: command => {
+                this._ttyCall("run", { command })
+            },
+            sendKey: event => {
+                let filteredEvent = {};
+                for (let key in event) {
+                    if (typeof event[key] != "object" && typeof event[key] != "function") {
+                        filteredEvent[key] = event[key];
+                    }
+                };
+                this._ttyCall("sendKey", { event: filteredEvent })
+            },
+            sendIo: (pipe, data) => {
+                this._ttyCall("io", { io: pipe, data });
+            },
+            onData: {
+                trigger: function (event) {
+                    this.listeners.forEach(listener => listener(event))
+                },
+                listeners: [],
+                add: function (func) {
+                    this.listeners.push(func);
+                }
+            },
+            quitProcess: () => {
+                this._ttyCall("quit");
+            }
+        }
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
@@ -19,6 +48,8 @@ class OSApi {
                 case "changeTheme":
                     this.theme.changeTheme(data.read());
                     break;
+                case "ttyData":
+                    this.tty.onData.trigger(data.read());
             }
         }
         document.body.addEventListener("mousedown", event => this.updateMousePosition(event.clientX, event.clientY));
@@ -160,9 +191,24 @@ class OSApi {
     async simpleRunCommand(command) {
         return await this.channel.write("simpleRunCommand", { command });
     }
-
     updateMousePosition(x, y) {
         this.channel.write("updateMousePosition", { x, y })
+    }
+    _ttyCall(call, args) {
+        let request = {
+            call,
+            args
+        };
+        this.channel.write("tty", request);
+    }
+    async listEnv() {
+        return await this.channel.write("listenv", null, true);
+    }
+    async readEnv(key) {
+        return await this.channel.write("readenv", { key }, true)
+    }
+    async setEnv(key, value) {
+        return await this.channel.write("setenv", { key, value }, true);
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
