@@ -43,8 +43,8 @@ class WidgetWindow {
         this.element.style.top = this.cover.style.top = this.position.y + "px";
         this.element.style.width = this.cover.style.width = this.config.width || "30vh";
         this.element.style.height = this.cover.style.height = this.config.height || "25vh";
-        document.getElementById("desktop").appendChild(this.element);
-        document.getElementById("desktop").appendChild(this.cover);
+        document.getElementById("desktop").appendChild(this.element, "widgets");
+        document.getElementById("desktop").appendChild(this.cover, "covers");
         document.body.addEventListener("mouseup",()=>this.removed?0:this.remove());
     }
     addListeners() {

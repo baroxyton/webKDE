@@ -10,7 +10,7 @@ class DesktopDrag {
         if (!this.element) {
             this.element = document.createElement("div");
             this.element.classList.add("desktopdrag");
-            document.getElementById("desktop").appendChild(this.element);
+            document.getElementById("desktop").appendChild(this.element, "selection");
         }
         // Normal drag. Change width to fit change
         if (this.currentPosition.x - this.startPosition.x > 0) {

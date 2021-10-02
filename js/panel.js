@@ -26,7 +26,7 @@ class Panel {
             }
             this.widgets.push(newWidget);
         })
-        document.getElementById("desktop").appendChild(this.panelElement);
+        document.getElementById("desktop").appendChild(this.panelElement, "panels");
     }
     
     remove() {

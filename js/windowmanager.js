@@ -70,7 +70,7 @@ class WebKWin {
             this.iframeHolder.appendChild(this.cover);
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
-            document.getElementById("desktop").appendChild(this.element);
+            document.getElementById("desktop").appendChild(this.element, "windows");
 
             this.element.style.left = this.position.x + "px";
             this.element.style.top = this.position.y + "px";

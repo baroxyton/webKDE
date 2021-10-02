@@ -82,7 +82,7 @@ class DesktopMenu {
             itemElement.appendChild(textElement);
             this.element.appendChild(itemElement);
         });
-        document.getElementById("desktop").appendChild(this.element);
+        document.getElementById("desktop").appendChild(this.element, "menus");
     }
     // Close menu when clicking desktop
     addListeners() {

@@ -21,7 +21,7 @@ class DesktopApp {
     render() {
         this.remove();
         this.removed = false;
-        
+
         // Create elements
         this.appElement = document.createElement("div");
         this.iconElement = document.createElement("div");
@@ -54,7 +54,7 @@ class DesktopApp {
         // Append elements to the desired parent
         this.appElement.appendChild(this.iconElement);
         this.appElement.appendChild(this.nameElement);
-        this.appHolder.appendChild(this.appElement);
+        this.appHolder.appendChild(this.appElement, "icons");
         this.addListeners();
     }
     // When user clicks on icon, make it visible
@@ -72,33 +72,33 @@ class DesktopApp {
         // Show context menu when rightclicking
         this.appElement.addEventListener("contextmenu", event => {
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
-                text:"Open",
-                icon:"/usr/share/icons/breeze-dark/actions/quickopen-file.svg",
-                action:()=>{
-                    desktop.openFile("/home/demo/Desktop/"+this.name)
+                text: "Open",
+                icon: "/usr/share/icons/breeze-dark/actions/quickopen-file.svg",
+                action: () => {
+                    desktop.openFile("/home/demo/Desktop/" + this.name)
                 }
             },
-                {
+            {
                 text: "Open with..",
-                icon:"/usr/share/icons/breeze-dark/categories/applications-other.svg",
-                seperator:true
+                icon: "/usr/share/icons/breeze-dark/categories/applications-other.svg",
+                seperator: true
             },
-                {
+            {
                 text: "Rename..",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-rename.svg",
-                action:()=>{
-                    let namePrompt = new WebKWin("file:///usr/share/apps/dialog/index.html",{
-                        type:"prompt",
-                        subject:"new file name",
-                        buttons:["Rename"],
-                        inputText:this.name
+                action: () => {
+                    let namePrompt = new WebKWin("file:///usr/share/apps/dialog/index.html", {
+                        type: "prompt",
+                        subject: "new file name",
+                        buttons: ["Rename"],
+                        inputText: this.name
                     });
-                    namePrompt.api.channel.onevent = data=>{
+                    namePrompt.api.channel.onevent = data => {
                         if (data.event != "quit") {
                             return;
                         }
                         let newName = data.read();
-                        debug.fileapi.internal.move("/home/demo/Desktop/"+this.name,"/home/demo/Desktop/"+newName);
+                        debug.fileapi.internal.move("/home/demo/Desktop/" + this.name, "/home/demo/Desktop/" + newName);
                         this.name = newName;
                         this.render();
                     }
@@ -106,7 +106,7 @@ class DesktopApp {
             }, {
                 text: "Delete",
                 icon: "/usr/share/icons/breeze-dark/actions/edit-delete.svg",
-                seperator:true,
+                seperator: true,
                 action: () => {
                     let confirm = new WebKWin("file:///usr/share/apps/dialog/index.html", {
                         type: "confirm",
@@ -126,9 +126,9 @@ class DesktopApp {
             }, {
                 text: "Properties",
                 icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
-                action:()=>{
-                    new WebKWin("file:///usr/share/apps/properties/index.html",{
-                        path:"/home/demo/Desktop/"+this.name
+                action: () => {
+                    new WebKWin("file:///usr/share/apps/properties/index.html", {
+                        path: "/home/demo/Desktop/" + this.name
                     })
                 }
             }]);
@@ -152,12 +152,12 @@ class DesktopApp {
 
         // Remove highlight when pressing desktop
         document.getElementById("desktop").addEventListener("mouseup", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             this.mousedown = null;
-            if(this.moving){
-            this.stopMoving();
+            if (this.moving) {
+                this.stopMoving();
             }
             if (event.target.id != "desktop") {
                 return;
@@ -177,7 +177,7 @@ class DesktopApp {
         });
         // On older machines you can easily escape the icon by moving the mouse fast. Add event as callback
         document.getElementById("desktop").addEventListener("mousemove", async event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             if (!this.mousedown) {
@@ -189,7 +189,7 @@ class DesktopApp {
         });
         this.appElement.addEventListener("dblclick", () => {
             desktop.openFile("/home/demo/Desktop/" + this.name)
-    })
+        })
     }
     // Stop drag click moving icon and place it in the app grid
     stopMoving() {

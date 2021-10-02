@@ -11,13 +11,57 @@ import WebKWin from "./windowmanager.js"
 import WidgetWindow from "./widgetWindow.js"
 import openFile from "./openFile.js"
 let config;
-
+// Override appendChild to keep track of z-index
+let originalAppend = Element.prototype.appendChild;
+Element.prototype.appendChild = function (element, type) {
+    if (type && desktop) {
+        desktop.zindex.find(layer => layer.name == type).instances.push(element);
+    }
+    desktop.renderZ && desktop.renderZ();
+    return originalAppend.call(this, element);
+}
 class Desktop {
     constructor(config) {
-
+        window.desktop = this;
         this.apps = [];
         this.selectedApps = [];
         this.panels = [];
+        this.zindex = [{
+            name: "icons",
+            level: 0,
+            instances: []
+        },
+        {
+            name: "selection",
+            level: 1,
+            instances: []
+        },
+        {
+            name: "windows",
+            level: 2,
+            instances: []
+        },
+        {
+            name: "widgets",
+            level: 3,
+            instances: []
+        },
+        {
+            name: "covers",
+            level: 4,
+            instances: []
+        },
+        {
+            name: "panels",
+            level: 5,
+            instances: []
+        },
+        {
+            name: "menus",
+            level: 6,
+            instances: []
+        }
+        ];
 
         this.config = config;
         // load current theme from config, with font
@@ -27,9 +71,9 @@ class Desktop {
         this.openFile = openFile;
         this.Tty = linux.Tty;
         this.mainTty = linux.mainTty;
-        
+
         this.render();
-        this.addListeners()
+        this.addListeners();
     }
     render() {
         this.element.style.backgroundImage = `url("data:image/png;base64,${btoa(linux.fileapi.internal.read(this.config.desktop.backgroundimage))}")`;
@@ -90,7 +134,7 @@ class Desktop {
             // spawn context menu
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: 'Create new...',
-                seperator:true,
+                seperator: true,
                 icon: "/usr/share/icons/breeze-dark/actions/document-new.svg",
                 submenus: [{
                     text: "Folder",
@@ -155,14 +199,15 @@ class Desktop {
             }
             ]);
         });
-        // track mousedown position to allow drag click selection later
 
+        // track mousedown position to allow drag click selection later
         this.element.addEventListener("mousedown", event => {
             if (event.target == this.element) {
                 this.mousedown = true;
                 this.mousepos = { x: event.pageX, y: event.pageY };
             }
         });
+
         // when the mouse is released and the user is performinng drag selection, stop it
         this.element.addEventListener("mouseup", event => {
             this.mousedown = false;
@@ -171,6 +216,7 @@ class Desktop {
                 this.drag = null;
             }
         })
+
         // mouse was moved
         this.element.addEventListener("mousemove", event => {
             this.mousePosition = { x: event.clientX, y: event.clientY };
@@ -188,6 +234,7 @@ class Desktop {
                 this.drag.change(this.mousePosition);
             }
         });
+
         // Translate various touch events for a (hacky) mobile suppot
         window.addEventListener("touchstart", event => {
             document.body.requestFullscreen();
@@ -208,12 +255,29 @@ class Desktop {
             event.target.dispatchEvent(clickEvent);
         });
     }
+    // Render Z index of elements
+    renderZ() {
+        let layers = this.zindex.sort(function (a, b) {
+            return a["level"] - b["level"];
+
+        });
+        let allElements = [];
+        layers.forEach(layer => {
+            layer.instances.forEach(instance => {
+                instance?.outerHTML && allElements.push(instance);
+            })
+        });
+        allElements.forEach((element, index)=>{
+            element.style.zIndex = index;
+        })
+    }
 };
+
 // wait for file system to load and render desktop
 linux.fileapi.onready.then(() => {
     // start config and
     config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
-    window.desktop = new Desktop(config);
+    new Desktop(config);
     // set flag to not download filesystem assets on next reload
     localStorage.downloaded = true;
     console.log("downloaded")
