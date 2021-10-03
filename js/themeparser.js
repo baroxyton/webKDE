@@ -84,42 +84,6 @@ class ThemeLoader {
         this.element.innerHTML = `
         ${this.generateFont()}
         ${this.generateVars()}
-        .app:hover{
-            background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal},0.4);
-            box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8);
-        }
-        .selectedapp {
-            background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8) !important;
-            box-shadow: none !important;
-        }
-        .panel{
-            background-color: rgba(${this.parsedTheme["Colors:View"].BackgroundNormal},0.9);
-            color:rgb(${this.parsedTheme["Colors:View"].ForegroundNormal});
-        }
-        .menu{
-            background-color:rgb(${this.parsedTheme["Colors:Window"].BackgroundNormal});
-            border: 1px rgba(${this.parsedTheme["Colors:Window"].ForegroundInactive},0.5) solid;
-        }
-        .menuText{
-            color:rgb(${this.parsedTheme["Colors:View"].ForegroundNormal});
-        }
-        .menuItem:hover{
-            background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.4);
-            box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8);
-        }
-        .menuItem.menuSeparator{
-            border-bottom: 1px rgba(${this.parsedTheme["Colors:Window"].ForegroundInactive},0.5) solid;
-        }
-        .desktopdrag{
-            background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.2);
-            box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].ForegroundNormal}, 0.4);
-        }
-        .kwin{
-            background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
-        }
-        .knavbar, .toolbar{
-            background-color:rgb(${this.parsedTheme["Colors:Tooltip"].BackgroundNormal});
-        }
         .minimizeIcon {
             filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
             background-image:url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read("/usr/share/icons/breeze-dark/actions/window-minimize.svg"))}");
@@ -154,18 +118,6 @@ class ThemeLoader {
                   <path d="M11 3a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8M7.707 7L11 10.294l3.293-3.293.707.707-3.293 3.293L15 14.294l-.707.707L11 11.708l-3.293 3.293L7 14.294l3.293-3.293L7 7.708l.707-.707" class="ColorScheme-NegativeText" fill="rgb(${this.parsedTheme["Colors:Window"].ForegroundNegative})"/>
                 </g>
               </svg>`)}");
-        }
-        .kwintitle{
-            color: rgb(${this.parsedTheme["Colors:Window"].ForegroundNormal});
-        }
-        .toolbar{
-            border-bottom: 1px rgba(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal},0.2) solid;
-        }
-        .toolbarItem{
-            color:rgb(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal});
-        }
-        .toolbarItem:hover{
-            background-color:rgba(${this.parsedTheme["Colors:Tooltip"].ForegroundNormal},0.1);
         }
         `
         document.head.appendChild(this.element);

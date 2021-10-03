@@ -20,13 +20,12 @@ html, body {
 
 .app {
     padding: 10px;
-    padding-left:15px;
-    padding-right:15px;
+    padding-left: 15px;
+    padding-right: 15px;
     position: fixed;
     border-radius: 3px;
     user-select: none;
 }
-
 
 .appicon {
     height: 85%;
@@ -43,133 +42,151 @@ html, body {
     width: 100%;
 }
 
-
 .panel {
     user-select: none;
     position: fixed;
     top: calc(100vh - 45px);
     box-shadow: 1px -1px 10px black;
 }
-.menu{
-    position:fixed;
+
+.menu {
+    position: fixed;
     min-width: 15vw;
-    font-size:0.85em;
-    width:fit-content;
-    height:fit-content;
+    font-size: 0.85em;
+    width: fit-content;
+    height: fit-content;
     border-radius: 0px;
     user-select: none;
     box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
     z-index: 9999;
 }
-.menuItem{
+
+.menuItem {
     white-space: nowrap;
-    width:100%;
-    padding-top:5px;
+    width: 100%;
+    padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 3px;
     display: flex;
 }
-.menuItem.disabled{
-    filter:brightness(0.5);
+
+.menuItem.disabled {
+    filter: brightness(0.5);
     pointer-events: none;
 }
-.menuText{
-    margin-left:5px;
+
+.menuText {
+    margin-left: 5px;
 }
-.menuIcon{
+
+.menuIcon {
     background-size: auto 100%;
-    margin-left:5px;
-    filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
+    margin-left: 5px;
+    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1));
 }
-.desktopdrag{
-    position:absolute;
+
+.desktopdrag {
+    position: absolute;
     border-radius: 5px;
 }
-.widget{
-    height:45px;
-    width:45px;
+
+.widget {
+    height: 45px;
+    width: 45px;
     background-size: cover;
-    float:left;
+    float: left;
     vertical-align: middle;
     text-align: center;
-    filter: drop-shadow(1px 1px 1px rgba(42,46,50, 1));
+    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1));
 }
-.kwin{
-    position:absolute;
-    border-radius:3px;
+
+.kwin {
+    position: absolute;
+    border-radius: 3px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.5);
     visibility: hidden;
 }
-.knavbar{
-    position:relative;
-    top:0;
+
+.knavbar {
+    position: relative;
+    top: 0;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    left:0;
-    height:25px;
-    width:100%;
+    left: 0;
+    height: 25px;
+    width: 100%;
 }
-.kwinActions{
-    float:right;
-    display:flex;
+
+.kwinActions {
+    float: right;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
-.kwinActions > div {
-    height:20px;
-    width:20px;
-    border-radius:50%;
-    margin:2px;
-    margin-top:2.5px;
+
+.kwinActions>div {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin: 2px;
+    margin-top: 2.5px;
     cursor: initial !important;
 }
-.kwintitle{
-    overflow:hidden;
+
+.kwintitle {
+    overflow: hidden;
     text-align: center;
     user-select: none;
 }
-.kwinIcon{
-    float:left;
-    height:25px;
-    width:25px;
+
+.kwinIcon {
+    float: left;
+    height: 25px;
+    width: 25px;
     background-size: 100% 100%;
 }
-.programIframe{
-    position:relative;
-    top:0;
-    left:0;
-    height:100%;
-    width:100%;
+
+.programIframe {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
     border: 0;
 }
-.iframeHolder{
-    height:calc(100% - 25px);
-    width:100%;
-    border-radius:3px;
-    display:flex;
+
+.iframeHolder {
+    height: calc(100% - 25px);
+    width: 100%;
+    border-radius: 3px;
+    display: flex;
     overflow: hidden;
 }
-.windowcover{
-    position:absolute;
-    background-color:transparent;
+
+.windowcover {
+    position: absolute;
+    background-color: transparent;
     height: 100%;
     width: 100%;
     z-index: 1000;
-    display:none;
+    display: none;
 }
-.toolbar{
-    height:30px;
-    width:100%;
+
+.toolbar {
+    height: 30px;
+    width: 100%;
     user-select: none;
-    display:none;
+    display: none;
 }
-.toolbarItem{
-    padding:3px;
-    border-radius:2px;
-    display:inline;
-    float:left;
-    margin-left:2px;
+
+.toolbarItem {
+    padding: 3px;
+    border-radius: 2px;
+    display: inline;
+    float: left;
+    margin-left: 2px;
 }
+
 @keyframes widgetAnimation {
     0% {
         transform: translate(0, 0);
@@ -178,16 +195,79 @@ html, body {
     100% {
         transform: translate(0, -100%);
         opacity: 1;
-     }
+    }
 }
-.widgetWindow{
-    border:0;
-    position:absolute;
+
+.widgetWindow {
+    border: 0;
+    position: absolute;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     overflow: hidden;
     visibility: hidden;
 }
-.widgetWindow.loaded{
+
+.widgetWindow.loaded {
     animation: widgetAnimation 0.1s forwards;
+}
+
+/*--Colors_Button_ForegroundNegative*/
+
+.app:hover {
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.4);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8);
+}
+
+.selectedapp {
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8) !important;
+    box-shadow: none !important;
+}
+
+.panel {
+    background-color: rgba(var(--Colors_View_BackgroundNormal_raw), 0.9);
+    color: var(--Colors_View_ForegroundNormal);
+}
+
+.menu {
+    background-color: var(--Colors_Window_BackgroundNormal);
+    border: 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5) solid;
+    color: var(--Colors_View_ForegroundNormal);
+}
+
+.menuItem:hover {
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.4);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8);
+}
+
+.menuItem.menuSeparator {
+    border-bottom: 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5) solid;
+}
+
+.desktopdrag {
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.2);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_ForegroundNormal_raw), 0.4);
+}
+
+.kwin {
+    background-color: var(--Colors_Tooltip_BackgroundNormal);
+}
+
+.knavbar, .toolbar {
+    background-color: var(--Colors_Tooltip_BackgroundNormal);
+}
+
+.kwintitle {
+    color: var(--Colors_Window_ForegroundNormal)
+}
+
+.toolbar {
+    border-bottom: 1px rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.2) solid;
+}
+
+.toolbarItem {
+    color: var(--Colors_Tooltip_ForegroundNormal);
+}
+
+.toolbarItem:hover {
+    background-color: rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.1);
 }
