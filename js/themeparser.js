@@ -62,11 +62,28 @@ class ThemeLoader {
               font-family:linuxFont;
           }`
     }
+    generateVars() {
+        let result = `:root {
+            `;
+        for (let section in this.parsedTheme) {
+            for (let data in this.parsedTheme[section]) {
+                let value = this.parsedTheme[section][data];
+                if (!value || section.includes("[") || !value.match(/^(((\d){1,3})(\,)?){3}$/)) {
+                    continue;
+                }
+                result += `--${section.replace(":", "_")}_${data}: rgb(${value});\n`;
+                result += `--${section.replace(":", "_")}_${data}_raw: ${value};\n`
+            }
+        }
+        result += "}";
+        return result;
+    }
     render() {
         this.element = document.createElement("style");
         // Generate CSS from theme
         this.element.innerHTML = `
         ${this.generateFont()}
+        ${this.generateVars()}
         .app:hover{
             background-color: rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal},0.4);
             box-shadow: inset 0px 0px 0px 1px rgba(${this.parsedTheme["Colors:Selection"].BackgroundNormal}, 0.8);
