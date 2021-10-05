@@ -331,6 +331,12 @@ let defaultBinaries = {
     "konsole":compile(async function(){
         api.spawnWindow("file:///usr/share/apps/konsole/index.html", { location: api.args[0] });
     }),
+    "minipaint":compile(async function(){
+        api.spawnWindow("https://viliusle.github.io/miniPaint", { location: api.args[0] });
+    }),
+    "chessgame":compile(async function(){
+        api.spawnWindow("https://mhonert.github.io/chess/", { location: api.args[0] });
+    }),
     "xdg-open": compile(async function () {
         api.openFile(api.args[0]);
     })
