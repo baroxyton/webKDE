@@ -103,7 +103,6 @@ html, body {
 .kwin {
     position: absolute;
     border-radius: 3px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.5);
     visibility: hidden;
 }
 
@@ -250,8 +249,12 @@ html, body {
 
 .kwin {
     background-color: var(--Colors_Tooltip_BackgroundNormal);
+    filter:contrast(0.95);
 }
-
+.kwin.focused{
+    filter: none !important;
+    box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.3);
+}
 .knavbar, .toolbar {
     background-color: var(--Colors_Tooltip_BackgroundNormal);
 }

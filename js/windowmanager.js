@@ -393,10 +393,16 @@ class WebKWin {
     focus(){
       this.focused = true;
       this.element.classList.add("focused");
+      this.setHighest();
     }
     unfocus(){
       this.focused = false;
       this.element.classList.remove("focused");
+    }
+    setHighest() {
+    let items = desktop.zindex.find(element=>element.name=="windows").instances;
+    items.push(items.splice(items.indexOf(this.element), 1)[0]);
+    desktop.renderZ()
     }
 }
 window.win = WebKWin;

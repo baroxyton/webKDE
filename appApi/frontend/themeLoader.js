@@ -37,17 +37,17 @@ function parseTheme(rawTheme) {
     })
     return result;
 }
-function inactiveTheme(parsedTheme){
-  let result = {...parsedTheme};
-  for(let section in result){
-  for(let element  in result[section]){
-   if(element.includes("Inactive")){
-    let normalName = element.slice(0, -8) + 'Normal';
-    result[section][normalName] = result[section][element];
+function inactiveTheme(parsedTheme) {
+    let result = JSON.parse(JSON.stringify(parsedTheme));
+    for (let section in result) {
+        for (let element in result[section]) {
+            if (element.includes("Inactive")) {
+                let normalName = element.slice(0, -8) + 'Normal';
+                result[section][normalName] = result[section][element];
+            }
+        }
     }
-   }
-  }
-  return result;
+    return result;
 }
 // Theme loader class generates and loads a CSS file from a font and raw theme
 
@@ -55,7 +55,8 @@ class ThemeLoader {
     constructor(rawTheme, font) {
         this.rawTheme = rawTheme;
         this.font = font;
-        this.parsedTheme = parseTheme(rawTheme);
+        this.parsedTheme = this.focusedTheme = parseTheme(rawTheme);
+        this.unfocusedTheme = inactiveTheme(this.parsedTheme);
 
         this.render()
     }
@@ -74,19 +75,19 @@ class ThemeLoader {
               font-family:linuxFont;
           }`
     }
-    generateVars(){
+    generateVars() {
         let result = `:root {
             `;
-        for(let section in this.parsedTheme){
-            for(let data in this.parsedTheme[section]){
+        for (let section in this.parsedTheme) {
+            for (let data in this.parsedTheme[section]) {
                 let value = this.parsedTheme[section][data];
-                if(!value||section.includes("[")||!value.match(/^(((\d){1,3})(\,)?){3}$/)){
+                if (!value || section.includes("[") || !value.match(/^(((\d){1,3})(\,)?){3}$/)) {
                     continue;
                 }
-                result += `--${section.replace(":","_")}_${data}: rgb(${value});\n`;
-                result += `--${section.replace(":","_")}_${data}_raw: ${value};\n`
+                result += `--${section.replace(":", "_")}_${data}: rgb(${value});\n`;
+                result += `--${section.replace(":", "_")}_${data}_raw: ${value};\n`
             }
-        } 
+        }
         result += "}";
         return result;
     }
@@ -120,7 +121,7 @@ class ThemeLoader {
             background-color: rgba(${this.parsedTheme["Colors:Button"].ForegroundActive},0.5);
         }
         `
-        
+
         document.head.appendChild(this.element);
     }
 
@@ -134,6 +135,14 @@ class ThemeLoader {
     changeTheme(rawtheme) {
         this.parsedTheme = parseTheme(rawtheme);
         this.render()
+    }
+    focus() {
+        this.parsedTheme = this.focusedTheme;
+        this.render();
+    }
+    unfocus() {
+        this.parsedTheme = this.unfocusedTheme;
+        this.render();
     }
 }
 export { ThemeLoader as default };

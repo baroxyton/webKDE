@@ -91,9 +91,13 @@ class ProgramApi {
                     this.tty.env[data.read().key] = String(data.read().value);
                     break;
                 case "focus":
-                this.windowObject.focus();
-                this.focus();
-                break;
+                    this.windowObject.focus();
+                    this.focus();
+                    break;
+                    case "unfocus":
+                    this.windowObject.unfocus();
+                    this.unfocus();
+                    break;
             }
         }
         setTimeout(() => {
@@ -288,7 +292,7 @@ class ProgramApi {
                 break;
             case "quit":
                 this.commandApi.io.stdout.done();
-            break;
+                break;
         }
     }
 
@@ -306,12 +310,13 @@ class ProgramApi {
             this.channel.write("windowApiData", packet);
         }
     }
-    focus(){
-      this.focused = true;
-      this.updateSty
+    focus() {
+        this.focused = true;
+        this.channel.write("focus");
     }
-    unfocus(){
-      this.focused = false;
+    unfocus() {
+        this.focused = false;
+        this.channel.write("unfocus");
     }
 }
 export { ProgramApi as default };

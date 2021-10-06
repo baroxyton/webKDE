@@ -38,6 +38,8 @@ class OSApi {
                 this._ttyCall("quit");
             }
         }
+        window.addEventListener("focus", event => { this.channel.write("focus", null); });
+        window.addEventListener("blur", event => { this.channel.write("unfocus", null); });
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
@@ -50,6 +52,12 @@ class OSApi {
                     break;
                 case "ttyData":
                     this.tty.onData.trigger(data.read());
+                    break;
+                case "focus":
+                    this.theme.focus();
+                    break;
+                case "unfocus":
+                    this.theme.unfocus();
             }
         }
         document.body.addEventListener("mousedown", event => this.updateMousePosition(event.clientX, event.clientY));
