@@ -38,8 +38,14 @@ class OSApi {
                 this._ttyCall("quit");
             }
         }
-        window.addEventListener("focus", event => { this.channel.write("focus", null); });
-        window.addEventListener("blur", event => { this.channel.write("unfocus", null); });
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                this.channel.write("unfocus", null)
+            } else {
+                this.channel.write("focus", null);
+            }
+        })
+
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
@@ -58,6 +64,12 @@ class OSApi {
                     break;
                 case "unfocus":
                     this.theme.unfocus();
+                    break;
+                case "keypress":
+                    let fakeEvent = new KeyboardEvent("keydown", data.read().event);
+                    console.log("fake event", fakeEvent)
+                    document.body.dispatchEvent(fakeEvent);
+                    break;
             }
         }
         document.body.addEventListener("mousedown", event => this.updateMousePosition(event.clientX, event.clientY));

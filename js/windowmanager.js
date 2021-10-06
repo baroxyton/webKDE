@@ -308,6 +308,37 @@ class WebKWin {
         this.element.addEventListener("mousedown", event => {
             this.contentElement.focus();
         })
+        document.body.addEventListener("keydown", event => {
+            if (this.removed || !this.focused) {
+                return;
+            }
+            let filteredEvent = {};
+            for (let eventKey in event) {
+                let eventValue = event[eventKey];
+                if (typeof eventValue == "object" || typeof eventValue == "function") {
+                    continue;
+                }
+                filteredEvent[eventKey] = eventValue;
+            }
+            console.log(filteredEvent, "filtered event")
+            this.api.channel.write("keypress", { event: filteredEvent });
+        });
+        document.body.addEventListener("mousedown", event => {
+            if (this.removed) {
+                return;
+            }
+            if (this.element.contains(event.target)) {
+                if (!this.focused) {
+                    this.focus();
+                    console.log("foused")
+                }
+            }
+            else {
+                if (this.focused) {
+                    this.unfocus();
+                }
+            }
+        })
     }
     showToolbar(data) {
         if (data) {
@@ -390,19 +421,19 @@ class WebKWin {
         new DesktopMenu(position, items);
         this.cover.style.display = "flex";
     }
-    focus(){
-      this.focused = true;
-      this.element.classList.add("focused");
-      this.setHighest();
+    focus() {
+        this.focused = true;
+        this.element.classList.add("focused");
+        this.setHighest();
     }
-    unfocus(){
-      this.focused = false;
-      this.element.classList.remove("focused");
+    unfocus() {
+        this.focused = false;
+        this.element.classList.remove("focused");
     }
     setHighest() {
-    let items = desktop.zindex.find(element=>element.name=="windows").instances;
-    items.push(items.splice(items.indexOf(this.element), 1)[0]);
-    desktop.renderZ()
+        let items = desktop.zindex.find(element => element.name == "windows").instances;
+        items.push(items.splice(items.indexOf(this.element), 1)[0]);
+        desktop.renderZ()
     }
 }
 window.win = WebKWin;
