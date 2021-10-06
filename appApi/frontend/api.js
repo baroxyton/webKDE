@@ -38,13 +38,14 @@ class OSApi {
                 this._ttyCall("quit");
             }
         }
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) {
-                this.channel.write("unfocus", null)
-            } else {
-                this.channel.write("focus", null);
+        let hasFocus = false;
+        setInterval(() => {
+            if (hasFocus == document.hasFocus()) {
+                return;
             }
-        })
+            hasFocus = document.hasFocus()
+            hasFocus ? this.channel.write("focus", null) : this.channel.write("unfocus", null);
+        }, 16);
 
     }
     async events() {
