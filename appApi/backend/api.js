@@ -5,6 +5,7 @@ import { getFile } from "../../linuxCore/components/fileapi.js";
 import WebKWin from "../../js/windowmanager.js";
 class ProgramApi {
     constructor(user, windowObject, iframe) {
+        this.focused = false;
         this.tty = new desktop.Tty("/", user);
         window.api = this;
         this.windowObject = windowObject;
@@ -89,6 +90,10 @@ class ProgramApi {
                 case "setenv":
                     this.tty.env[data.read().key] = String(data.read().value);
                     break;
+                case "focus":
+                this.windowObject.focus();
+                this.focus();
+                break;
             }
         }
         setTimeout(() => {
@@ -300,6 +305,13 @@ class ProgramApi {
             let packet = { data: data.read(), event: data.event };
             this.channel.write("windowApiData", packet);
         }
+    }
+    focus(){
+      this.focused = true;
+      this.updateSty
+    }
+    unfocus(){
+      this.focused = false;
     }
 }
 export { ProgramApi as default };

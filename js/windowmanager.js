@@ -7,6 +7,7 @@ import toMime from "./toMime.js";
 
 class WebKWin {
     constructor(url, args) {
+        this.isFocused = false;
         let urlData = new URL(url, String(location));
         if (urlData.protocol == "javascript:") {
             console.log("prevented xss!");
@@ -110,7 +111,7 @@ class WebKWin {
 
         // Mouse move: drag & resize window
         document.body.addEventListener("mousemove", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             if (this.mousePos) {
@@ -161,7 +162,7 @@ class WebKWin {
             }
         });
         document.body.addEventListener("mouseup", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             if (this.resize) {
@@ -187,7 +188,7 @@ class WebKWin {
         
         */
         document.body.addEventListener("mousedown", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             // Resize box
@@ -304,6 +305,9 @@ class WebKWin {
             this.navbar.style.cursor = "default";
             this.mousePos = null;
         });
+        this.element.addEventListener("mousedown", event => {
+            this.contentElement.focus();
+        })
     }
     showToolbar(data) {
         if (data) {
@@ -385,6 +389,14 @@ class WebKWin {
         });
         new DesktopMenu(position, items);
         this.cover.style.display = "flex";
+    }
+    focus(){
+      this.focused = true;
+      this.element.classList.add("focused");
+    }
+    unfocus(){
+      this.focused = false;
+      this.element.classList.remove("focused");
     }
 }
 window.win = WebKWin;
