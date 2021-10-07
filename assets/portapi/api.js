@@ -241,6 +241,9 @@ class OSApi {
         return await this.channel.write("setenv", { key, value }, true);
     }
     addShortcut(shortcut, action) {
+        if(shortcut instanceof Array){
+            shortcut.forEach(s=>this.addShortcut(s, action));
+        }
         let shortcutInfo = { key: null, shift: false, ctrl: false, alt: false };
         let splitShortcut = shortcut.toLowerCase().split(" ").join("").split("+");
         splitShortcut.forEach(info => {

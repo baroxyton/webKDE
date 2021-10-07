@@ -17,10 +17,12 @@ api.gotData.then(async () => {
                         new Tab(api);
                     }
                 },
-                { text: "Open", icon: "/usr/share/icons/breeze-dark/actions/document-open.svg", seperator: true, action:async ()=>{
-                    let location = await api.fileDialog(["*.json","*.txt"]);
-                    new Tab(api, location);
-                } },
+                {
+                    text: "Open", icon: "/usr/share/icons/breeze-dark/actions/document-open.svg", seperator: true, action: async () => {
+                        let location = await api.fileDialog(["*.json", "*.txt"]);
+                        new Tab(api, location);
+                    }
+                },
                 {
                     text: "Save", icon: "/usr/share/icons/breeze-dark/actions/document-save.svg", action: () => {
                         tabList.find(tab => tab.selected).save()
@@ -30,12 +32,12 @@ api.gotData.then(async () => {
                     text: "Save as..", icon: "/usr/share/icons/breeze-dark/actions/document-save-as.svg", action: () => {
                         tabList.find(tab => tab.selected).saveAs()
                     },
-                    seperator:true
+                    seperator: true
                 },
                 {
                     text: "Quit",
                     icon: "/usr/share/icons/breeze-dark/actions/gtk-quit.svg",
-                    action:()=>api.quit()
+                    action: () => api.quit()
                 }
             ],
         },
@@ -60,9 +62,14 @@ api.channel.onevent = async data => {
                 let quit = await api.dialog("confirm", "discard changes and quit", ["No", "Yes"]);
                 if (quit == 1) { api.quit() }
             }
-            else{
-            api.quit();
+            else {
+                api.quit();
             }
             break;
     }
 }
+api.addShortcut("Ctrl+S", () => { tabList.find(tab => tab.selected).save() });
+api.addShortcut("Ctrl+Shift+S", () => { tabList.find(tab => tab.selected).saveAs() });
+api.addShortcut("Ctrl+O", async () => { let location = await api.fileDialog(["*.json", "*.txt"]); new Tab(api, location) });
+api.addShortcut(["Ctrl+T", "Ctrl+N"], () => { new Tab() });
+api.addShortcut("Ctrl+W", () => { tabList.find(tab => tab.selected).close() })
