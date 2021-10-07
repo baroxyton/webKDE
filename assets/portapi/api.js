@@ -2,6 +2,7 @@ import Channel from "{{file:/usr/lib/api/communication.js}}"
 import ThemeLoader from "{{file:/usr/lib/api/themeLoader.js}}"
 class OSApi {
     constructor() {
+        this.shortcuts = [];
         this.iconCache = {};
         this.channel = new Channel(window.parent);
         this.events();
@@ -60,7 +61,7 @@ class OSApi {
                     break;
                 case "ttyData":
                     this.tty.onData.trigger(data.read());
-                break;
+                    break;
                 case "keypress":
                     let fakeEvent = new KeyboardEvent("keydown", data.read().event);
                     console.log("fake event", fakeEvent)
@@ -70,6 +71,19 @@ class OSApi {
         }
         document.body.addEventListener("mousedown", event => this.updateMousePosition(event.clientX, event.clientY));
         document.body.addEventListener("touchstart", event => { this.updateMousePosition(event.touches[0].clientX, event.touches[0].clientY) });
+        document.body.addEventListener("keydown", event => {
+            let shortcutData = {
+                key: event.key.toLowerCase(),
+                shift: event.shiftKey,
+                ctrl: event.ctrlKey,
+                alt: event.altKey
+            };
+            let shortcut = this.shortcuts.find(s => s.shortcut.key == shortcutData.key && s.shortcut.shift == shortcutData.shift && s.shortcut.ctrl == shortcutData.ctrl && s.shortcut.alt == shortcutData.alt);
+            if (shortcut) {
+                event.preventDefault();
+                shortcut.action();
+            }
+        })
     }
 
     // Data structure:
@@ -225,6 +239,27 @@ class OSApi {
     }
     async setEnv(key, value) {
         return await this.channel.write("setenv", { key, value }, true);
+    }
+    addShortcut(shortcut, action) {
+        let shortcutInfo = { key: null, shift: false, ctrl: false, alt: false };
+        let splitShortcut = shortcut.toLowerCase().split(" ").join("").split("+");
+        splitShortcut.forEach(info => {
+            switch (info) {
+                case "ctrl":
+                    shortcutInfo.ctrl = true;
+                    break;
+                case "shift":
+                    shortcutInfo.shift = true;
+                    break;
+                case "alt":
+                    shortcutInfo.alt = true;
+                    break;
+                default:
+                    shortcutInfo.key = info;
+                    break;
+            }
+        })
+        this.shortcuts.push({ shortcut: shortcutInfo, action });
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
