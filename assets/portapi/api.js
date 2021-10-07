@@ -50,6 +50,7 @@ class OSApi {
     }
     async events() {
         this.data = (await this.channel.write("loaded", true, true)).data;
+        this.channel.write("focus", null);
         this.gotDataRes(this.data);
         this.theme = new ThemeLoader(this.data.theme, this.data.font)
         this.channel.onevent = data => {
@@ -59,13 +60,7 @@ class OSApi {
                     break;
                 case "ttyData":
                     this.tty.onData.trigger(data.read());
-                    break;
-                case "focus":
-                    this.theme.focus();
-                    break;
-                case "unfocus":
-                    this.theme.unfocus();
-                    break;
+                break;
                 case "keypress":
                     let fakeEvent = new KeyboardEvent("keydown", data.read().event);
                     console.log("fake event", fakeEvent)
