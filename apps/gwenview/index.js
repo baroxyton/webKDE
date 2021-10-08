@@ -147,7 +147,10 @@ async function saveFile() {
     }
     fileReader.readAsBinaryString(imageBlob);
 }
-
+async function saveAs() {
+    fileLocation = await api.fileDialog(["*.png", "*.jpg"]);
+    saveFile();
+}
 function startDrawing() {
     if (!editingHistory.length) {
         saveToHistory();
@@ -216,3 +219,5 @@ api.gotData.then(async () => {
 
 document.getElementById("drawMenu").querySelector("button").addEventListener("click", stopDrawing);
 document.querySelector("#noImage > button").addEventListener("click", () => openFile());
+api.addShortcut("Ctrl+S", () => saveFile());
+api.addShortcut("Ctrl+Shift+S", () => saveAs());
