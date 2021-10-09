@@ -274,3 +274,14 @@ html, body {
 .toolbarItem:hover {
     background-color: rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.1);
 }
+.appLauncherIcon{
+    height:40px;
+    width:40px;
+    background-size: 100% 100%;
+    background-position: 0 0;
+    margin-left:2px;
+}
+.appWidget{
+    display:flex;
+    align-items:center;
+}

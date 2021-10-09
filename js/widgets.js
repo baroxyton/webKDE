@@ -1,5 +1,6 @@
 "use strict";
 import WidgetWindow from "./widgetWindow.js";
+import parseDesktopFile from "./parseDesktopFile.js"
 class Widget {
     constructor(icon, panel, config) {
         this.config = config;
@@ -14,10 +15,10 @@ class Widget {
         this.element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.icon))}")`;
         this.element.classList.add("widget");
         this.panel.appendChild(this.element);
-        this.element.addEventListener("click",event=>this.callAction(event));
+        this.element.addEventListener("click", event => this.callAction(event));
         // Addiitonal method, that widgets can add
         if (this.rendered) {
-            this.rendered()
+            setTimeout(()=>this.rendered(), 10)
         }
     }
 
@@ -29,7 +30,7 @@ class Widget {
     }
 
     remove() {
-        this.removed  = true;
+        this.removed = true;
         if (this.element) {
             this.element.outerHTML = "";
         }
@@ -37,9 +38,9 @@ class Widget {
 
     // Called when clicking
     callAction(event) {
-        if(this.popup){
+        if (this.popup) {
             let panelRect = this.panel.getBoundingClientRect();
-            new WidgetWindow({x:this.element.offsetTop,y:panelRect.top}, this.popup, {config:this.config||{}});
+            new WidgetWindow({ x: this.element.offsetTop, y: panelRect.top }, this.popup, { config: this.config || {} });
             return;
         }
         if (this.action) {
@@ -54,17 +55,46 @@ export class SearchMenuWidget extends Widget {
         this.popup = "file:///usr/share/widgets/startMenu/index.html"
     }
 }
-
+class StarterApp {
+    constructor(parsedApp, launcherElement) {
+        this.launcherElement = launcherElement
+        this.parsedApp = parsedApp;
+    }
+    render() {
+        this.command = this.parsedApp["Desktop Entry"].Exec[0].replace("%U", "");
+        this.icon = this.parsedApp["Desktop Entry"].Icon[0];
+        this.element = document.createElement("div");
+        this.element.classList.add("appLauncherIcon");
+        this.element.addEventListener("click", () => {
+            debug.runCommand(this.command)
+        });
+        this.element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.icon))}")`;
+        this.launcherElement.appendChild(this.element);
+    }
+    remove() {
+        this.removed = true;
+        this.element.outerHTML = null;
+    }
+}
 // Panel widget with apps you can click to start
-class AppsWidget extends Widget {
+export class AppsWidget extends Widget {
     constructor(panel, options) {
         super("/", panel, options);
+        this.element.classList.add("appWidget")
+        this.panel = panel;
+        this.options = options;
+        this.apps = options.apps.map(appData => {
+            let parsedApp = parseDesktopFile(debug.fileapi.internal.read(appData));
+            let app = new StarterApp(parsedApp, this.element);
+            app.render();
+            return app;
+        })
     }
     rendered() {
         // Use full height
-        this.element.style.height = panel.style.height + "px";
+        this.element.style.height = this.panel.style.height + "px";
         // Adjust width to icons
-        this.element.style.width = "fit-content";
+        this.element.style.width = this.options.apps.length * 42 + "px";
     }
 }
 
@@ -74,7 +104,7 @@ export class SpaceWidget extends Widget {
         super("/", panel);
     }
     rendered() {
-        this.element.style.width = (options.width || "5") + "%";
+        this.element.style.width = (options.width || "5") + "px";
     }
 }
 
