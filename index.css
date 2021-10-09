@@ -280,8 +280,13 @@ html, body {
     background-size: 100% 100%;
     background-position: 0 0;
     margin-left:2px;
+    filter:brightness(1);
+    transition: filter 0.2s;
 }
 .appWidget{
     display:flex;
     align-items:center;
+}
+.appLauncherIcon:hover{
+    filter:brightness(1.2);
 }
