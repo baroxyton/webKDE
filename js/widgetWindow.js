@@ -2,6 +2,9 @@ import ProgramApi from "../appApi/backend/api.js";
 import WebKWin from "./windowmanager.js";
 import { checkPermission } from "../linuxCore/components/checkPermission.js"
 import toMime from "./toMime.js";
+
+// Popup for panel widgets
+// Compatiple with app api
 class WidgetWindow {
     constructor(position, url, args) {
         let urlData = new URL(url, String(location));
@@ -21,6 +24,8 @@ class WidgetWindow {
         this.addListeners();
         this.menu = WebKWin.prototype.menu;
     }
+
+    // Load file from webstorage FS
     loadLocalFile(path) {
         let file = debug.fileapi.internal.getFile(path);
         if (file instanceof Error || file.meta.type == "dir" || !checkPermission("demo", file, "r")) {
@@ -50,7 +55,6 @@ class WidgetWindow {
     addListeners() {
         this.cover.addEventListener("mouseup", event => {
             if (event.button == 0) {
-                console.log(event);
                 event.target.style.display = "none";
             }
         });

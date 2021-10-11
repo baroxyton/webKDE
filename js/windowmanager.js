@@ -3,8 +3,8 @@ import ProgramApi from "../appApi/backend/api.js";
 import DesktopMenu from "./menu.js"
 import { checkPermission } from "../linuxCore/components/checkPermission.js"
 import toMime from "./toMime.js";
-// Window manager class
 
+// Window manager class
 class WebKWin {
     constructor(url, args) {
         this.isFocused = false;
@@ -308,10 +308,14 @@ class WebKWin {
         this.element.addEventListener("mousedown", event => {
             this.contentElement.focus();
         })
+        
+        // Focused window, but not iframe: simulate keydown via api
         document.body.addEventListener("keydown", event => {
             if (this.removed || !this.focused) {
                 return;
             }
+        
+            // Filter out unsendable properties
             let filteredEvent = {};
             for (let eventKey in event) {
                 let eventValue = event[eventKey];
@@ -320,9 +324,10 @@ class WebKWin {
                 }
                 filteredEvent[eventKey] = eventValue;
             }
-            console.log(filteredEvent, "filtered event")
             this.api.channel.write("keypress", { event: filteredEvent });
         });
+    
+        // Focus/unfocus window
         document.body.addEventListener("mousedown", event => {
             if (this.removed) {
                 return;
@@ -330,7 +335,6 @@ class WebKWin {
             if (this.element.contains(event.target)) {
                 if (!this.focused) {
                     this.focus();
-                    console.log("foused")
                 }
             }
             else {
@@ -340,6 +344,8 @@ class WebKWin {
             }
         })
     }
+
+    // Show toolbar of window with options
     showToolbar(data) {
         if (data) {
             this.toolbar.innerHTML = "";
@@ -365,18 +371,25 @@ class WebKWin {
         this.iframeHolder.style.height = "calc(100% - 55px)";
         this.toolbar.style.display = "block";
     }
+
+    // Hide the toolbar
     hideToolbar() {
         this.iframeHolder.style.height = "calc(100% - 30px)";
         this.toolbar.style.display = "none";
     }
+
+    // Tell program to selfterminate
     sigterm() {
         this.api.sigterm()
     }
+
     remove() {
         this.removed = true;
         this.element.outerHTML = "";
     }
+
     enterFullscreen() {
+        // Backup inital window geometry. Set geometry to fullscreen
         let height = innerHeight - (desktop.panels[0].panelElement.offsetHeight + 0);
         this.beforeFullscreen = {
             height: this.height,
@@ -394,7 +407,9 @@ class WebKWin {
         this.element.style.height = this.height + "px";
         this.fullscreen = true;
     }
+
     exitFullscreen() {
+        // Restore window geometry
         this.fullscreen = false;
         for (let prop in this.beforeFullscreen) this[prop] = this.beforeFullscreen[prop]
         this.element.style.top = this.position.y + "px";
@@ -402,9 +417,12 @@ class WebKWin {
         this.element.style.width = this.width + "px";
         this.element.style.height = this.height + "px";
     }
+
     toggleFullscreen() {
         this.fullscreen ? this.exitFullscreen() : this.enterFullscreen();
     }
+
+    // Show menu popup from within application. Called by api
     menu(data) {
         console.log(data);
         let position = data.position;
@@ -421,15 +439,19 @@ class WebKWin {
         new DesktopMenu(position, items);
         this.cover.style.display = "flex";
     }
+
     focus() {
         this.focused = true;
         this.element.classList.add("focused");
         this.setHighest();
     }
+
     unfocus() {
         this.focused = false;
         this.element.classList.remove("focused");
     }
+
+    // Set to highest window
     setHighest() {
         let items = desktop.zindex.find(element => element.name == "windows").instances;
         items.push(items.splice(items.indexOf(this.element), 1)[0]);

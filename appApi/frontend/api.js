@@ -243,6 +243,7 @@ class OSApi {
     addShortcut(shortcut, action) {
         if(shortcut instanceof Array){
             shortcut.forEach(s=>this.addShortcut(s, action));
+            return;
         }
         let shortcutInfo = { key: null, shift: false, ctrl: false, alt: false };
         let splitShortcut = shortcut.toLowerCase().split(" ").join("").split("+");

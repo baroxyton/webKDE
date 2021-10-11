@@ -16,9 +16,9 @@ class Widget {
         this.element.classList.add("widget");
         this.panel.appendChild(this.element);
         this.element.addEventListener("click", event => this.callAction(event));
-        // Addiitonal method, that widgets can add
+
         if (this.rendered) {
-            setTimeout(()=>this.rendered(), 10)
+            setTimeout(()=>this.rendered())
         }
     }
 
@@ -55,6 +55,8 @@ export class SearchMenuWidget extends Widget {
         this.popup = "file:///usr/share/widgets/startMenu/index.html"
     }
 }
+
+// Shortcut icon for AppsWidget
 class StarterApp {
     constructor(parsedApp, launcherElement) {
         this.launcherElement = launcherElement
@@ -76,13 +78,16 @@ class StarterApp {
         this.element.outerHTML = null;
     }
 }
-// Panel widget with apps you can click to start
+
+// Panel widget with application shortcuts
 export class AppsWidget extends Widget {
     constructor(panel, options) {
         super("/", panel, options);
         this.element.classList.add("appWidget")
         this.panel = panel;
         this.options = options;
+
+        // Render shortcut icons
         this.apps = options.apps.map(appData => {
             let parsedApp = parseDesktopFile(debug.fileapi.internal.read(appData));
             let app = new StarterApp(parsedApp, this.element);
@@ -109,7 +114,6 @@ export class SpaceWidget extends Widget {
 }
 
 // Digital clock widget
-
 export class ClockWidget extends Widget {
     constructor(panel, options) {
         super("/", panel);
@@ -122,7 +126,7 @@ export class ClockWidget extends Widget {
         let year = date.getFullYear();
         let day = date.getDate()
 
-        // Add zeros in beginning (e.g 9:2 becomes 09:02)
+        // Format date with zeros
         if (minutes < 10) {
             minutes = "0" + minutes;
         }
@@ -145,7 +149,8 @@ export class ClockWidget extends Widget {
         setInterval(() => this.updateTime(), 1000)
     }
 }
-// Widget to click to minimize all windows and return to desktop
+
+// Show desktop widget
 class ShowDesktopWidget extends Widget {
     constructor(panel, options) {
         super("/usr/share/icons/breeze-dark/places/desktop.svg", panel);

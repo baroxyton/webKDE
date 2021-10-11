@@ -18,7 +18,7 @@ class Panel {
         this.panelElement.style.width = this.config.width + "%";
         this.panelElement.style.left = this.config.left + "%";
         this.panelElement.top = this.config.top + "%";
-
+        
         this.config.items.forEach(item => {
             let newWidget = new widgets[item.type](this.panelElement,item.config);
             if (item.styles) {

@@ -33,50 +33,51 @@ class DesktopMenu {
             if (item.icon) {
                 let iconElement = document.createElement("div");
                 iconElement.classList.add("menuIcon");
-                // Hacky way to get space for icons without dealing with painful alignment
+
+                // Empty space for icon
                 iconElement.innerHTML = "&nbsp;".repeat(5);
                 iconElement.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(item.icon))}")`;
                 itemElement.appendChild(iconElement);
             }
-            if(item.seperator){
+            if (item.seperator) {
                 itemElement.classList.add("menuSeparator");
             }
-            if(item.disabled){
+            if (item.disabled) {
                 itemElement.classList.add("disabled");
             }
-            // Item was clicked
+            // Menu item was clicked
             itemElement.addEventListener("mouseup", event => {
-                // Ignore anything other than leftclick. Ignore, if it's a menu with submenus
+                // Ignore rightclick
                 if (event.button != 0 || item.submenus) {
                     return;
                 }
-                //  Function that is added on initialisation
+
                 if (item.action) {
                     item.action();
                 }
-                // Close when clicked
+                // Close menu
                 this.remove();
+
                 // If submenu, close parent menu
                 if (this.parent) {
                     this.parent.parentElement.outerHTML = "";
                 }
             });
-            // If element has submenus and mouse is moving on it, expand
+
+            // Expand submenu
             itemElement.addEventListener("mousemove", event => {
-                // Make sure it's not expanded already
                 if (item.expanded || !item.submenus) {
                     return;
                 }
-                // Get positions of submenu: ending position of parent
+                // Find submenu position
                 let rect = itemElement.getBoundingClientRect();
-
                 let positionX = rect.left + rect.width;
                 let positionY = rect.top;
 
                 item.expanded = true;
                 itemElement.object = item;
 
-                //spawn submenu
+                // Spawn submenu
                 this.submenus.push(new DesktopSubmenu({ x: positionX, y: positionY }, item.submenus, itemElement));
             })
             itemElement.appendChild(textElement);
@@ -84,10 +85,11 @@ class DesktopMenu {
         });
         document.getElementById("desktop").appendChild(this.element, "menus");
     }
+
     // Close menu when clicking desktop
     addListeners() {
         document.getElementById("desktop").addEventListener("mousedown", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             if (event.target.classList.contains("menu") || event.target.classList.contains("menuItem") || event.target.parentElement.classList.contains("menuItem")) {
@@ -101,20 +103,19 @@ class DesktopMenu {
         this.element.outerHTML = "";
     }
 }
-// Submenu class
 
+// Submenu class
 class DesktopSubmenu extends DesktopMenu {
     constructor(position, items, parent) {
         super(position, items);
-        // Submenu is smaller than normal menu
         this.element.style.minWidth = "10vw";
         this.parent = parent;
     }
 
     addListeners() {
-        // Detect moving off element instead of clicking to close submenu
+        // Close submenu when moving off
         document.getElementById("desktop").addEventListener("mousemove", event => {
-            if(this.removed){
+            if (this.removed) {
                 return;
             }
             if (event.target != this.element && event.target.parentElement != this.element && event.target.parentElement.parentElement != this.element && event.target != this.parent && event.target.parentElement != this.parent) {

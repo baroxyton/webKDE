@@ -1,14 +1,16 @@
 "use strict";
 import DesktopMenu from "./menu.js";
 import WebKWin from "./windowmanager.js";
-// Icon, that renders on desktop
+
+// Desktop icon
 class DesktopApp {
     constructor(name, icon, position, appConfig) {
         this.name = name;
         this.icon = icon;
         this.position = position;
         this.config = appConfig;
-        //container element of desktop apps
+
+        // App container
         this.appHolder = document.getElementById("apps");
         this.render();
     }
@@ -42,8 +44,8 @@ class DesktopApp {
         this.appElement.style.width = iconWidth + "px";
         this.appElement.style.height = iconHeight + "px";
 
-        this.appElement.style.left = /*margin from start*/ 5 + (iconWidth * /*grid position times icon size*/ this.position.x) + (/*margin and padding of each icon*/40 * this.position.x) + "px";
-        this.appElement.style.top = /*margin from start*/ 5 + (iconHeight * /*grid position times icon size*/ this.position.y) + (/*margin and padding of each icon*/ 40 * this.position.y) + "px";
+        this.appElement.style.left = /*screen start margin*/ 5 + (iconWidth * /*grid position times icon size*/ this.position.x) + (/*margin and padding of each icon*/40 * this.position.x) + "px";
+        this.appElement.style.top = /*screen start margin*/ 5 + (iconHeight * /*grid position times icon size*/ this.position.y) + (/*margin and padding of each icon*/ 40 * this.position.y) + "px";
 
         this.nameElement.innerText = this.name;
 
@@ -57,7 +59,7 @@ class DesktopApp {
         this.appHolder.appendChild(this.appElement, "icons");
         this.addListeners();
     }
-    // When user clicks on icon, make it visible
+    // Highlight app on click
     select() {
         this.appElement.classList.add("selectedapp");
     }
@@ -69,7 +71,7 @@ class DesktopApp {
         // After render, reset event data
         this.mousedown = false;
 
-        // Show context menu when rightclicking
+        // Icon context menu
         this.appElement.addEventListener("contextmenu", event => {
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: "Open",
@@ -134,7 +136,7 @@ class DesktopApp {
             }]);
         })
 
-        // Detect mouse click: Select app, unselect other apps and prepare to drag icons
+        // Highlight app on click
         this.appElement.addEventListener("mousedown", event => {
             this.mousedown = true;
             desktop.apps.forEach(app => app.unselect());
@@ -142,7 +144,7 @@ class DesktopApp {
             this.select();
         });
 
-        // If dragging app, stop
+        // Stop dragging
         this.appElement.addEventListener("mouseup", event => {
             this.mousedown = false;
             if (this.moving) {
@@ -150,7 +152,7 @@ class DesktopApp {
             }
         });
 
-        // Remove highlight when pressing desktop
+        // Remove highlighting
         document.getElementById("desktop").addEventListener("mouseup", event => {
             if (this.removed) {
                 return;
@@ -165,8 +167,8 @@ class DesktopApp {
             this.unselect();
         })
 
+        // Move icon on click drag
         this.appElement.addEventListener("mousemove", async event => {
-            // If not clicked down, we can exit function
             if (!this.mousedown) {
                 return;
             }
@@ -175,7 +177,6 @@ class DesktopApp {
             this.appElement.style.left = (event.pageX - this.mousedownPosition.x) + "px";
             this.appElement.style.top = (event.pageY - this.mousedownPosition.y) + "px";
         });
-        // On older machines you can easily escape the icon by moving the mouse fast. Add event as callback
         document.getElementById("desktop").addEventListener("mousemove", async event => {
             if (this.removed) {
                 return;
@@ -189,9 +190,10 @@ class DesktopApp {
         });
         this.appElement.addEventListener("dblclick", () => {
             desktop.openFile("/home/demo/Desktop/" + this.name)
-        })
+        });
     }
-    // Stop drag click moving icon and place it in the app grid
+
+    // Stop moving, place app in grid
     stopMoving() {
         let iconWidth = (60 * this.config.iconSize);
         let iconHeight = (65 * this.config.iconSize);

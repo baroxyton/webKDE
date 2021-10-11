@@ -38,19 +38,6 @@ function parseTheme(rawTheme) {
     return result;
 }
 
-function inactiveTheme(parsedTheme){
-  let result = {...parsedTheme};
-  for(let section in result){
-  for(let element  in result[section]){
-   if(element.includes("Inactive")){
-    let normalName = element.slice(0, -8) + 'Normal';
-    result[section][normalName] = result[section][element];
-    }
-   }
-  }
-  return result;
-}
-
 // Theme loader class generates and loads a CSS file from a font and raw theme
 
 class ThemeLoader {
@@ -62,7 +49,9 @@ class ThemeLoader {
         this.render()
     }
 
+    // Generate font entry from config
     generateFont() {
+
         // Make font optional
         if (!this.font) {
             return "";
@@ -76,6 +65,8 @@ class ThemeLoader {
               font-family:linuxFont;
           }`
     }
+
+    // Generate variables to use theme in normal .css file
     generateVars() {
         let result = `:root {
             `;
