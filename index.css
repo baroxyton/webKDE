@@ -7,13 +7,13 @@ html, body {
 }
 @keyframes load{
     0% {
-        background: linear-gradient(to right, rgb(61,174,233) 0%, rgb(42,46,50) 99%);
+        box-shadow: inset 10px 0 0 0 rgb(61,174,233);
     }
-    1%{
-        background: linear-gradient(to right, rgb(61,174,233) 1%, rgb(42,46,50) 99%);
+    60%{
+        box-shadow: inset 30vw 0 0 0 rgb(61,174,233);
     }
     100% {
-        background: linear-gradient(to right, rgb(61,174,233) 100%, rgb(42,46,50) 0%);
+        box-shadow: inset 40vw 0 0 0 rgb(61,174,233);
     }
 }
 body::before {
@@ -35,7 +35,7 @@ body::before {
 
 body::after {
     content: "";
-    background-color: rgb(49, 54, 59);
+    background-color: rgb(73, 73, 73);
     position: absolute;
     width: 40vw;
     height: 5px;
@@ -91,8 +91,6 @@ body::after {
 .menu {
     position: fixed;
     min-width: 15vw;
-    width: fit-content;
-    height: fit-content;
     user-select: none;
     background-color: var(--Colors_Window_BackgroundNormal);
     box-shadow: inset 1px 1px 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5), inset -1px -1px 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5);
