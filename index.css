@@ -55,9 +55,8 @@ html, body {
     width: fit-content;
     height: fit-content;
     user-select: none;
-    z-index: 9999;
     background-color: var(--Colors_Window_BackgroundNormal);
-    box-shadow: 0 0 0 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5);
+    box-shadow: inset 1px 1px 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5), inset -1px -1px 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5);
     color: var(--Colors_View_ForegroundNormal);
     border-radius: 3px;
     font-size: 0.8em
@@ -234,7 +233,7 @@ html, body {
 }
 
 .menuItem.menuSeparator {
-    border-bottom: 1px solid
+    box-shadow: 0px 1px 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5);
 }
 
 .kwin.focused {
