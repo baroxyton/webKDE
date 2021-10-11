@@ -256,7 +256,8 @@ export async function runCommand(command, hook, tty = mainTty) {
 
 export async function runBinary(path, args, api, tty = mainTty) {
     let content = getFile(path).content;
-    let execWorker = new Worker("./linuxCore/components/binarysandbox.js");
+    let url = "data:application/javascript;base64,"+btoa(fileapi.internal.read("/usr/lib/binary/binarySandbox.js"))
+    let execWorker = new Worker(url);
     api.worker = execWorker
     execWorker.postMessage({
         type: "run",

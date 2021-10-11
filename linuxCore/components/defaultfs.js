@@ -3,7 +3,7 @@ async function download(url) {
     if (localStorage.downloaded) {
         return "{}";
     }
-    let response = await fetch("./"+url);
+    let response = await fetch("./" + url);
     let result = await response.text();
     return result;
 }
@@ -11,7 +11,7 @@ async function downloadBinary(url) {
     if (localStorage.downloaded) {
         return "{}";
     }
-    let response = await fetch("./"+url);
+    let response = await fetch("./" + url);
     let blob = await response.blob();
     let fr = new FileReader();
     fr.readAsBinaryString(blob);
@@ -51,7 +51,7 @@ async function downloadDirectory(url, isbinary) {
     let downloadCmd = (isbinary ? downloadBinary : download);
     let fileIndex = (await downloadCmd(url + "/index.txt")).split("\n");
     await Promise.all(fileIndex.map(async function (item) {
-        if(!item){
+        if (!item) {
             return;
         }
         let content;
@@ -277,7 +277,26 @@ export const defaultfs = async function () {
                                 type: "dir"
                             },
                             content: {
-                                "api": await downloadDirectory("/assets/portapi")
+                                "api": await downloadDirectory("/assets/portapi"),
+                                "binary": {
+                                    meta: {
+                                        changeDate: 0,
+                                        owner: "root",
+                                        permission: [7, 5, 5],
+                                        type: "dir"
+                                    },
+                                    content: {
+                                        "binarySandbox.js": {
+                                            meta: {
+                                                changeDate: 0,
+                                                owner: "root",
+                                                permission: [7, 5, 5],
+                                                type: "dir"
+                                            },
+                                            content: await download("/assets/binarySandbox.js")
+                                        }
+                                    }
+                                }
                             }
                         },
                         "bin": {
