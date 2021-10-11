@@ -5,6 +5,45 @@ html, body {
     overscroll-behavior-y: contain;
     overflow: hidden
 }
+@keyframes load{
+    0% {
+        background: linear-gradient(to right, rgb(61,174,233) 0%, rgb(42,46,50) 99%);
+    }
+    1%{
+        background: linear-gradient(to right, rgb(61,174,233) 1%, rgb(42,46,50) 99%);
+    }
+    100% {
+        background: linear-gradient(to right, rgb(61,174,233) 100%, rgb(42,46,50) 0%);
+    }
+}
+body::before {
+    font-family: Arial, Helvetica, sans-serif !important;
+    content: "Loading...";
+    background-color: rgb(49, 54, 59);
+    color: rgb(252, 252, 252);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    font-size: calc(10vh + 10vw);
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+body::after {
+    content: "";
+    background-color: rgb(49, 54, 59);
+    position: absolute;
+    width: 40vw;
+    height: 5px;
+    top: 80%;
+    left: 30%;
+    z-index: -1;
+    animation: load ease-in-out 10s forwards;
+}
 
 #desktop {
     height: 100vh;
