@@ -1,64 +1,66 @@
 html, body {
     height: 100vh;
     width: 100vw;
-    margin: 0px;
+    margin: 0;
     overscroll-behavior-y: contain;
-    overflow: hidden;
+    overflow: hidden
 }
 
 #desktop {
     height: 100vh;
     width: 100vw;
-    margin: 0px;
+    margin: 0;
     background-size: cover;
-    background-position: center;
+    background-position: center
 }
 
 #apps {
-    width: 100%;
+    width: 100%
 }
 
 .app {
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 10px 15px;
     position: fixed;
     border-radius: 3px;
-    user-select: none;
+    user-select: none
 }
 
 .appicon {
     height: 85%;
     width: 100%;
     background-size: 100% 100%;
-    filter: drop-shadow(1px 1px 0.5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(1px 1px 0.5px rgba(0, 0, 0, 0.5))
 }
 
 .appname {
     text-align: center;
-    color: white;
+    color: #fff;
     text-shadow: 1px 1px 2px #000, 1px 1px 2px #000, 1px 1px 2px #000;
     height: 8.333%;
-    width: 100%;
+    width: 100%
 }
 
 .panel {
     user-select: none;
     position: fixed;
     top: calc(100vh - 45px);
-    box-shadow: 1px -1px 10px black;
+    box-shadow: 1px -1px 10px #000;
+    background-color: rgba(var(--Colors_View_BackgroundNormal_raw), 0.9);
+    color: var(--Colors_View_ForegroundNormal)
 }
 
 .menu {
     position: fixed;
     min-width: 15vw;
-    font-size: 0.85em;
     width: fit-content;
     height: fit-content;
-    border-radius: 0px;
     user-select: none;
-    box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.2);
     z-index: 9999;
+    background-color: var(--Colors_Window_BackgroundNormal);
+    box-shadow: 0 0 0 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5);
+    color: var(--Colors_View_ForegroundNormal);
+    border-radius: 3px;
+    font-size: 0.8em
 }
 
 .menuItem {
@@ -67,27 +69,29 @@ html, body {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 3px;
-    display: flex;
+    display: flex
 }
 
 .menuItem.disabled {
     filter: brightness(0.5);
-    pointer-events: none;
+    pointer-events: none
 }
 
 .menuText {
-    margin-left: 5px;
+    margin-left: 5px
 }
 
 .menuIcon {
     background-size: auto 100%;
     margin-left: 5px;
-    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1));
+    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1))
 }
 
 .desktopdrag {
     position: absolute;
     border-radius: 5px;
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.2);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_ForegroundNormal_raw), 0.4)
 }
 
 .widget {
@@ -97,13 +101,15 @@ html, body {
     float: left;
     vertical-align: middle;
     text-align: center;
-    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1));
+    filter: drop-shadow(1px 1px 1px rgba(42, 46, 50, 1))
 }
 
 .kwin {
     position: absolute;
     border-radius: 3px;
     visibility: hidden;
+    background-color: var(--Colors_Tooltip_BackgroundNormal);
+    filter: contrast(0.95)
 }
 
 .knavbar {
@@ -113,36 +119,36 @@ html, body {
     border-top-right-radius: 3px;
     left: 0;
     height: 25px;
-    width: 100%;
+    width: 100%
 }
 
 .kwinActions {
     float: right;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center
 }
 
 .kwinActions>div {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    margin: 2px;
-    margin-top: 2.5px;
-    cursor: initial !important;
+    margin: 2.5px 2px 2px;
+    cursor: initial!important
 }
 
 .kwintitle {
     overflow: hidden;
     text-align: center;
     user-select: none;
+    color: var(--Colors_Window_ForegroundNormal)
 }
 
 .kwinIcon {
     float: left;
     height: 25px;
     width: 25px;
-    background-size: 100% 100%;
+    background-size: 100% 100%
 }
 
 .programIframe {
@@ -151,7 +157,7 @@ html, body {
     left: 0;
     height: 100%;
     width: 100%;
-    border: 0;
+    border: 0
 }
 
 .iframeHolder {
@@ -159,7 +165,7 @@ html, body {
     width: 100%;
     border-radius: 3px;
     display: flex;
-    overflow: hidden;
+    overflow: hidden
 }
 
 .windowcover {
@@ -168,7 +174,7 @@ html, body {
     height: 100%;
     width: 100%;
     z-index: 1000;
-    display: none;
+    display: none
 }
 
 .toolbar {
@@ -176,6 +182,7 @@ html, body {
     width: 100%;
     user-select: none;
     display: none;
+    border-bottom: 1px solid
 }
 
 .toolbarItem {
@@ -184,16 +191,17 @@ html, body {
     display: inline;
     float: left;
     margin-left: 2px;
+    color: var(--Colors_Tooltip_ForegroundNormal)
 }
 
 @keyframes widgetAnimation {
     0% {
         transform: translate(0, 0);
-        opacity: 0;
+        opacity: 0
     }
     100% {
         transform: translate(0, -100%);
-        opacity: 1;
+        opacity: 1
     }
 }
 
@@ -203,90 +211,60 @@ html, body {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     overflow: hidden;
-    visibility: hidden;
+    visibility: hidden
 }
 
 .widgetWindow.loaded {
-    animation: widgetAnimation 0.1s forwards;
+    animation: widgetAnimation 0.1s forwards
 }
-
-/*--Colors_Button_ForegroundNegative*/
 
 .app:hover {
     background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.4);
-    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8)
 }
 
 .selectedapp {
-    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8) !important;
-    box-shadow: none !important;
-}
-
-.panel {
-    background-color: rgba(var(--Colors_View_BackgroundNormal_raw), 0.9);
-    color: var(--Colors_View_ForegroundNormal);
-}
-
-.menu {
-    background-color: var(--Colors_Window_BackgroundNormal);
-    border: 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5) solid;
-    color: var(--Colors_View_ForegroundNormal);
+    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8)!important;
+    box-shadow: none!important
 }
 
 .menuItem:hover {
     background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.4);
-    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8);
+    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.8)
 }
 
 .menuItem.menuSeparator {
-    border-bottom: 1px rgba(var(--Colors_Window_ForegroundInactive_raw), 0.5) solid;
+    border-bottom: 1px solid
 }
 
-.desktopdrag {
-    background-color: rgba(var(--Colors_Selection_BackgroundNormal_raw), 0.2);
-    box-shadow: inset 0px 0px 0px 1px rgba(var(--Colors_Selection_ForegroundNormal_raw), 0.4);
+.kwin.focused {
+    filter: none!important;
+    box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.3)
 }
 
-.kwin {
-    background-color: var(--Colors_Tooltip_BackgroundNormal);
-    filter:contrast(0.95);
-}
-.kwin.focused{
-    filter: none !important;
-    box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(0, 0, 0, 0.3);
-}
 .knavbar, .toolbar {
-    background-color: var(--Colors_Tooltip_BackgroundNormal);
-}
-
-.kwintitle {
-    color: var(--Colors_Window_ForegroundNormal)
-}
-
-.toolbar {
-    border-bottom: 1px rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.2) solid;
-}
-
-.toolbarItem {
-    color: var(--Colors_Tooltip_ForegroundNormal);
+    background-color: var(--Colors_Tooltip_BackgroundNormal)
 }
 
 .toolbarItem:hover {
-    background-color: rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.1);
+    background-color: rgba(var(--Colors_Tooltip_ForegroundNormal_raw), 0.1)
 }
-.appLauncherIcon{
-    height:40px;
-    width:40px;
+
+.appLauncherIcon {
+    height: 40px;
+    width: 40px;
     background-size: 100% 100%;
     background-position: 0 0;
-    margin-left:2px;
-    filter:brightness(1);
-    transition: filter 0.2s;
+    margin-left: 2px;
+    filter: brightness(1);
+    transition: filter 0.2s
 }
-.appWidget{
-    display:flex;
-    align-items:center;
+
+.appWidget {
+    display: flex;
+    align-items: center
 }
-.appLauncherIcon:hover{
-    filter:brightness(1.2);
+
+.appLauncherIcon:hover {
+    filter: brightness(1.2)
 }
