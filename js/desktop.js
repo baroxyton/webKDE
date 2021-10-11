@@ -8,9 +8,9 @@ import "./windowmanager.js"
 import * as linux from "../linuxCore/index.js";
 import ThemeLoader from "./themeparser.js"
 import WebKWin from "./windowmanager.js"
-import WidgetWindow from "./widgetWindow.js"
 import openFile from "./openFile.js"
 let config;
+
 // Override appendChild to keep track of z-index
 let originalAppend = Element.prototype.appendChild;
 Element.prototype.appendChild = function (element, type) {
@@ -20,12 +20,15 @@ Element.prototype.appendChild = function (element, type) {
     desktop.renderZ && desktop.renderZ();
     return originalAppend.call(this, element);
 }
+
 class Desktop {
     constructor(config) {
         window.desktop = this;
         this.apps = [];
         this.selectedApps = [];
         this.panels = [];
+
+        // zindex priority of different elements
         this.zindex = [{
             name: "icons",
             level: 0,
@@ -64,6 +67,7 @@ class Desktop {
         ];
 
         this.config = config;
+
         // load current theme from config, with font
         this.theme = new ThemeLoader(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme), "data:application/octet-stream;base64," + btoa(linux.fileapi.internal.read(this.config.font)));
         this.element = document.getElementById("desktop");
@@ -75,63 +79,75 @@ class Desktop {
         this.render();
         this.addListeners();
     }
+    // (Re-)render desktop
     render() {
+        this.theme.changeTheme(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme));
         this.element.style.backgroundImage = `url("data:image/png;base64,${btoa(linux.fileapi.internal.read(this.config.desktop.backgroundimage))}")`;
         this.renderApps();
         this.renderPanels();
     };
-    // (re-)render icons on desktop
-    renderApps() {
-        //clear all icons
-        this.apps.forEach(app => app.remove());
 
-        // get list of file names on desktop
+    // (Re-)render icons on desktop
+    renderApps() {
+        // Clear all currently rendered icons
+        this.apps.forEach(app => app.remove());
+        this.apps = [];
+
+        // Get list of file names on desktop
         let apps = linux.fileapi.internal.list("/home/demo/Desktop");
 
-        // generate appropriate app elements using the name 
+        // Generate correct app elements using the name 
         let preparedApps = apps.map((app, index, apps) => {
             let result = {};
             result.name = app;
             let meta = linux.fileapi.internal.readMeta("/home/demo/Desktop/" + app);
             result.meta = meta;
-            // attempt to set correct icon using mime type
+
+            // Attempt to set correct icon using MIME type
             if (meta.type == "dir") {
                 result.icon = "/usr/share/icons/breeze-dark/places/folder.svg";
             }
             else {
                 result.icon = "/usr/share/icons/breeze-dark/mimetypes/" + toMime(app).replace("/", "-") + ".svg";
             }
-            //position in desktop grid
+
+            // Position in desktop grid
             result.position = { x: 0, y: 0 };
             if (this.config.desktop.icons[app]) {
                 result.position = this.config.desktop.icons[app].position;
             };
             return result;
-        })
-        // generate app icons and store them in desktop instance
+        });
+
+        // Generate app icons and store them in desktop instance
         preparedApps.forEach(element => {
             let app = new DesktopApp(element.name, element.icon, element.position, config.apps);
             this.apps.push(app);
         });
     }
-    // grab panels from config and render them
+
+    // Grab panels from config and render them
     renderPanels() {
         this.panels.forEach(panel => panel.remove());
+        this.panels = [];
         this.config.desktop.panels.forEach(panel => {
             this.panels.push(new Panel(panel));
         })
     }
-    // add all event listeners needed
+
+    // Add all event listeners needed
     addListeners() {
 
+        // Context menu
         this.element.addEventListener("contextmenu", event => {
-            // prevent browser context menu
             event.preventDefault();
-            // clicked another element. Let it handle it
+
+            // Not desktop element
             if (event.target != this.element) {
                 return;
             }
-            // spawn context menu
+
+            // Spawn context menu
             new DesktopMenu({ x: event.pageX, y: event.pageY }, [{
                 text: 'Create new...',
                 seperator: true,
@@ -200,7 +216,7 @@ class Desktop {
             ]);
         });
 
-        // track mousedown position to allow drag click selection later
+        // Track mousedown event for dragclick selection
         this.element.addEventListener("mousedown", event => {
             if (event.target == this.element) {
                 this.mousedown = true;
@@ -208,8 +224,8 @@ class Desktop {
             }
         });
 
-        // when the mouse is released and the user is performinng drag selection, stop it
-        this.element.addEventListener("mouseup", event => {
+        // Stop drag selection
+        this.element.addEventListener("mouseup", () => {
             this.mousedown = false;
             if (this.drag) {
                 this.drag.remove();
@@ -217,25 +233,26 @@ class Desktop {
             }
         })
 
-        // mouse was moved
+        // Drag selection
         this.element.addEventListener("mousemove", event => {
             this.mousePosition = { x: event.clientX, y: event.clientY };
-            // mouse button wasn't down. Nothing to do.
-            // Or: bubbled up from other element. Let it handle it.
+
+            // Mouse not down or wrong element
             if (!this.mousedown || (!this.drag && event.target != this.element && !event.target.classList.contains("desktopdrag"))) {
                 return;
             }
-            // Not currently utilizing click drag selection. Start to.
+
+            // Start drag selection
             if (!this.drag) {
                 this.drag = new DesktopDrag(this.mousepos, this.mousePosition);
             }
-            // Currently dragging. Report position change to respective drag instance.
+            // Track mouse position
             if (this.drag) {
                 this.drag.change(this.mousePosition);
             }
         });
 
-        // Translate various touch events for a (hacky) mobile suppot
+        // Mobile support
         window.addEventListener("touchstart", event => {
             document.body.requestFullscreen();
             let clickEvent = document.createEvent('MouseEvents');
@@ -273,12 +290,12 @@ class Desktop {
     }
 };
 
-// wait for file system to load and render desktop
+// Render desktop
 linux.fileapi.onready.then(() => {
-    // start config and
+    // Load config
     config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
     new Desktop(config);
-    // set flag to not download filesystem assets on next reload
+    // Flag to prevent needless downloading
     localStorage.downloaded = true;
     console.log("downloaded")
 });
