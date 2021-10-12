@@ -72,12 +72,11 @@ class WebKWin {
             this.iframeHolder.appendChild(this.contentElement);
             this.element.appendChild(this.iframeHolder);
             document.getElementById("desktop").appendChild(this.element, "windows");
-
+            this.api = new ProgramApi("demo", this);
             this.element.style.left = this.position.x + "px";
             this.element.style.top = this.position.y + "px";
-        }
 
-        this.api = new ProgramApi("demo", this);
+        }
     }
     addListeners() {
         this.cover.addEventListener("mouseup", event => {

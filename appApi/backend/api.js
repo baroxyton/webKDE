@@ -43,6 +43,14 @@ class ProgramApi {
                     this.windowObject.minHeight = data.read()?.minHeight || this.windowObject.minHeight || 100;
                     this.windowObject.width = data.read()?.width || data.read()?.minWidth || this.windowObject.width || innerHeight * 0.5;
                     this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
+                    if (this.windowObject.position.x + this.windowObject.width + 5 > innerWidth) {
+                        this.windowObject.position.x = innerWidth - innerHeight;
+                    }
+                    if (this.windowObject.position.y + this.windowObject.height + 45 > innerHeight) {
+                        this.windowObject.position.y = innerHeight - this.windowObject.height;
+                    }
+                    this.windowObject.element.style.left = this.windowObject.position.x + "px";
+                    this.windowObject.element.style.top = this.windowObject.position.y + "px";
                     this.window.style.width = this.windowObject.width + "px";
                     this.window.style.height = this.windowObject.height + "px";
                     if ((this.windowObject.maxHeight || this.windowObject.maxWidth) && !this.windowObject.fullscreen) {
@@ -94,7 +102,7 @@ class ProgramApi {
                     this.windowObject.focus();
                     this.focus();
                     break;
-                    case "unfocus":
+                case "unfocus":
                     this.windowObject.unfocus();
                     this.unfocus();
                     break;
