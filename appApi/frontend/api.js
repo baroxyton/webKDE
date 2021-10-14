@@ -159,6 +159,9 @@ class OSApi {
     menu(position, menuitems) {
         let events = {};
         let items = menuitems.map(item => {
+            if(!item){
+                return;
+            }
             item.event = `menu-${this.menuCount}`;
             this.menuCount++;
             events[item.event] = item.action;

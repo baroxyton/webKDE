@@ -21,6 +21,9 @@ class DesktopMenu {
 
         // Render all items
         this.items.forEach(item => {
+            if(!item){
+                return;
+            }
             item.expanded = false;
 
             let itemElement = document.createElement("div");

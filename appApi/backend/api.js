@@ -44,7 +44,7 @@ class ProgramApi {
                     this.windowObject.width = data.read()?.width || data.read()?.minWidth || this.windowObject.width || innerHeight * 0.5;
                     this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
                     if (this.windowObject.position.x + this.windowObject.width + 5 > innerWidth) {
-                        this.windowObject.position.x = innerWidth - innerHeight;
+                        this.windowObject.position.x = innerWidth - this.windowObject.width;
                     }
                     if (this.windowObject.position.y + this.windowObject.height + 45 > innerHeight) {
                         this.windowObject.position.y = innerHeight - this.windowObject.height;

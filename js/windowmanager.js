@@ -429,6 +429,9 @@ class WebKWin {
         position.x += rect.left;
         position.y += rect.top;
         let items = data.items.map(item => {
+            if(!item){
+                return;
+            }
             item.submenus = null;
             item.action = () => {
                 this.api.channel.write(item.event, true);

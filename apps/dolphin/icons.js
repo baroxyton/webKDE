@@ -76,7 +76,24 @@ class Icon {
                         this.api.filesystem("move", this.name, { new: cwd + "/" + newName });
                         loadContent(cwd);
                     }
-                }
+                },
+                (() => {
+                    // No download button for directories
+                    if (this.meta.type == "file") {
+                        return {
+                            text: "Download to host",
+                            icon: "/usr/share/icons/breeze-dark/actions/download.svg",
+                            action: () => {
+                                let win = window.open("about:blank");
+                                (async () => {
+                                    let fileContent = (await this.api.filesystem("read", this.name)).read().content;
+                                    let downloadUrl = URL.createObjectURL(await (await fetch(`data:${getMime(this.name)};base64,${btoa(fileContent)}`)).blob());
+                                    win.location = downloadUrl;
+                                })();
+                            }
+                        }
+                    }
+                })()
                 ]);
         });
         this.element.addEventListener("dblclick", () => {
