@@ -81,6 +81,7 @@ class Desktop {
     }
     // (Re-)render desktop
     render() {
+        config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
         this.theme.changeTheme(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme));
         this.element.style.backgroundImage = `url("data:image/png;base64,${btoa(linux.fileapi.internal.read(this.config.desktop.backgroundimage))}")`;
         this.renderApps();
@@ -130,8 +131,8 @@ class Desktop {
     renderPanels() {
         this.panels.forEach(panel => panel.remove());
         this.panels = [];
-        this.config.desktop.panels.forEach(panel => {
-            this.panels.push(new Panel(panel));
+        this.config.desktop.panels.forEach((panel, index) => {
+            this.panels.push(new Panel(panel, index));
         })
     }
 
@@ -284,7 +285,7 @@ class Desktop {
                 instance?.outerHTML && allElements.push(instance);
             })
         });
-        allElements.forEach((element, index)=>{
+        allElements.forEach((element, index) => {
             element.style.zIndex = index;
         })
     }

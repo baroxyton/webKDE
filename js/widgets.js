@@ -1,6 +1,7 @@
 "use strict";
 import WidgetWindow from "./widgetWindow.js";
-import parseDesktopFile from "./parseDesktopFile.js"
+import parseDesktopFile from "./parseDesktopFile.js";
+import DesktopMenu from "./menu.js";
 class Widget {
     constructor(icon, panel, config) {
         this.config = config;
@@ -58,24 +59,42 @@ export class SearchMenuWidget extends Widget {
 
 // Shortcut icon for AppsWidget
 class StarterApp {
-    constructor(parsedApp, launcherElement) {
+    constructor(appLocation, launcherElement, panelIndex) {
+        this.appLocation = appLocation;
+        this.panelIndex = panelIndex;
         this.launcherElement = launcherElement
-        this.parsedApp = parsedApp;
+        this.parsedApp  = parseDesktopFile(debug.fileapi.internal.read(appLocation));
     }
     render() {
         this.command = this.parsedApp["Desktop Entry"].Exec[0].replace("%U", "");
         this.icon = this.parsedApp["Desktop Entry"].Icon[0];
         this.element = document.createElement("div");
         this.element.classList.add("appLauncherIcon");
-        this.element.addEventListener("click", () => {
-            debug.runCommand(this.command)
-        });
         this.element.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.icon))}")`;
         this.launcherElement.appendChild(this.element);
+        this.addListeners()
     }
     remove() {
         this.removed = true;
         this.element.outerHTML = null;
+    }
+    addListeners(){
+        this.element.addEventListener("click", () => {
+            debug.runCommand(this.command)
+        });
+        this.element.addEventListener("contextmenu", event=>{
+            new DesktopMenu({x: event.clientX, y: event.clientY}, [{
+                text: "Unpin",
+                icon: "/usr/share/icons/breeze-dark/actions/window-unpin.svg",
+                action:()=>{
+                    let config = JSON.parse(debug.fileapi.internal.read("/home/demo/.config/plasma.json"));
+                    let widgetConfig = config.desktop.panels[this.panelIndex].items.find(widget => widget.type == "AppsWidget");
+                    widgetConfig.config.apps.splice(widgetConfig.config.apps.indexOf(this.appLocation));
+                    debug.fileapi.internal.write("demo", "/home/demo/.config/plasma.json", JSON.stringify(config));
+                    this.remove();
+                }
+            }])
+        })
     }
 }
 
@@ -89,8 +108,7 @@ export class AppsWidget extends Widget {
 
         // Render shortcut icons
         this.apps = options.apps.map(appData => {
-            let parsedApp = parseDesktopFile(debug.fileapi.internal.read(appData));
-            let app = new StarterApp(parsedApp, this.element);
+            let app = new StarterApp(appData, this.element, this.panel.panelIndex);
             app.render();
             return app;
         })

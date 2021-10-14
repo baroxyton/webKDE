@@ -1,7 +1,8 @@
 import * as widgets from "./widgets.js";
 "use strict";
 class Panel {
-    constructor(config) {
+    constructor(config, panelIndex) {
+        this.panelIndex = panelIndex;
         this.widgets = [];
         this.config = config;
         this.render();
@@ -12,6 +13,7 @@ class Panel {
         this.removed = false;
         
         this.panelElement = document.createElement("div");
+        this.panelElement.panelIndex = this.panelIndex;
         this.panelElement.classList.add("panel");
 
         this.panelElement.style.height = this.config.height + "px";
