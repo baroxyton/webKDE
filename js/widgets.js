@@ -41,7 +41,8 @@ class Widget {
     callAction(event) {
         if (this.popup) {
             let panelRect = this.panel.getBoundingClientRect();
-            new WidgetWindow({ x: this.element.offsetTop, y: panelRect.top }, this.popup, { config: this.config || {} });
+            let elementRect = this.element.getBoundingClientRect();
+            new WidgetWindow({ x: elementRect.left, y: panelRect.top }, this.popup, { config: this.config || {} });
             return;
         }
         if (this.action) {
