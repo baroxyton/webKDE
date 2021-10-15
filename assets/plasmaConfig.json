@@ -12,10 +12,10 @@
         },
         "panels": [
             {
-                "height": 45,
-                "top": 100,
-                "width": 100,
-                "left": 0,
+                "height": "45px",
+                "top": "calc(100% - 45px)",
+                "width": "100%",
+                "left": "0",
                 "items": [
                     {
                         "type": "SearchMenuWidget",

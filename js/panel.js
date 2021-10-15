@@ -16,10 +16,10 @@ class Panel {
         this.panelElement.panelIndex = this.panelIndex;
         this.panelElement.classList.add("panel");
 
-        this.panelElement.style.height = this.config.height + "px";
-        this.panelElement.style.width = this.config.width + "%";
-        this.panelElement.style.left = this.config.left + "%";
-        this.panelElement.top = this.config.top + "%";
+        this.panelElement.style.height = this.config.height;
+        this.panelElement.style.width = this.config.width;
+        this.panelElement.style.left = this.config.left;
+        this.panelElement.style.top = this.config.top;
         
         this.config.items.forEach(item => {
             let newWidget = new widgets[item.type](this.panelElement,item.config);
