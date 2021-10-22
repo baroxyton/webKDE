@@ -69,6 +69,15 @@ class App {
             api.simpleRunCommand(this.appData.cmd.replaceAll(" %U", ""));
             api.quit();
         });
+        this.element.addEventListener("contextmenu", event=>{
+            api.menu({x:event.clientX, y:event.clientY}, [{
+                text: "Run",
+                icon: "/usr/share/icons/breeze-dark/actions/gtk-execute.svg"
+            },{
+                text: "Pin to panel",
+                icon:"/usr/share/icons/breeze-dark/actions/pin.svg"
+            }])
+        })
     }
 }
 class Category {

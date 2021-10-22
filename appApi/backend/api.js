@@ -99,11 +99,11 @@ class ProgramApi {
                     this.tty.env[data.read().key] = String(data.read().value);
                     break;
                 case "focus":
-                    this.windowObject.focus();
+                    this.windowObject.focus?this.windowObject.focus():0;
                     this.focus();
                     break;
                 case "unfocus":
-                    this.windowObject.unfocus();
+                    this.windowObject.unfocus?this.windowObject.unfocus():0;
                     this.unfocus();
                     break;
             }

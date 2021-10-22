@@ -48,9 +48,21 @@ class WidgetWindow {
         this.element.style.top = this.cover.style.top = this.position.y + "px";
         this.element.style.width = this.cover.style.width = this.config.width || "30vh";
         this.element.style.height = this.cover.style.height = this.config.height || "25vh";
+        this.cover.style.transform = "translate(0, -100%)"
         document.getElementById("desktop").appendChild(this.element, "widgets");
         document.getElementById("desktop").appendChild(this.cover, "covers");
-        document.body.addEventListener("mouseup",()=>this.removed?0:this.remove());
+        document.body.addEventListener("mouseup",event=>{
+            if(this.removed){
+                return;
+            }
+            if(event.target == this.cover){
+                return;
+            }
+            if(event.target.classList.contains("menu")||event.target.classList.contains("menuItem")||event.target.classList.contains("menuText")||event.target.classList.contains("menuIcon")){
+                return;
+            }
+            this.remove();
+        });
     }
     addListeners() {
         this.cover.addEventListener("mouseup", event => {
