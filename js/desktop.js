@@ -82,6 +82,7 @@ class Desktop {
     // (Re-)render desktop
     render() {
         config = JSON.parse(linux.fileapi.internal.read("/home/demo/.config/plasma.json"));
+        this.config = config;
         this.theme.changeTheme(linux.fileapi.internal.read("/usr/share/themes/" + this.config.desktop.theme));
         this.element.style.backgroundImage = `url("data:image/png;base64,${btoa(linux.fileapi.internal.read(this.config.desktop.backgroundimage))}")`;
         this.renderApps();

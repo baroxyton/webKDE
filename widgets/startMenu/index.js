@@ -64,18 +64,28 @@ class App {
         this.element.outerHTML = "";
         renderedApps.splice(renderedApps.indexOf(this), 1);
     }
-    addListeners(){
-        this.element.addEventListener("click", event=>{
+    addListeners() {
+        this.element.addEventListener("click", event => {
             api.simpleRunCommand(this.appData.cmd.replaceAll(" %U", ""));
             api.quit();
         });
-        this.element.addEventListener("contextmenu", event=>{
-            api.menu({x:event.clientX, y:event.clientY}, [{
+        this.element.addEventListener("contextmenu", event => {
+            api.menu({ x: event.clientX, y: event.clientY }, [{
                 text: "Run",
-                icon: "/usr/share/icons/breeze-dark/actions/gtk-execute.svg"
-            },{
+                icon: "/usr/share/icons/breeze-dark/actions/gtk-execute.svg",
+                action: () => {
+                    api.simpleRunCommand(this.appData.cmd.replaceAll(" %U", ""));
+                }
+            }, {
                 text: "Pin to panel",
-                icon:"/usr/share/icons/breeze-dark/actions/pin.svg"
+                icon: "/usr/share/icons/breeze-dark/actions/pin.svg",
+                action: async () => {
+                    let config = JSON.parse((await api.filesystem("read", "/home/demo/.config/plasma.json")).read().content);
+                    console.log(config);
+                    config.desktop.panels[0].items.find(item=>item.type == "AppsWidget").config.apps.push(this.appData.location);
+                    await api.filesystem("write", "/home/demo/.config/plasma.json", {content:JSON.stringify(config)});
+                    this.remove();
+                }
             }])
         })
     }
@@ -133,13 +143,14 @@ async function updateApps() {
     let appData = [];
     let appList = (await api.filesystem("list", "/usr/share/applications")).read().content;
     appData = await Promise.all(appList.map(async app => (await api.filesystem("read", "/usr/share/applications/" + app)).read().content));
-    appData.forEach(data => {
+    appData.forEach((data, index) => {
         let parsedFile = parseApp(data);
+        let location = "/usr/share/applications/" + appList[index];
         let name = parsedFile["Desktop Entry"].Name[0];
         let cmd = parsedFile["Desktop Entry"].Exec[0];
         let icon = parsedFile["Desktop Entry"].Icon[0];
         let fileCategories = parsedFile["Desktop Entry"].Categories || [];
-        let app = { name, cmd, icon };
+        let app = { name, cmd, icon, location };
         categories.forEach(category => {
             if (fileCategories.includes(category) || category == "all") {
                 assignedApplications[category] = assignedApplications[category] || [];
