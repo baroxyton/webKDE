@@ -2,7 +2,7 @@ import OSApi from "{{file:/usr/lib/api/api.js}}";
 let api = new OSApi();
 let inputContent = "";
 let caretPosition = 0;
-let ttyLocation = "/";
+let ttyLocation = "/home/demo";
 let user = "demo";
 let commandIsRunning = false;
 let preinput = "demo@linux:/ $";
@@ -164,7 +164,8 @@ api.gotData.then(async () => {
         title: "Konsole",
         icon: "/usr/share/icons/breeze-dark/apps/utilities-terminal.svg"
     });
-    setTimeout(a => api.tty.run("ls"), 1000);
+    api.setEnv("PWD", ttyLocation);
+
     await updatePreinput();
 });
 loadInputContent();
