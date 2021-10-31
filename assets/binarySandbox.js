@@ -142,7 +142,7 @@ api = {
     },
     // Makes web request, use proxy to avoid CORS
     web: async function (url) {
-        let data = await (await fetch("https://proxy.ironblockhd.repl.co/?url=" + encodeURIComponent(url))).text();
+        let data =  (await (await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)).json()).contents;
         return data;
     }
 }
