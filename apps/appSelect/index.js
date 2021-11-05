@@ -1,4 +1,5 @@
 import OSApi from "../../appApi/frontend/api.js";
+let file = "unknown";
 let api = new OSApi();
 
 api.channel.onevent = data => {
@@ -10,12 +11,60 @@ api.channel.onevent = data => {
             break;
     }
 }
+
 // Got api data (user, application arguments and all that stuff)
 api.gotData.then(async () => {
-console.log(api.data);
-// Render window
-api.done({
-    title: "Open file with..",
-    icon: "/usr/share/icons/breeze-dark/categories/applications-other.svg"
+    file = api.data.args.file;
+    // Render window
+    api.done({
+        title: "Open file with..",
+        icon: "/usr/share/icons/breeze-dark/categories/applications-other.svg"
+    });
 });
-})
+function parseApp(data) {
+    let result = {};
+    let sections = data.split("\n\n");
+    // Iterate over sections
+    sections.forEach(section => {
+        let sectionData = {};
+        let sectionName;
+        let sectionParts = section.split("\n");
+
+        // Iterate over data in section
+        sectionParts.forEach((sectionPart, index) => {
+
+            // It's the title/name line
+            if (index == 0) {
+                // Remove the brackets at the start and end
+                sectionName = sectionPart.slice(1, -1);
+                return;
+            }
+            // Extract data of current row
+            let data = sectionPart.split("=");
+            sectionData[data[0]] = data[1].split(";");
+        });
+        result[sectionName] = sectionData;
+    })
+    return result;
+}
+class DisplayApp {
+    constructor(data) {
+        this.data = data;
+        this.render();
+    }
+    render() {
+        this.element = document.createElement("div");
+        this.element.innerText = this.data.name;
+        document.getElementById("apps").appendChild(this.element)
+    }
+}
+(async () => {
+    let applications = (await api.filesystem("list", "/usr/share/applications")).read().content;
+    let appData = await Promise.all(applications.map(async app => {
+        let appContent = (await api.filesystem("read", "/usr/share/applications/" + app)).read().content;
+        let parsedContent = parseApp(appContent);
+        let data = { icon: parsedContent["Desktop Entry"].Icon[0], name: parsedContent["Desktop Entry"].Name[0], exec: parsedContent["Desktop Entry"].Exec[0].replace("%U", file) };
+        return data;
+    }));
+    appData.forEach(app=>new DisplayApp(app));
+})()
