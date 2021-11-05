@@ -47,15 +47,38 @@ function parseApp(data) {
     })
     return result;
 }
+let appList = [];
 class DisplayApp {
-    constructor(data) {
+    constructor(data, index) {
+        this.index = index;
         this.data = data;
+        appList.push(this);
         this.render();
+        this.addListeners();
     }
     render() {
         this.element = document.createElement("div");
+        this.element.classList.add("app");
+        this.element.setAttribute("icon", this.data.icon);
+        if(this.index % 2 == 0){
+            this.element.classList.add("dark");
+        }
         this.element.innerText = this.data.name;
-        document.getElementById("apps").appendChild(this.element)
+        document.getElementById("apps").appendChild(this.element);
+    }
+    select(){
+        this.selected = true;
+        this.element.classList.add("selected");
+    }
+    unselect(){
+        this.selected = false;
+        this.element.classList.remove("selected");
+    }
+    addListeners(){
+        this.element.addEventListener("click", event=>{
+            appList.find(app=>app.selected)?.unselect();
+            this.select();
+        })
     }
 }
 (async () => {
@@ -66,5 +89,7 @@ class DisplayApp {
         let data = { icon: parsedContent["Desktop Entry"].Icon[0], name: parsedContent["Desktop Entry"].Name[0], exec: parsedContent["Desktop Entry"].Exec[0].replace("%U", file) };
         return data;
     }));
-    appData.forEach(app=>new DisplayApp(app));
+    appData.forEach((app, index)=>new DisplayApp(app, index));
+    appList[0].select();
+    api.loadIcons();
 })()

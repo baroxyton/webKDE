@@ -1,6 +1,19 @@
 #apps{
-    height:50%;
+    max-height:50vh;
     width:100%;
     overflow:auto;
-    background-color:red;
+    background-color:var(--Colors_Window_BackgroundAlternate)
+}
+.app{
+    border-radius:3px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background-repeat:no-repeat;
+    background-size: auto 100%;
+}
+.app.dark{
+    background-color: var(--Colors_Window_BackgroundNormal);
+}
+.app.selected{
+    background-color: var(--Colors_Window_DecorationHover);
 }
