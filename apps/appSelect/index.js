@@ -1,4 +1,5 @@
 import OSApi from "../../appApi/frontend/api.js";
+import toMime from "../../js/toMime.js";
 let file = "unknown";
 let api = new OSApi();
 
@@ -83,10 +84,11 @@ class DisplayApp {
 }
 (async () => {
     let applications = (await api.filesystem("list", "/usr/share/applications")).read().content;
-    let appData = await Promise.all(applications.map(async app => {
+    let appData = await Promise.all(applications.map(async (app, index) => {
+        let location = "/usr/share/applications/" + applications[index];
         let appContent = (await api.filesystem("read", "/usr/share/applications/" + app)).read().content;
         let parsedContent = parseApp(appContent);
-        let data = { icon: parsedContent["Desktop Entry"].Icon[0], name: parsedContent["Desktop Entry"].Name[0], exec: parsedContent["Desktop Entry"].Exec[0].replace("%U", file) };
+        let data = { icon: parsedContent["Desktop Entry"].Icon[0], name: parsedContent["Desktop Entry"].Name[0], exec: parsedContent["Desktop Entry"].Exec[0].replace("%U", file), location:location };
         return data;
     }));
     appData.forEach((app, index) => new DisplayApp(app, index));
@@ -94,5 +96,19 @@ class DisplayApp {
     api.loadIcons();
 })()
 window.cancelOperation = function () {
-api.quit();
+    api.quit();
+}
+window.openWindow = async function () {
+    let saveChoice = document.getElementById("always").checked;
+    let selectedApplication = appList.find(app => app.selected);
+    let applicationLocation = selectedApplication.data.location;
+    api.simpleRunCommand(selectedApplication.data.exec);
+    if(saveChoice){
+        let configFile = "/home/"+api.data.user+"/.config/mime.json";
+        let types = JSON.parse((await api.filesystem("read", configFile)).read().content);
+        types[toMime(api.data.args.file)] = applicationLocation.split("/").slice(-1)[0].slice(0, -8);
+        let modified = JSON.stringify(types);
+        api.filesystem("write", configFile, {content:modified});
+    }
+    api.quit();
 }
