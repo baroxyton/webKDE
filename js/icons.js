@@ -83,7 +83,10 @@ class DesktopApp {
             {
                 text: "Open with..",
                 icon: "/usr/share/icons/breeze-dark/categories/applications-other.svg",
-                seperator: true
+                seperator: true,
+                action: () => {
+                    new desktop.window("file:///usr/share/apps/appSelect/index.html", { file: "/home/demo/Desktop/" + this.name });
+                }
             },
             {
                 text: "Rename..",

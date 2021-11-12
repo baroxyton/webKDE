@@ -59,11 +59,21 @@ class Icon {
                     action: () => {
                         this.api.filesystem("delete", this.name);
                         loadContent(cwd);
-                    }
+                    },
+                    separator: true
+                },
+                {
+                    text: "Open with...",
+                    icon: "/usr/share/icons/breeze-dark/categories/applications-other.svg",
+                    action: () => {
+                        this.api.spawnWindow("file:///usr/share/apps/appSelect/index.html", { file: this.name });
+                    },
+                    seperator: true
                 },
                 {
                     text: "Properties",
                     icon: "/usr/share/icons/breeze-dark/actions/document-properties.svg",
+                    seperator: true,
                     action: () => {
                         this.api.spawnWindow("file:///usr/share/apps/properties/index.html", { path: this.name });
                     },
