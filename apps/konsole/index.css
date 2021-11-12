@@ -4,7 +4,7 @@ body {
     text-align: start !important;
     font-weight: 550;
     user-select: text !important;
-    font-size: 0.9em !important;
+    font-size: 1.2em !important;
 }
 
 ::selection {

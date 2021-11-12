@@ -1,5 +1,5 @@
-import OSApi from "../../appApi/frontend/api.js";
-import toMime from "../../js/toMime.js";
+import OSApi from "{{file:/usr/lib/api/api.js}}";
+import toMime from "{{file:/usr/lib/api/toMime.js}}"
 let file = "unknown";
 let api = new OSApi();
 
@@ -76,9 +76,12 @@ class DisplayApp {
         this.element.classList.remove("selected");
     }
     addListeners() {
-        this.element.addEventListener("click", event => {
+        this.element.addEventListener("click", () => {
             appList.find(app => app.selected)?.unselect();
             this.select();
+        })
+        this.element.addEventListener("dblclick", ()=>{
+            window.openWindow();
         })
     }
 }

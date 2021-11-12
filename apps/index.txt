@@ -4,3 +4,4 @@ kate/
 dolphin/
 properties/
 konsole/
+appSelect/

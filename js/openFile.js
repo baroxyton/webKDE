@@ -25,7 +25,7 @@ function openFile(filePath, mime) {
 
     // None found: spawn app selector
     if (!application) {
-        new desktop.window("/apps/appSelect", {file:filePath});
+        new desktop.window("file:///usr/share/apps/appSelect/index.html", {file:filePath});
         return;
     }
 
