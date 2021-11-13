@@ -144,6 +144,10 @@ function shortcut(event) {
         loadInputContent();
         return;
     }
+    if (event.key == "l" && event.ctrlKey&&!commandIsRunning) {
+        document.getElementById("content").innerText = "";
+        return;
+    }
     inputContent += "^" + event.key.toUpperCase();
     caretPosition = inputContent.length;
     loadInputContent();
