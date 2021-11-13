@@ -144,7 +144,7 @@ function shortcut(event) {
         loadInputContent();
         return;
     }
-    if (event.key == "l" && event.ctrlKey&&!commandIsRunning) {
+    if (event.key == "l" && event.ctrlKey && !commandIsRunning) {
         document.getElementById("content").innerText = "";
         return;
     }
@@ -172,4 +172,26 @@ api.gotData.then(async () => {
 
     await updatePreinput();
 });
+document.body.addEventListener("contextmenu", event => {
+    api.menu({ x: event.clientX, y: event.clientY },
+        [
+            {
+                "text": "Quit",
+                "icon": "/usr/share/icons/breeze-dark/actions/gtk-quit.svg",
+                action: () => {
+                    api.quit();
+                }
+            },
+            {
+                text: "Stop process",
+                icon: "/usr/share/icons/breeze-dark/actions/process-stop.svg",
+                action: () => {
+                    if (commandIsRunning) {
+                        api.tty.quitProcess();
+                        return;
+                    }
+                }
+            }
+        ]);
+})
 loadInputContent();
