@@ -190,6 +190,14 @@ document.body.addEventListener("contextmenu", event => {
                         api.tty.quitProcess();
                         return;
                     }
+                },
+                seperator: true
+            },
+            {
+                text: "Clear",
+                icon: "/usr/share/icons/breeze-dark/actions/24/edit-clear-all.svg",
+                action: () => {
+                    document.getElementById("content").innerText = "";
                 }
             }
         ]);

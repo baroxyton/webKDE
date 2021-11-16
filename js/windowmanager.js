@@ -81,10 +81,10 @@ class WebKWin {
     addListeners() {
         this.cover.addEventListener("mouseup", event => {
             if (event.button == 0) {
-                console.log(event);
+
                 event.target.style.display = "none";
             }
-        })
+        });
         this.actions.children[1].addEventListener("mouseup", () => this.toggleFullscreen())
         this.actions.children[2].addEventListener("mouseup", () => {
             if (!this.api.supported) {
@@ -94,7 +94,33 @@ class WebKWin {
             this.sigterm()
         });
         // Mouse down: set initial data for dragging window
+        this.navbar.addEventListener("contextmenu", event=>{
+            let x = event.clientX;
+            let y = event.clientY;
+            new DesktopMenu({x,y}, [{
+                text:"Close",
+                icon:"/usr/share/icons/breeze-dark/actions/gtk-close.svg",
+                action:()=>{
+                    if (!this.api.supported) {
+                        this.remove();
+                        return;
+                    }
+                    this.sigterm()
+                },
+                seperator:true
+            },
+        {
+            text:"Maximize/Restore",
+            icon:"/usr/share/icons/breeze-dark/actions/view-fullscreen.svg",
+            action:()=>{
+                this.toggleFullscreen();
+            }
+        }])
+        })
         this.navbar.addEventListener("mousedown", event => {
+            if(event.button !== 0){
+                return;
+            }
             if (this.fullscreen) {
                 return;
             }
