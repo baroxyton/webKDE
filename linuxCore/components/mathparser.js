@@ -1,13 +1,13 @@
 "use strict";
 function isNumber(input) {
-    if (input.match("[0-9/.]")) {
+    if (input.match("[0-9.]")) {
         return true;
     }
     return false;
 }
 
 function mathTokonizer(mathString) {
-    const MULTIPLY_TOKEN = "*", PARATHESES_OPEN_TOKEN = "(", PARATHESES_CLOSE_TOKEN = ")", ADDITION_TOKEN = "+", SUBTRACT_TOKEN = "-", EXP_TOKEN = "**", DIVIDE_TOKEN = "/", SPACE_TOKEN = " ";
+    const EXP_TOKEN = "^", MULTIPLY_TOKEN = "*", PARATHESES_OPEN_TOKEN = "(", PARATHESES_CLOSE_TOKEN = ")", ADDITION_TOKEN = "+", SUBTRACT_TOKEN = "-", DIVIDE_TOKEN = "/", SPACE_TOKEN = " ";
 
     let result = [];
 
@@ -100,6 +100,9 @@ function mathTokonizer(mathString) {
             return;
         }
         switch (currentChar) {
+            case EXP_TOKEN:
+                result.push({ type: "exp" });
+                break;
             case ADDITION_TOKEN:
                 result.push({ type: "add" });
                 break;
@@ -141,36 +144,25 @@ export function mathParser(calcString) {
     result.forEach(token => {
         if (token.type == "parantheses") {
             token.type = "number";
-            token.content = mathParser(token.content)[0]?.content;
+            token.content = mathParser(token.content)?.content;
         }
     });
-
     // Generic calculate function
     function calculate(token, calculator) {
-        let newResult = [];
-        let skip;
-        result.forEach((item, index, array) => {
-            if (skip) {
-                skip = false;
-                return;
-            }
-            if (array[index + 1]?.type == token) {
-                return;
-            }
-            if (item.type == token) {
-                skip = true;
-                let result = calculator(array[index - 1].content, array[index + 1].content)
-                newResult.push({ type: "number", content: result });
-                return;
-            }
-            newResult.push(item);
-        })
-        result = newResult;
+        let tokenPosition;
+        while((tokenPosition = result.findIndex(item=>item.type == token)) != -1){
+        let numBefore = result[tokenPosition -1].content;
+        let numAfter = result[tokenPosition + 1].content;
+        let resultNum = calculator(numBefore, numAfter);
+        result.splice(tokenPosition - 1, 3,{type:"number",content:resultNum});
+        console.log({numBefore,numAfter,resultNum});
+       }
     };
     calculate("exp",(a,b)=>a**b);
     calculate("multiply",(a,b)=>a*b);
     calculate("divide",(a,b)=>a/b);
     calculate("add",(a,b)=>a+b);
     calculate("sub",(a,b)=>a-b);
-    return result[0].content;
+    return result[0];
 }
+console.log(mathParser("(1/(1+0.04)**5)"));
