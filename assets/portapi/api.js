@@ -1,7 +1,10 @@
 import Channel from "{{file:/usr/lib/api/communication.js}}"
 import ThemeLoader from "{{file:/usr/lib/api/themeLoader.js}}"
+let api;
 class OSApi {
     constructor() {
+        api = this;
+        this.Config = ConfigInterface;
         this.shortcuts = [];
         this.iconCache = {};
         this.channel = new Channel(window.parent);
@@ -159,7 +162,7 @@ class OSApi {
     menu(position, menuitems) {
         let events = {};
         let items = menuitems.map(item => {
-            if(!item){
+            if (!item) {
                 return;
             }
             item.event = `menu-${this.menuCount}`;
@@ -244,8 +247,8 @@ class OSApi {
         return await this.channel.write("setenv", { key, value }, true);
     }
     addShortcut(shortcut, action) {
-        if(shortcut instanceof Array){
-            shortcut.forEach(s=>this.addShortcut(s, action));
+        if (shortcut instanceof Array) {
+            shortcut.forEach(s => this.addShortcut(s, action));
             return;
         }
         let shortcutInfo = { key: null, shift: false, ctrl: false, alt: false };
@@ -267,6 +270,47 @@ class OSApi {
             }
         })
         this.shortcuts.push({ shortcut: shortcutInfo, action });
+    }
+}
+class ConfigInterface {
+    /*
+    name: Name of the application. Should not use name taken by another application.
+
+    fields: Array of objects. Properties:
+    name (Required),
+    value (Default: null),
+    inSettings (Default: false),
+    type (Default:string, possible values: bool, slider, string, dict, list, num, select)
+    */
+    constructor(name, fields) {
+        this.name = name;
+        this.fields = fields;
+        this.configLocation = "/home/demo/.config/apps/" + this.name + ".json";
+        this.ready = this.fetchContents();
+        setInterval(()=>this.update(), 500)
+    }
+    async fetchContents() {
+        let fileExists = (await api.filesystem("fileExists", this.configLocation)).read().content;
+        let data;
+        if (!fileExists) {
+            data = JSON.stringify(this.fields);
+        }
+        else {
+            data = (await api.filesystem("read", this.configLocation)).read().content;
+        }
+        this.data = JSON.parse(data);
+    }
+    update() {
+        let stringifiedData = JSON.stringify(this.data);
+        if (this.lastData == stringifiedData) {
+            return;
+        }
+        this.lastData = stringifiedData;
+        api.filesystem("write", this.configLocation, { content: stringifiedData });
+    }
+    // Obtain value from database
+    key(name) {
+        return this.data.find(data => data.name == name);
     }
 }
 document.body.addEventListener("contextmenu", e => e.preventDefault());
