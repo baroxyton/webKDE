@@ -1,6 +1,36 @@
 import OSApi from "{{file:/usr/lib/api/api.js}}";
 import Icon from "{{file:/usr/share/apps/dolphin/icons.js}}"
 let api = new OSApi();
+let favoriteStore = new api.Config("dolphin",[{
+    name: "favorites",
+    type: "list",
+    inSettings: true,
+    value: [
+        {
+            name: "Home",
+            icon: "/usr/share/icons/breeze-dark/places/user-home.svg",
+            location: "/home/demo"
+        },
+        {
+            name: "Desktop",
+            icon: "/usr/share/icons/breeze-dark/places/user-desktop.svg",
+            location: "/home/demo/Desktop"
+        }, {
+            name: "Pictures",
+            icon: "/usr/share/icons/breeze-dark/places/folder-pictures.svg",
+            location: "/home/demo/Pictures"
+        },
+        {
+            name: "Downloads",
+            icon: "/usr/share/icons/breeze-dark/places/folder-downloads.svg",
+            location: "/home/demo/Downloads"
+        },
+        {
+            name: "Documents",
+            icon: "/usr/share/icons/breeze-dark/places/folder-documents.svg",
+            location: "/home/demo/Documents"
+        }]
+}]);
 window.locationHistory = [];
 window.historyPosition = 0;
 window.cwd = "/home/demo"
@@ -95,12 +125,6 @@ document.getElementById("location").addEventListener("keyup", event => {
         loadContent(event.target.value);
     }
 });
-Array.from(document.getElementsByClassName("location")).forEach(element => {
-    element.addEventListener("click", () => {
-        let location = element.getAttribute("location");
-        loadContent(location);
-    })
-});
 document.getElementById("content").addEventListener("contextmenu", event => {
     if (event.target != document.getElementById("content")) {
         return;
@@ -169,4 +193,46 @@ document.querySelector(".forward").addEventListener("click", () => {
     }
     historyPosition++;
     loadContent(null, true);
-})
+});
+let favorites = [];
+
+class Favorite{
+    constructor(data){
+        this.icon = data.icon;
+        this.name = data.name;
+        this.location = data.location;
+        this.render();
+        this.addListeners();
+        favorites.push(this);
+    }
+    render(){
+        this.element = document.createElement("div");
+        this.element.classList.add("location");
+        this.element.setAttribute("location", this.location);
+        this.element.setAttribute("icon", this.icon);
+        this.element.innerText = this.name;
+        document.querySelector("#locations").appendChild(this.element);
+    }
+    remove(){
+        this.element.outerHTML = null;
+        this.removed = true;
+    }
+    addListeners(){
+        this.element.addEventListener("click", e=>loadContent(this.location));
+        this.element.addEventListener("contextmenu",e=>{
+            api.menu({x:e.clientX, y:e.clientY}, [{text:"Remove favorite",icon:"/usr/share/icons/breeze-dark/emblems/vcs-removed.svg",action:()=>{
+                let index = favoriteStore.data[0].value.findIndex(data=>data.location==this.location);
+                favoriteStore.data[0].value.splice(index,1);
+                this.remove()
+            }}])
+        })
+    }
+}
+favoriteStore.ready.then(()=>loadFavorites(favoriteStore.data[0]));
+function loadFavorites(data){
+    let favoriteData = data.value;
+    favorites.forEach(fav=>fav.remove());
+    favorites = [];
+    favoriteData.forEach(favorite=>new Favorite(favorite));
+
+}
