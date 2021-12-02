@@ -166,7 +166,7 @@ export async function runCommand(command, hook, tty = mainTty) {
                     arg = arg.content;
                     break;
                 case "math":
-                    arg = mathParser(arg.content);
+                    arg = mathParser(arg.content).content;
                     break;
                 case "exec":
                     arg = await getCommandOutput(arg.content);

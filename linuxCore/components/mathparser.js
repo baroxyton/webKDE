@@ -165,4 +165,3 @@ export function mathParser(calcString) {
     calculate("sub",(a,b)=>a-b);
     return result[0];
 }
-console.log(mathParser("(1/(1+0.04)**5)"));

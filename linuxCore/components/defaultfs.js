@@ -162,6 +162,15 @@ export const defaultfs = async function () {
                                                 "application/json":"kate",
                                                 "inode/directory":"dolphin"
                                             }`
+                                        },
+                                        "apps": {
+                                            meta: {
+                                                changeDate: 0,
+                                                owner: "demo",
+                                                permission: [7, 5, 5],
+                                                type: "dir"
+                                            },
+                                            content: {}
                                         }
                                     }
                                 },

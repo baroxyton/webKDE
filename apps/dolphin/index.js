@@ -234,5 +234,12 @@ function loadFavorites(data){
     favorites.forEach(fav=>fav.remove());
     favorites = [];
     favoriteData.forEach(favorite=>new Favorite(favorite));
-
+}
+window.addFavorite = async function(){
+    let favorite = await api.dialog("prompt", "Location", ["next"]);
+    let name = await api.dialog("prompt", "name", ["Add favorite"]);
+    let result = {name,location:favorite,icon:"/usr/share/icons/breeze-dark/places/folder.svg"};
+    new Favorite(result);
+    favoriteStore.data[0].value.push(result);
+    api.loadIcons();
 }
