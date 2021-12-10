@@ -1,0 +1,16 @@
+#sidebar{
+    width:20vw;
+    left:0;
+    top:0;
+    position:fixed;
+    height:100vh;
+    background-color: var(--Colors_View_BackgroundAlternate);
+}
+#content{
+    position:fixed;
+    left:calc(20vw + 2px);
+    top:1px;
+    width:calc(80vw - 4px);
+    border:1px rgba(var(--Colors_View_ForegroundInactive_raw), 0.2) solid;
+    height:calc(100vh - 2px);
+}
