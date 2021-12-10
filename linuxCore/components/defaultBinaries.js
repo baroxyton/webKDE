@@ -332,13 +332,16 @@ let defaultBinaries = {
         api.spawnWindow("file:///usr/share/apps/konsole/index.html", { location: api.args[0] });
     }),
     "minipaint":compile(async function(){
-        api.spawnWindow("https://viliusle.github.io/miniPaint", { location: api.args[0] });
+        api.spawnWindow("https://viliusle.github.io/miniPaint");
     }),
     "chessgame":compile(async function(){
-        api.spawnWindow("https://mhonert.github.io/chess/", { location: api.args[0] });
+        api.spawnWindow("https://mhonert.github.io/chess/");
     }),
     "xdg-open": compile(async function () {
         api.openFile(api.args[0]);
+    }),
+    "settings":compile(async function(){
+        api.spawnWindow("/apps/settings");
     })
 };
 //commands implemented so far:

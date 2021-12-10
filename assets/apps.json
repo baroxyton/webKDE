@@ -51,30 +51,43 @@
         },
         "content": "[Desktop Entry]\nName=Konsole\nExec=konsole %U\nIcon=/usr/share/icons/breeze-dark/apps/utilities-terminal.svg\nCategories=system;utilities\nMimeType=application/x-sh"
     },
-    "minipaint.desktop":{
-        "meta":{
-            "changeDate":0,
-            "owner":"root",
-            "permission":[
+    "minipaint.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
                 7,
                 5,
                 5
             ],
-            "type":"file"
+            "type": "file"
         },
-        "content":"[Desktop Entry]\nName=MiniPaint\nExec=minipaint\nIcon=/usr/share/icons/breeze-dark/apps/kolourpaint.svg\nCategories=graphics"
+        "content": "[Desktop Entry]\nName=MiniPaint\nExec=minipaint\nIcon=/usr/share/icons/breeze-dark/apps/kolourpaint.svg\nCategories=graphics"
     },
-    "chess.desktop":{
-        "meta":{
-            "changeDate":0,
-            "owner":"root",
-            "permission":[
+    "chess.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
                 7,
                 5,
                 5
             ],
-            "type":"file"
+            "type": "file"
         },
-        "content":"[Desktop Entry]\nName=Chess\nExec=chessgame\nIcon=/usr/share/icons/breeze-dark/actions/milestone.svg\nCategories=games"
+        "content": "[Desktop Entry]\nName=Chess\nExec=chessgame\nIcon=/usr/share/icons/breeze-dark/actions/milestone.svg\nCategories=games"
+    },
+    "settings.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
+                7,
+                5,
+                5
+            ],
+            "type": "file"
+        },
+        "content": "[Desktop Entry]\nName=Settings\nExec=settings\nIcon=/usr/share/icons/breeze-dark/apps/systemsettings.svg\nCategories=system"
     }
 }
