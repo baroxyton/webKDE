@@ -18,3 +18,4 @@ api.done({
     icon: "/usr/share/icons/breeze-dark/apps/systemsettings.svg"
 });
 })
+api.loadIcons();
