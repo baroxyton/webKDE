@@ -89,5 +89,18 @@
             "type": "file"
         },
         "content": "[Desktop Entry]\nName=Settings\nExec=settings\nIcon=/usr/share/icons/breeze-dark/apps/systemsettings.svg\nCategories=system"
+    },
+    "piped.desktop": {
+        "meta": {
+            "changeDate": 0,
+            "owner": "root",
+            "permission": [
+                7,
+                5,
+                5
+            ],
+            "type": "file"
+        },
+        "content": "[Desktop Entry]\nName=Piped (YouTube)\nExec=piped-tube\nIcon=/usr/share/icons/breeze-dark/actions/im-youtube.svg\nCategories=multimedia"
     }
 }
