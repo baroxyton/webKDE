@@ -348,6 +348,9 @@ let defaultBinaries = {
     }),
     "code":compile(async function(){
         api.spawnWindow("https://vscode.dev/");
+    }),
+    "photopea":compile(async function(){
+        api.spawnWindow("/apps/photopea", { location: api.args[0] });
     })
 };
 //commands implemented so far:
