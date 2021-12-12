@@ -345,6 +345,9 @@ let defaultBinaries = {
     }),
     "piped-tube":compile(async function(){
         api.spawnWindow("https://piped.kavin.rocks/");
+    }),
+    "code":compile(async function(){
+        api.spawnWindow("https://vscode.dev/");
     })
 };
 //commands implemented so far:
