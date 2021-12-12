@@ -1,12 +1,15 @@
 import OSApi from "../../appApi/frontend/api.js";
 let api = new OSApi();
 
-api.channel.onevent = data => {
+api.channel.onevent = async data => {
     switch (data.event) {
         case "sigterm":
 
             // Add custom exit handler here
-            api.quit();
+            let sure = await api.dialog("confirm", "close potentially unsaved work", ["stay", "close"]);
+            if(sure == 1){
+                api.quit();
+            }
             break;
     }
 }
@@ -14,7 +17,7 @@ api.channel.onevent = data => {
 api.gotData.then(async () => {
 // Render window
 api.done({
-    title: "Title",
-    icon: "/usr/share/icons/breeze-dark/categories/applications-development.svg"
+    title: "Photopea Intergration",
+    icon: "/usr/share/icons/breeze-dark/apps/photolayoutseditor.svg"
 });
 })
