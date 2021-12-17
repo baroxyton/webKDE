@@ -39,10 +39,10 @@ class ProgramApi {
                     this.windowObject.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.windowObject.iconLocation))}")`;
                     this.windowObject.maxWidth = data.read()?.maxWidth || this.windowObject.maxWidth;
                     this.windowObject.maxHeight = data.read()?.maxHeight || this.windowObject.maxHeight;
-                    this.windowObject.minWidth = data.read()?.minWidth || this.windowObject.minWidth || 150;
-                    this.windowObject.minHeight = data.read()?.minHeight || this.windowObject.minHeight || 100;
-                    this.windowObject.width = data.read()?.width || data.read()?.minWidth || this.windowObject.width || innerHeight * 0.5;
-                    this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerHeight * 0.3;
+                    this.windowObject.minWidth = data.read()?.minWidth || this.windowObject.minWidth || 100
+                    this.windowObject.minHeight = data.read()?.minHeight || this.windowObject.minHeight || 75
+                    this.windowObject.width = data.read()?.width || data.read()?.minWidth || this.windowObject.width || innerWidth*0.5;
+                    this.windowObject.height = data.read()?.height || data.read()?.minHeight || this.windowObject.height || innerWidth*0.5*0.75;
                     if (this.windowObject.position.x + this.windowObject.width + 5 > innerWidth) {
                         this.windowObject.position.x = innerWidth - this.windowObject.width;
                     }
