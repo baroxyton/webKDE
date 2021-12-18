@@ -121,14 +121,20 @@ class ProgramApi {
             this.windowObject.iconLocation = "/usr/share/icons/breeze-dark/categories/applications-all.svg";
             this.windowObject.title.innerText = this.windowObject.titleText;
             this.windowObject.icon.style.backgroundImage = `url("data:image/svg+xml;base64,${btoa(debug.fileapi.internal.read(this.windowObject.iconLocation))}")`;
-            this.windowObject.maxWidth = innerWidth;
-            this.windowObject.maxHeight = innerHeight;
-            this.windowObject.minWidth = 150;
-            this.windowObject.minHeight = 100;
-            this.windowObject.width = innerHeight * 0.5;
-            this.windowObject.height = innerHeight * 0.3;
+            this.windowObject.minWidth =  100
+            this.windowObject.minHeight = 75
+            this.windowObject.width = innerWidth*0.5;
+            this.windowObject.height = innerWidth*0.5*0.75;
+            if (this.windowObject.position.x + this.windowObject.width + 5 > innerWidth) {
+                this.windowObject.position.x = innerWidth - this.windowObject.width;
+            }
+            if (this.windowObject.position.y + this.windowObject.height + 45 > innerHeight) {
+                this.windowObject.position.y = innerHeight - this.windowObject.height;
+            }
             this.window.style.width = this.windowObject.width + "px";
             this.window.style.height = this.windowObject.height + "px";
+            this.windowObject.element.style.left = this.windowObject.position.x + "px";
+            this.windowObject.element.style.top = this.windowObject.position.y + "px";
         }, 1000);
     }
     sigterm() {
