@@ -29,17 +29,42 @@ async function startIframe() {
         environment: {
             "customIO": {
                 "open": "app.echoToOE('openFile');",
-                "save":"app.activeDocument.saveToOE('png');"
+                "save": "app.activeDocument.saveToOE('png');"
             }
         }
     }
     document.querySelector("iframe").src = "https://photopea.com/#" + encodeURI(JSON.stringify(apidata));
 }
-window.initIntergration = async function(){
-    let fileRaw = (currentFile ? "data:image/png;base64,"+btoa((await api.filesystem("read", currentFile)).read().content) : undefined);
-    if(fileRaw){
-    document.querySelector("iframe").contentWindow.postMessage("app.open('"+fileRaw+"', '"+currentFile+"')", '*')
+window.initIntergration = async function () {
+    let fileRaw = (currentFile ? "data:image/png;base64," + btoa((await api.filesystem("read", currentFile)).read().content) : undefined);
+    if (fileRaw) {
+        document.querySelector("iframe").contentWindow.postMessage("app.open('" + fileRaw + "', '" + currentFile + "')", '*')
     }
 }
-
-onmessage = console.log
+async function openFile() {
+    let location = await api.fileDialog(["*.png", "*.jpg", "*.jpeg", "*.bmp"]);
+    currentFile = location;
+    let fileRaw = "data:image/png;base64," + btoa((await api.filesystem("read", location)).read().content);
+    document.querySelector("iframe").contentWindow.postMessage("app.open('" + fileRaw + "', '" + location + "')", '*');
+}
+async function saveFile(blob){
+    if(!currentFile){
+        currentFile = await api.fileDialog(["*.png", "*.jpg", "*.jpeg", "*.bmp"]);
+    }
+    let filereader = new FileReader()
+    filereader.readAsBinaryString(blob);
+    filereader.onload = async function(){
+        let result = filereader.result;
+        api.filesystem("write", currentFile, {content:result});
+    }
+}
+onmessage = function (msg) {
+    let data = msg.data;
+    if(data == "openFile"){
+        openFile();
+    }
+    if(data instanceof ArrayBuffer){
+        let blob = new Blob([data]);
+        saveFile(blob);
+    }
+}
