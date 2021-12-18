@@ -160,7 +160,11 @@ export const defaultfs = async function () {
                                             content: `{
                                                 "text/plain":"kate",
                                                 "application/json":"kate",
-                                                "inode/directory":"dolphin"
+                                                "inode/directory":"dolphin",
+                                                "image/png":"gwenview",
+                                                "image/jpg":"gwenview",
+                                                "image/jpeg":"gwenview",
+                                                "image/bmp":"gwenview"
                                             }`
                                         },
                                         "apps": {
