@@ -341,7 +341,7 @@ let defaultBinaries = {
         api.openFile(api.args[0]);
     }),
     "settings":compile(async function(){
-        api.spawnWindow("/apps/settings");
+        api.spawnWindow("file:///usr/share/apps/settings/index.html");
     }),
     "piped-tube":compile(async function(){
         api.spawnWindow("https://piped.kavin.rocks/");
@@ -350,7 +350,7 @@ let defaultBinaries = {
         api.spawnWindow("https://vscode.dev/");
     }),
     "photopea":compile(async function(){
-        api.spawnWindow("/apps/photopea", { location: api.args[0] });
+        api.spawnWindow("file:///usr/share/apps/photopea/index.html", { location: api.args[0] });
     })
 };
 //commands implemented so far:

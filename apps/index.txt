@@ -5,3 +5,5 @@ dolphin/
 properties/
 konsole/
 appSelect/
+photopea/
+settings/

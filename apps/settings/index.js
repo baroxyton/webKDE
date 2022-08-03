@@ -1,4 +1,4 @@
-import OSApi from "../../appApi/frontend/api.js";
+import OSApi from "{{file:/usr/lib/api/api.js}}";
 let api = new OSApi();
 
 api.channel.onevent = data => {
@@ -50,7 +50,7 @@ class AboutPage extends SettingPage{
         <div style="text-align:left">
         <h2>About this OS</h2>
         <b>Inspired By:</b> KDE<br>
-        <b>Github repo:</b> <a target="_blank" href='https://github.com/ironblockhd/webKDE'>https://github.com/ironblockhd/webKDE</a><br>
+        <b>Github repo:</b> <a target="_blank" href='https://github.com/baroxyton/webKDE'>https://github.com/baroxyton/webKDE</a><br>
         <b>Theme:</b> Breeze<br>
         <b>Version:</b> 1.0
         </div>
