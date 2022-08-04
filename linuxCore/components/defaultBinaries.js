@@ -66,6 +66,7 @@ let defaultBinaries = {
         }
         //print output
         api.io.stdout.output.write(output.join(" "));
+	api.io.stdout.output.write("\n");
         api.application.quit();
     }),
     //cat-command for reading files
@@ -88,6 +89,7 @@ let defaultBinaries = {
         //print file content and quit
         let content = await api.fs("read", [dir]);
         api.io.stdout.output.write(content);
+	api.io.stdout.output.write("\n");
         api.application.quit();
     }),
     //echo command for printing arguments
@@ -96,6 +98,7 @@ let defaultBinaries = {
         let output = api.args.join(" ");
         //print concated args and quit
         api.io.stdout.output.write(output);
+	api.io.stdout.output.write("\n");
         api.application.quit()
     }),
     //whoami command for printing current user
@@ -104,6 +107,7 @@ let defaultBinaries = {
         let name = api.user;
         //print and quit
         api.io.stdout.output.write(name);
+	api.io.stdout.output.write("\n");
         api.application.quit()
     }),
     //sudo command for executing commands as root-user
@@ -158,6 +162,7 @@ let defaultBinaries = {
         }
         //when input process ends, exit as well
         api.io.stdin.input.ondone = function () {
+	api.io.stdout.output.write("\n");
             api.application.quit()
         }
     }),
@@ -189,6 +194,7 @@ let defaultBinaries = {
         let path = await api.env.read("PWD");
         //print output and quit
         api.io.stdout.output.write(path);
+	api.io.stdout.output.write("\n");
         api.application.quit()
     }),
     //nano, a terminal editor
@@ -317,6 +323,7 @@ let defaultBinaries = {
     //shows "command not found"-error
     "err:notfound": compile(async function () {
         api.io.stderr.output.write("this command was not found");
+	api.io.stdout.output.write("\n");
         api.application.quit()
     }),
     "kate": compile(async function () {

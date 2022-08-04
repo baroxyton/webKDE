@@ -150,6 +150,12 @@ export let processes = [{
     api: {}
 }]
 export async function runCommand(command, hook, tty = mainTty) {
+    if(!command){
+	if(hook && hook.ondone){
+		hook.ondone();
+	}
+	return;
+    }
     let apiGen = (hook && hook.generateApi || generateApi)
     let parsed = parseCommand(command);
 
