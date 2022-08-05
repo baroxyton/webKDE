@@ -17,10 +17,15 @@ let defaultBinaries = {
         //quit
         api.application.quit();
     }),
+    //help command for printing help page
+    help: compile(async function () {
+        //help
+        api.io.stdout.output.write("webKDE - Usage\n");
+    }),
     //exit command for exitting
     exit: compile(async function () {
         //quit
-        
+
     }),
     //sleep command for waiting after the next command
     sleep: compile(async function () {
@@ -114,6 +119,11 @@ let defaultBinaries = {
         api.io.stdout.output.write(name);
         api.io.stdout.output.write("\n");
         api.application.quit()
+    }),
+    //file command for printing file type
+    file: compile(async function () {
+        let args = api.args.join(" ");
+        //Just for testing
     }),
     //sudo command for executing commands as root-user
     sudo: compile(async function () {
