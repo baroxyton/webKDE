@@ -338,6 +338,11 @@ let defaultBinaries = {
 			Press Ctl+C to exit
 			`);
 	}),
+  // get MIME type of file
+  file: compile(async function(){
+    // get file name
+    let args = api.args[0];
+  });
 	//shows "command not found"-error
 	"err:notfound": compile(async function () {
 		api.io.stderr.output.write("this command was not found");
