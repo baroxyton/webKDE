@@ -342,7 +342,7 @@ let defaultBinaries = {
   file: compile(async function(){
     // get file name
     let args = api.args[0];
-  });
+  }),
 	//shows "command not found"-error
 	"err:notfound": compile(async function () {
 		api.io.stderr.output.write("this command was not found");
